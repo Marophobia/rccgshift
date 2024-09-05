@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(255)
+  email    String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  role     Role
+}
+
+model User {
+  id                Int            @id @default(autoincrement())
+  name              String
+  email             String?        @unique @db.VarChar(255)
+  telephone         String?
+  bio               String?
+  regional_pastor   String?
+  gender            String?
+  age_grade         String?
+  category          String?
+  type              String?
+  number_of_members Int            @default(1)
+  country           String?
+  state             String?
+  region            String?
+  province          String?
+  picture           String?
+  date              DateTime       @default(now())
+  status            UserStatus     @default(registered)
+  user_sessions     User_session[]
+}
+
+model Round {
+  id            Int            @id @default(autoincrement())
+  name          String
+  qualifiers    Int?
+  status        Boolean        @default(true)
+  current_round Settings[]
+  users         User_session[]
+}
+
+model Settings {
+  id            Int     @id @default(autoincrement())
+  current_round Int
+  status        Boolean @default(true)
+  round         Round   @relation(fields: [current_round], references: [id])
+
+  @@index([current_round], map: "current_id")
+}
+
+model User_session {
+  id          Int               @id @default(autoincrement())
+  round_id    Int
+  votes       Int               @default(0)
+  judge_votes Int               @default(0)
+  score       Int               @default(0)
+  status      UserSessionStatus @default(pending)
+  user_id     Int
+  round       Round             @relation(fields: [round_id], references: [id])
+  user        User              @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], map: "user_id")
+  @@index([round_id], map: "round_id")
+}
+
+enum Role {
+  judge
+  admin
+}
+
+enum UserSessionStatus {
+  voted
+  skipped
+  pending
+}
+
+enum UserStatus {
+  registered
+  approved
+  disqualified
+}
