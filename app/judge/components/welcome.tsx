@@ -15,11 +15,12 @@ type Props = {
         name: string,
         email: string,
         role: string,
-    } | undefined
+    } | undefined,
+    status: string
 }
 
 const Welcome = (props: Props) => {
-    const { settings, user } = props
+    const { settings, user, status } = props
     const options: Intl.DateTimeFormatOptions = {
         weekday: 'long',
         year: 'numeric',
@@ -46,10 +47,15 @@ const Welcome = (props: Props) => {
                             </span>
                             {settings.round.name}
                         </h1>
-                        <Link href="/judge/vote" className="btn b-solid btn-primary-solid btn-lg mt-6">
-                            <MoveRight />
-                            Start Voting
-                        </Link>
+                        {status === 'Finished' ?
+                            (<div className="btn b-solid btn-primary-solid btn-lg mt-6">
+                                Voting Ended! Thanks!
+                            </div>)
+                            :
+                            <Link href="/judge/vote" className="btn b-solid btn-primary-solid btn-lg mt-6">
+                                <MoveRight />
+                                Start Voting
+                            </Link>}
                     </div>
                     <div
                         className="col-span-full md:col-span-5 flex-col items-center justify-center 2xl:block hidden md:flex">

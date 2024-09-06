@@ -1,7 +1,10 @@
 import { Diamond, Gavel, List, MenuIcon, PersonStanding, Settings } from 'lucide-react'
 import Link from 'next/link'
 
-type Props = {}
+
+type Props = {
+
+};
 
 const Menu = (props: Props) => {
     return (

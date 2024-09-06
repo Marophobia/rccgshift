@@ -32,7 +32,7 @@ const Judges = async () => {
             <div className='w-full xl:pl-[300px] '>
                 <div className="main-content group-data-[sidebar-size=lg]:xl:ml-[52px] group-data-[sidebar-size=sm]:xl:ml-[32px] px-4 ac-transition">
                     <div className="grid grid-cols-12 gap-x-4">
-                        <Welcome settings={settings.data} user={userSession} />
+                        <Welcome settings={settings.data.settings} status={settings.data.votingStatus} user={userSession} />
                     </div>
                 </div>
             </div>

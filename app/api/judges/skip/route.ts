@@ -12,14 +12,26 @@ export const POST = async (req: Request) => {
     }
 
     // Extract id and vote from the request body
-    const { id, vote } = await req.json();
+    const { id } = await req.json();
 
     // Validate input
-    if (!id || vote === undefined) {
-        return errorHandler('Missing Vote', 400);
+    if (!id) {
+        return errorHandler('Missing Contestant', 400);
     }
 
     try {
+
+
+        // Check if skipping is allowed
+        const settings = await prisma.settings.findFirst({});
+        if (!settings) {
+            return errorHandler('Settings Not Found', 404);
+        }
+
+        if (!settings.status) {
+            return errorHandler('You are not allowed to skip', 405);
+        }
+
         // Check the current status of the contestant
         const contestant = await prisma.user_session.findUnique({
             where: { id: id },
@@ -36,21 +48,18 @@ export const POST = async (req: Request) => {
         }
 
         // If the vote is valid and contestant hasn't been voted for, proceed with update
-        if (vote > 0) {
+
+        if (contestant.status === 'pending') {
             await prisma.user_session.update({
                 where: { id: id },  // Ensure `id` is unique in the schema
                 data: {
-                    judge_votes: {
-                        increment: vote,
-                    },
-                    status: 'voted'  // Update status to 'voted'
+                    status: 'skipped'  // Update status to 'skipped'
                 },
             });
-
-            return sucessHandler('Vote Registered', 200);
-        } else {
-            return errorHandler('Invalid vote', 400);
         }
+
+
+        return sucessHandler('Vote Skipped', 200);
     } catch (error) {
         return errorHandler(`Something went wrong with the server: ${error}`, 500);
     }

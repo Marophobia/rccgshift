@@ -4,7 +4,7 @@ import { NextApiRequest } from "next";
 
 export const POST = async (req: NextApiRequest) => {
     try {
-        await prisma.current_round.update({
+        await prisma.settings.update({
             where: { id: 1 },
             data: {
                 status: false,

@@ -1,6 +1,12 @@
 import { Icontestants } from "./contestants"
 import { Iround } from "./round"
 
+export enum UserSessionStatus {
+    pending = 'pending',
+    voted = 'voted',
+    skipped = 'skipped'
+}
+
 export interface IuserSession {
     id: number,
     round_id: number,
@@ -9,6 +15,7 @@ export interface IuserSession {
     score: number,
     user_id: number,
     user: Icontestants,
-    round: Iround
+    round: Iround,
+    status: UserSessionStatus
 }
 

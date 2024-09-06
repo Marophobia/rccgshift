@@ -25,19 +25,9 @@ const Judges = async () => {
     const fetch = await getData()
     const session = await getAuthSession()
     const userSession = session?.user
-    console.log(fetch.data)
 
     return (
-        <div className='flex bg-body-light w-full dark:bg-dark-body'>
-            <Menu />
-            <div className='w-full xl:pl-[300px] '>
-                <div className="main-content group-data-[sidebar-size=lg]:xl:ml-[52px] group-data-[sidebar-size=sm]:xl:ml-[32px] px-4 ac-transition">
-                    <div className="grid grid-cols-12 gap-x-4">
-                        <Main data={fetch.data} />
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Main data={fetch.data} />
     )
 }
 
