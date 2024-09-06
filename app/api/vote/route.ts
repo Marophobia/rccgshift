@@ -13,7 +13,7 @@ export const POST = async (req: Request) => {
         if (current_round?.status) {
             await prisma.user_session.update({
                 where: {
-                    id, status: true
+                    id, status: 'pending'
                 },
                 data: {
                     votes: {

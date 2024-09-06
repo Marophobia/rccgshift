@@ -1,9 +1,23 @@
-import { Diamond, Gavel, List, MenuIcon, PersonStanding, Settings } from 'lucide-react'
+"use client"
+import { IuserSession } from '@/app/types/user_session';
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 
-type Props = {}
+type Props = {
+    data: {
+        id: number;
+        name: string;
+        status: boolean;
+        qualifiers: number;
+        users: IuserSession[];
+    },
+    onContestantSelect: any
+}
 
 const Menu = (props: Props) => {
+    const { data, onContestantSelect } = props;
+    // const router = useRouter()
+
     return (
         <div
             id="app-menu-drawer"
@@ -15,7 +29,34 @@ const Menu = (props: Props) => {
                 className="pl-4 group-data-[sidebar-size=sm]:pl-0 text-center group-data-[sidebar-size=sm]:!overflow-visible !overflow-x-hidden smooth-scrollbar"
             >
                 <div className='mt-8'>
-                    <h1 style={{ fontWeight: "500", fontSize: "30px" }}>Pending Votes</h1>
+                    <h1 style={{ fontWeight: "500", fontSize: "25px" }}>Skipped Contestants</h1>
+                </div>
+
+                {data.users.map((contestant) => (
+                    contestant.status === 'skipped' && (
+                        <div key={contestant.id}>
+                            <button onClick={() => onContestantSelect(contestant.id)}>
+                                <div className='flex gap-2 mt-5'>
+                                    <img
+                                        src={`/images/contestants/${contestant.user.picture}`}
+                                        width="100"
+                                        style={{ border: '2px solid red' }}
+                                    />
+                                    <div style={{ textAlign: 'left' }}>
+                                        <p>Contestant {contestant.user.id}</p>
+                                        <p>{contestant.user.name}</p>
+                                        <p>{contestant.user.category}</p>
+                                        <p>{contestant.user.type}</p>
+                                    </div>
+                                </div>
+                            </button>
+                            <hr className="my-5 mx-5" />
+                        </div>
+                    )
+                ))}
+
+                <div>
+
                 </div>
 
                 <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
