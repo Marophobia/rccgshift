@@ -7,18 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  id       Int    @id @default(autoincrement())
-  name     String @db.VarChar(255)
-  email    String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
-  role     Role
+model admin {
+  id       Int        @id @default(autoincrement())
+  name     String     @db.VarChar(255)
+  email    String     @unique(map: "Admin_email_key") @db.VarChar(255)
+  password String     @db.VarChar(255)
+  role     admin_role
 }
 
-model User {
+model round {
+  id           Int            @id @default(autoincrement())
+  name         String
+  qualifiers   Int?
+  status       Boolean        @default(true)
+  settings     settings[]
+  user_session user_session[]
+}
+
+model settings {
+  id            Int     @id @default(autoincrement())
+  current_round Int
+  status        Boolean @default(true)
+  round         round   @relation(fields: [current_round], references: [id], map: "Settings_current_round_fkey")
+
+  @@index([current_round], map: "current_id")
+}
+
+model user {
   id                Int            @id @default(autoincrement())
   name              String
-  email             String?        @unique @db.VarChar(255)
+  email             String?        @unique(map: "User_email_key") @db.VarChar(255)
   telephone         String?
   bio               String?
   regional_pastor   String?
@@ -33,55 +51,37 @@ model User {
   province          String?
   picture           String?
   date              DateTime       @default(now())
-  status            UserStatus     @default(registered)
-  user_sessions     User_session[]
+  status            user_status    @default(registered)
+  user_session      user_session[]
 }
 
-model Round {
-  id            Int            @id @default(autoincrement())
-  name          String
-  qualifiers    Int?
-  status        Boolean        @default(true)
-  current_round Settings[]
-  users         User_session[]
-}
-
-model Settings {
-  id            Int     @id @default(autoincrement())
-  current_round Int
-  status        Boolean @default(true)
-  round         Round   @relation(fields: [current_round], references: [id])
-
-  @@index([current_round], map: "current_id")
-}
-
-model User_session {
-  id          Int               @id @default(autoincrement())
+model user_session {
+  id          Int                 @id @default(autoincrement())
   round_id    Int
-  votes       Int               @default(0)
-  judge_votes Int               @default(0)
-  score       Int               @default(0)
-  status      UserSessionStatus @default(pending)
+  votes       Int                 @default(0)
+  judge_votes Int                 @default(0)
+  score       Int                 @default(0)
   user_id     Int
-  round       Round             @relation(fields: [round_id], references: [id])
-  user        User              @relation(fields: [user_id], references: [id])
+  status      user_session_status @default(pending)
+  round       round               @relation(fields: [round_id], references: [id], map: "User_session_round_id_fkey")
+  user        user                @relation(fields: [user_id], references: [id], map: "User_session_user_id_fkey")
 
-  @@index([user_id], map: "user_id")
   @@index([round_id], map: "round_id")
+  @@index([user_id], map: "user_id")
 }
 
-enum Role {
+enum admin_role {
   judge
   admin
 }
 
-enum UserSessionStatus {
+enum user_session_status {
   voted
   skipped
   pending
 }
 
-enum UserStatus {
+enum user_status {
   registered
   approved
   disqualified
