@@ -63,6 +63,11 @@ export const POST = async (req: Request) => {
             data: { current_round: newRound }
         });
 
+        await prisma.round.update({
+            where: { id: current_round },
+            data: { qualifiers: qualifiers, status: false },
+        });
+
         // Create new user sessions for the top contestants in the new round
         const newSessions = await Promise.all(topContestants.map(async (contestant) => {
             return await prisma.user_session.create({

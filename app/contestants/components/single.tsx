@@ -88,10 +88,12 @@ const Single = (props: Props) => {
         lname: contestant.name,
         publicKey: publicKey,
         text: "Pay with Card",
-        onSuccess: () => {
+        onSuccess: (response: any) => {
+            const { reference } = response; // Paystack reference (transaction ID)
+            console.log(reference)
             fetch(`${apiUrl}/api/vote`, {
                 method: 'POST',
-                body: JSON.stringify({ data }),
+                body: JSON.stringify({ data, reference }), // Send transaction ID to backend
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -112,25 +114,34 @@ const Single = (props: Props) => {
                             text: `Vote placed for ${contestant.name}`,
                             confirmButtonColor: '#F5245F'
                         });
-                        router.refresh()
+                        router.refresh();
                     } else if (responseData.message === "empty") {
                         toast.error("One or more fields are empty");
-                        router.refresh()
+                        router.refresh();
                     } else {
                         toast.error("Something went wrong");
-                        router.refresh()
+                        router.refresh();
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     toast.error("Something went wrong");
-                    router.refresh()
+                    router.refresh();
                 });
         },
         onClose: () => {
-            toast.error('What went wrong?')
+            toast.error('What went wrong?');
         },
     };
+
+
+    const highestSession = contestant.user_sessions.reduce((prev, current) =>
+        prev.round_id > current.round_id ? prev : current
+    );
+
+    // Determine status based on highestSession and settings.current_round
+    const isActive = highestSession.round_id === settings.current_round;
+    const statusText = isActive ? "Active" : "Eliminated";
 
     return (
         <>
@@ -249,6 +260,10 @@ const Single = (props: Props) => {
                             <li>
                                 <div className="ombre-table-left">COUNTRY</div>
                                 <div className="ombre-table-right">{contestant.country}</div>
+                            </li>
+                            <li>
+                                <div className="ombre-table-left">CURRENT STATUS</div>
+                                <div className="ombre-table-right text-white">{statusText}</div>
                             </li>
 
                         </ul>
