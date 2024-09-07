@@ -242,7 +242,7 @@ const Main = (props: Props) => {
                                 <Sheet>
                                     <SheetTrigger>
                                         <button className="flex items-center justify-center">
-                                            Contestants <MoveRight />
+                                            Contestants <MenuIcon />
                                         </button>
                                     </SheetTrigger>
                                     <SheetContent side={'left'}>
@@ -329,15 +329,15 @@ const Main = (props: Props) => {
                                                             </div>
                                                         )
                                                 )}
-
-                                                <div></div>
-
-                                                <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
-                                                    <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
-                                                        <SignOut />
-                                                    </div>
-                                                </div>
                                             </ScrollArea>
+
+                                            <div></div>
+
+                                            <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
+                                                <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
+                                                    <SignOut />
+                                                </div>
+                                            </div>
                                         </div>
                                     </SheetContent>
                                 </Sheet>
@@ -404,7 +404,11 @@ const Main = (props: Props) => {
                                                                         .type ===
                                                                     'Group' ? (
                                                                         <span className="font-bold">
-                                                                            Solo{' '}
+                                                                            {
+                                                                                contestant
+                                                                                    .user
+                                                                                    .type
+                                                                            }{' '}
                                                                             {
                                                                                 contestant
                                                                                     .user
@@ -413,11 +417,7 @@ const Main = (props: Props) => {
                                                                         </span>
                                                                     ) : (
                                                                         <span className="font-bold">
-                                                                            {
-                                                                                contestant
-                                                                                    .user
-                                                                                    .type
-                                                                            }
+                                                                            Solo
                                                                         </span>
                                                                     )}
                                                                 </p>

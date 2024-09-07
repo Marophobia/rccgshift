@@ -72,11 +72,6 @@ const LoginForm = () => {
                                 <h3 className="text-xl md:text-[28px] leading-none font-semibold text-heading">
                                     Welcome back!
                                 </h3>
-                                <p className="font-medium text-gray-500 dark:text-dark-text mt-4 px-[10%]">
-                                    Whether you&apos;re launching a stunning
-                                    online store or optimizing your
-                                    object-oriented
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -176,45 +171,6 @@ const LoginForm = () => {
                                     Sign In
                                 </button>
                             </form>
-                            <div className="font-spline_sans text-gray-900 dark:text-dark-text leading-none text-center my-4">
-                                OR
-                            </div>
-                            <div className="flex items-center flex-col xl:flex-row gap-4 2xl:gap-5">
-                                <a
-                                    href="#"
-                                    className="btn b-outline-static btn-disable-outline w-full grow xl:w-auto"
-                                >
-                                    <img
-                                        src="./images/icons/google.svg"
-                                        alt="icon"
-                                    />
-                                    <span className="shrink-0">
-                                        Sign in with Google
-                                    </span>
-                                </a>
-                                <a
-                                    href="#"
-                                    className="btn b-outline-static btn-disable-outline w-full grow xl:w-auto"
-                                >
-                                    <img
-                                        src="./images/icons/apple.svg"
-                                        alt="icon"
-                                        className="dark:brightness-[3]"
-                                    />
-                                    <span className="shrink-0">
-                                        Continue with Apple
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="text-gray-900 dark:text-dark-text font-medium leading-none mt-5">
-                                Don’t have an account yet?
-                                <a
-                                    href="sign-up.html"
-                                    className="text-primary-500 font-semibold"
-                                >
-                                    Sign Up
-                                </a>
-                            </div>
                         </div>
                     </div>
                     {/* End Form Area */}

@@ -9,7 +9,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 type ChartData = {
     maleCounts: number[];
     femaleCounts: number[];
-    dates: string[];
+    months: string[];
 };
 
 type Props = {
@@ -21,52 +21,39 @@ const Contestants = (props: Props) => {
     const [chartData, setChartData] = useState<ChartData>({
         maleCounts: [],
         femaleCounts: [],
-        dates: [],
+        months: [],
     });
 
-    // Helper function to filter data for the last two months and process it by day/week
+    // Helper function to process contestant data
     const processDataForChart = (contestants: Icontestants[]) => {
-        const maleCounts: number[] = [];
-        const femaleCounts: number[] = [];
-        const dateLabels: string[] = [];
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ];
 
-        const today = new Date();
-        const twoMonthsAgo = new Date();
-        twoMonthsAgo.setMonth(today.getMonth() - 2);
+        const maleCounts = new Array(12).fill(0);
+        const femaleCounts = new Array(12).fill(0);
 
-        // Filter contestants registered in the last two months
-        const recentContestants = contestants.filter((contestant) => {
-            const registrationDate = new Date(contestant.date);
-            return registrationDate >= twoMonthsAgo;
-        });
-
-        // Process data day by day (or week by week)
-        recentContestants.forEach((contestant) => {
-            const registrationDate = new Date(contestant.date);
-            const dateLabel = registrationDate.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-            });
-
-            // Check if this date is already in the dateLabels array
-            const dateIndex = dateLabels.indexOf(dateLabel);
-
-            if (dateIndex === -1) {
-                // New date, add to the dateLabels array
-                dateLabels.push(dateLabel);
-                maleCounts.push(contestant.gender === 'Male' ? 1 : 0);
-                femaleCounts.push(contestant.gender === 'Female' ? 1 : 0);
-            } else {
-                // Existing date, increment the respective count
-                if (contestant.gender === 'Male') {
-                    maleCounts[dateIndex]++;
-                } else if (contestant.gender === 'Female') {
-                    femaleCounts[dateIndex]++;
-                }
+        contestants.map((contestant) => {
+            const registrationMonth = new Date(contestant.date).getMonth(); // Get the month index (0-11)
+            if (contestant.gender === 'Male') {
+                maleCounts[registrationMonth]++;
+            } else if (contestant.gender === 'Female') {
+                femaleCounts[registrationMonth]++;
             }
         });
 
-        return { maleCounts, femaleCounts, dates: dateLabels };
+        return { maleCounts, femaleCounts, months };
     };
 
     useEffect(() => {
@@ -86,10 +73,7 @@ const Contestants = (props: Props) => {
             },
         },
         xaxis: {
-            categories: chartData.dates,
-            title: {
-                text: 'Registration Date',
-            },
+            categories: chartData.months,
         },
         legend: {
             position: 'top',
@@ -120,7 +104,6 @@ const Contestants = (props: Props) => {
             data: chartData.femaleCounts,
         },
     ];
-
     return (
         <>
             <div className="col-span-full 2xl:col-span-8 card">
