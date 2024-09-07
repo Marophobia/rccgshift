@@ -66,6 +66,7 @@ model User_session {
   round       Round             @relation(fields: [round_id], references: [id])
   user        User              @relation(fields: [user_id], references: [id])
 
+  @@unique([user_id, round_id]) // Add this line for composite unique constraint
   @@index([user_id], map: "user_id")
   @@index([round_id], map: "round_id")
 }

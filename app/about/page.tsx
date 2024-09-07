@@ -1,33 +1,35 @@
-import Navbar from '@/components/navbar';
-import React from 'react';
-import AboutBody from './components/body';
-import '../styles/style.css';
+import '../styles/new.css'
+import React from 'react'
+import Header from '../components/header'
+import Footer from '../components/footer'
+import AboutBody from './components/body'
 
-type Props = {};
+type Props = {}
 
 const About = (props: Props) => {
     return (
-        <div>
-            <Navbar />
-            <div className="jumbotron jumbotron-fluid bg-jumbotron mb-20">
-                <div className="container text-center py-5">
-                    <div className="d-inline-flex align-items-center text-white">
-                        <p className="m-0">
-                            <a className="text-white" href="#">
-                                Home
-                            </a>
-                        </p>
-                        <i className="far fa-circle px-3"></i>
-                        <p className="m-0">
-                            About RCCG Int&apos;l Sift Talent Hunt{' '}
-                        </p>
+        <>
+            <div className="main-container">
+                <Header />
+                <main id="main">
+                    <div id="featured-image-container">
+                        {/* <div className="img-loading"></div> */}
+                        <div id="featured-image">
+                            <div id="featured-image-title">
+                                <h1>About Us</h1>
+                                <p><span>Quid o quibusdam te enim ita sea qui</span></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div id="page-container">
+                        <AboutBody />
+                    </div>
+                </main>
+                <Footer />
             </div>
 
-            <AboutBody />
-        </div>
-    );
-};
+        </>
+    )
+}
 
-export default About;
+export default About

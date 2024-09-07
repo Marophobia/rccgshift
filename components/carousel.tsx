@@ -25,12 +25,12 @@ const CarouselHero = (props: Props) => {
                 opts={{
                     loop: true,
                 }}
-                // onMouseEnter={plugin.current.stop}
-                // onMouseLeave={plugin.current.reset}
+            // onMouseEnter={plugin.current.stop}
+            // onMouseLeave={plugin.current.reset}
             >
                 <CarouselContent>
                     <CarouselItem>
-                        <div className="relative min-h-[80dvh]">
+                        <div className="relative min-h-[60dvh]">
                             <img
                                 className="position-absolute w-100 h-100"
                                 src="/img/carousel-1.jpg"
@@ -55,7 +55,7 @@ const CarouselHero = (props: Props) => {
                         </div>
                     </CarouselItem>
                     <CarouselItem>
-                        <div className="relative min-h-[80dvh]">
+                        <div className="relative min-h-[60dvh]">
                             <Image
                                 src="/img/carousel-2.jpg"
                                 alt="Slide 2"
@@ -84,7 +84,7 @@ const CarouselHero = (props: Props) => {
                         </div>
                     </CarouselItem>
                     <CarouselItem>
-                        <div className="relative min-h-[80dvh]">
+                        <div className="relative min-h-[60dvh]">
                             <Image
                                 src="/img/carousel-3.jpg"
                                 alt="Slide 3"
@@ -112,14 +112,6 @@ const CarouselHero = (props: Props) => {
                         </div>
                     </CarouselItem>
                 </CarouselContent>
-                <CarouselPrevious className="absolute top-1/2 -translate-y-1/2 left-4 z-10 text-white hover:text-primary transition-colors">
-                    <ChevronLeftIcon color="black" className="w-6 h-6" />
-                    <span className="sr-only">Previous</span>
-                </CarouselPrevious>
-                <CarouselNext className="absolute top-1/2 -translate-y-1/2 right-4 z-10 text-white hover:text-primary transition-colors">
-                    <ChevronRightIcon color="black" className="w-6 h-6" />
-                    <span className="sr-only">Next</span>
-                </CarouselNext>
             </Carousel>
         </div>
     );

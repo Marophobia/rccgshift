@@ -1,37 +1,36 @@
-import CarouselHero from '@/components/carousel';
-import Navbar from '@/components/navbar';
-import Image from 'next/image';
-import About from '@/components/about';
-import HomeCarousel from '@/components/homeCarousel';
-import './styles/style.css';
-import HomeEvent from '@/components/event';
-import Reward from '@/components/reward';
-import Sponsor from '@/components/sponsor';
+import React from 'react'
+import './styles/new.css'
+import CarouselHero from './components/carousel'
+import Header from './components/header'
+import COntestants from './components/contestants'
+import Sponsor from './components/sponsors'
+import Footer from './components/footer'
+import About from './components/about'
+import Reward from './components/reward'
+import Outline from './components/outline'
 
-export default function Home() {
+type Props = {}
+
+const Page = (props: Props) => {
     return (
         <>
-            <div className="snap-y snap-mandatory">
-                <Navbar />
-
-                <CarouselHero />
-
-                <About />
-
-                <HomeCarousel />
-
-                <HomeEvent />
-
-                <Reward />
-
-                <Sponsor />
-
-                {/* start footer */}
-
-                <a href="#" className="btn btn-lg btn-primary back-to-top">
-                    <i className="fa fa-angle-double-up"></i>
-                </a>
+            <div className="main-container">
+                <Header />
+                <main id="main">
+                    <CarouselHero />
+                    <div id="page-container">
+                        <About />
+                        <COntestants />
+                        <Outline />
+                        <Reward />
+                        <div className="grid-border"></div>
+                        <Sponsor />
+                    </div>
+                </main>
+                <Footer />
             </div>
         </>
-    );
+    )
 }
+
+export default Page
