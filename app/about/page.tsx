@@ -1,10 +1,10 @@
-import '../styles/new.css'
-import React from 'react'
-import Header from '../components/header'
-import Footer from '../components/footer'
-import AboutBody from './components/body'
+import '../styles/new.css';
+import React from 'react';
+import Header from '../components/header';
+import Footer from '../components/footer';
+import AboutBody from './components/body';
 
-type Props = {}
+type Props = {};
 
 const About = (props: Props) => {
     return (
@@ -14,10 +14,17 @@ const About = (props: Props) => {
                 <main id="main">
                     <div id="featured-image-container">
                         {/* <div className="img-loading"></div> */}
-                        <div id="featured-image">
+                        <div
+                            id="featured-image"
+                            style={{
+                                backgroundImage: `url(/images/logo-white.png)`,
+                                backgroundPosition: 'center',
+                                backgroundSize: 'contain',
+                                backgroundRepeat: 'no-repeat',
+                            }}
+                        >
                             <div id="featured-image-title">
                                 <h1>About Us</h1>
-                                <p><span>Quid o quibusdam te enim ita sea qui</span></p>
                             </div>
                         </div>
                     </div>
@@ -27,9 +34,8 @@ const About = (props: Props) => {
                 </main>
                 <Footer />
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default About
+export default About;

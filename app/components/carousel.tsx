@@ -24,40 +24,82 @@ const CarouselHero = (props: Props) => {
                 opts={{
                     loop: true,
                 }}
-            // onMouseEnter={plugin.current.stop}
-            // onMouseLeave={plugin.current.reset}
+                // onMouseEnter={plugin.current.stop}
+                // onMouseLeave={plugin.current.reset}
             >
                 <div className="slider-container">
                     <div className="home-slider">
                         <CarouselContent>
-                            <CarouselItem>
-                                <img src="/img/carousel-1.jpg" data-animation="image-zoom scale-right" alt="" />
-                                <div className="ns_slideContent">
-                                    <div className="top-left">
-                                        <h1 className="animatedmedium slideInLeft">Welcome to Ombre</h1>
-                                        <p className="animated slideInLeft"><span>Legam e officia ita nae</span></p>
+                            <CarouselItem className="ns_nerveSlider">
+                                <div>
+                                    <Image
+                                        width={1920}
+                                        height={1080}
+                                        src="/img/carousel-1.jpg"
+                                        data-animation="image-zoom scale-right"
+                                        alt=""
+                                        className=""
+                                    />
+                                    <div className="ns_slideContent">
+                                        <div className="top-left">
+                                            <h1 className="animated slideInRight">
+                                                Register
+                                            </h1>
+                                            <p className="animated slideInRight">
+                                                <span>
+                                                    {' '}
+                                                    RCCG INT&apos;L SHIFT TALENT
+                                                    HUNT
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </CarouselItem>
-                            <CarouselItem>
-                                <img src="/img/carousel-2.jpg" data-animation="image-zoom scale-right" alt="" />
-                                <div className="ns_slideContent">
-                                    <div className="bottom-right">
-                                        <h1 className="animatedmedium slideInRight">Dolore admod</h1>
-                                        <p className="animated slideInRight"><span>Se quis incididunt appellat summis</span></p>
+                            <CarouselItem className="ns_nerveSlider">
+                                <div>
+                                    <img
+                                        src="/img/carousel-2.jpg"
+                                        data-animation="image-zoom scale-right"
+                                        alt=""
+                                    />
+                                    <div className="ns_slideContent">
+                                        <div className="bottom-right">
+                                            <h1 className="animated slideInRight">
+                                                Register
+                                            </h1>
+                                            <p className="animated slideInRight">
+                                                <span>
+                                                    EARLY BIRD REGISTRATION,
+                                                    ₦5,000 FEBRUARY ONLY
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </CarouselItem>
-                            <CarouselItem>
-                                <img src="/img/carousel-3.jpg" data-animation="image-zoom scale-left" alt="" />
-                                <div className="ns_slideContent">
-                                    <div className="top-right">
-                                        <h1 className="animatedmedium slideInRight">Ut eram iudicem</h1>
-                                        <p className="animated slideInRight"><span>Cupidatat velit fugiat summis ab dolor</span></p>
+                            <CarouselItem className="ns_nerveSlider">
+                                <div>
+                                    <img
+                                        src="/img/carousel-3.jpg"
+                                        data-animation="image-zoom scale-left"
+                                        alt=""
+                                    />
+                                    <div className="ns_slideContent">
+                                        <div className="top-right">
+                                            <h1 className="animated slideInRight">
+                                                Register
+                                            </h1>
+                                            <p className="animated slideInRight">
+                                                <span>
+                                                    MUSIC | DRAMA | UNUSUAL
+                                                    CREATIVITY
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </CarouselItem>
-
                         </CarouselContent>
                     </div>
                 </div>
@@ -65,6 +107,5 @@ const CarouselHero = (props: Props) => {
         </div>
     );
 };
-
 
 export default CarouselHero;

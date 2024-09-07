@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-type Props = {}
+type Props = {};
 
 const About = (props: Props) => {
     return (
@@ -13,23 +13,31 @@ const About = (props: Props) => {
                     </div>
                 </div>
                 <div className="unit one-third">
-                    <p>The is a talent competition organized by the Redeemed Christian Church of God (RCCG) Young Adults and Youth Affairs (YAYA).
-                        It is a platform for young people to showcase their talents and to be rewarded for their creativity and excellence.
-                        The RCCG Int'l Shift Talent Hunt is open to all young people between the ages of 13 and 45 who are members of the RCCG
+                    <p>
+                        The is a talent competition organized by the Redeemed
+                        Christian Church of God (RCCG) Young Adults and Youth
+                        Affairs (YAYA). It is a platform for young people to
+                        showcase their talents and to be rewarded for their
+                        creativity and excellence. The RCCG Int&apos;l Shift
+                        Talent Hunt is open to all young people between the ages
+                        of 13 and 45 who are members of the RCCG
                         <br /> <br />
-                        The competition is divided into different categories, including Music, dancing, and Unusual Creativity.
+                        The competition is divided into different categories,
+                        including Music, dancing, and Unusual Creativity.
                     </p>
                     <ol className="rounded-list">
-                        <li><span>12 Judges</span>
+                        <li>
+                            <span>12 Judges</span>
                         </li>
-                        <li><span>639 Contestants</span>
+                        <li>
+                            <span>639 Contestants</span>
                         </li>
                     </ol>
                     <p>.</p>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default About
+export default About;
