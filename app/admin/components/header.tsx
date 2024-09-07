@@ -24,13 +24,13 @@ import NavMenu from './navMenu';
 
 type Props = {
     session:
-        | {
-              name: string;
-              email: string;
-              id: string | number;
-              role: string;
-          }
-        | undefined;
+    | {
+        name: string;
+        email: string;
+        id: string | number;
+        role: string;
+    }
+    | undefined;
 };
 
 const Header = (props: Props) => {
@@ -45,13 +45,12 @@ const Header = (props: Props) => {
                         <div className="menu-hamburger-container flex-center flex items-center justify-center xl:hidden">
                             <Sheet>
                                 <SheetTrigger>
-                                    <button
-                                        type="button"
+                                    <div
                                         id="app-menu-hamburger"
                                         className="menu-hamburger"
                                     >
                                         <MenuIcon />
-                                    </button>
+                                    </div>
                                 </SheetTrigger>
                                 <SheetContent side={'left'}>
                                     <NavMenu />
@@ -145,12 +144,12 @@ const Header = (props: Props) => {
                                         signOut().catch(console.error);
                                     }}
                                 >
-                                    <a className="flex w-full font-medium px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:text-white">
+                                    <div className="flex w-full font-medium px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-200 dark:hover:text-white">
                                         Sign out
                                         <DropdownMenuShortcut>
                                             ⇧⌘Q
                                         </DropdownMenuShortcut>
-                                    </a>
+                                    </div>
                                 </div>
                             </DropdownMenuContent>
                         </DropdownMenu>

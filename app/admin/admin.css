@@ -17252,7 +17252,7 @@ pre[class*="language-"]:hover::-webkit-scrollbar-thumb{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'\.\.\/\.\.\/assets\/images\/landing\/footer\/footer-bg\.png\'\)\]{
+/* .bg-\[url\(\'\.\.\/\.\.\/assets\/images\/landing\/footer\/footer-bg\.png\'\)\]{
   background-image: url('../../public/images/landing/footer/footer-bg.png');
 }
 
@@ -17262,7 +17262,7 @@ pre[class*="language-"]:hover::-webkit-scrollbar-thumb{
 
 .bg-\[url\(\'\.\.\/\.\.\/assets\/images\/profile\/profile\.png\'\)\]{
   background-image: url('../../public/images/profile/profile.png');
-}
+} */
 
 .bg-card-pattern{
   background-image: url(../../public/images/admin/card/pattern.png);
@@ -19658,7 +19658,7 @@ div[class*="scrollbar-thumb scrollbar-thumb-"]{
 }
 
 .before\:content-\[url\(\'\.\.\/\.\.\/assets\/images\/landing\/icon\/slider-icon\.svg\'\)\]::before{
-  --tw-content: url('../../public/images/landing/icon/slider-icon.svg');
+  /* --tw-content: url('../../public/images/landing/icon/slider-icon.svg'); */
   content: var(--tw-content);
 }
 

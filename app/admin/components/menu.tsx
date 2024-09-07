@@ -108,8 +108,7 @@ const Menu = (props: Props) => {
                     </ul>
                 </div>
                 <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
-                    <a
-                        href="#"
+                    <div
                         className="flex-center-between text-gray-500 dark:text-dark-text font-semibold leading-none bg-gray-200 dark:bg-[#090927] dark:group-data-[sidebar-size=sm]:bg-dark-card-shade rounded-[10px] px-6 py-4 group-data-[sidebar-size=sm]:p-[12px_8px] group-data-[sidebar-size=sm]:justify-center"
                     >
                         <span className="group-data-[sidebar-size=sm]:hidden block">
@@ -127,7 +126,7 @@ const Menu = (props: Props) => {
                                 fill="currentColor"
                             />
                         </svg>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>

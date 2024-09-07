@@ -38,7 +38,7 @@ const Latest = (props: Props) => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-dashed divide-gray-900/60 dark:divide-dark-border-three">
-                            {data.map((contestant) => (
+                            {data.splice(0, 5).map((contestant) => (
                                 <tr key={contestant.id}>
                                     <td className="flex items-center gap-2 px-3.5 py-4">
                                         <a

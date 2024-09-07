@@ -241,9 +241,9 @@ const Main = (props: Props) => {
                             <div className="card col-span-full flex-center flex items-center justify-center xl:hidden">
                                 <Sheet>
                                     <SheetTrigger>
-                                        <button className="flex items-center justify-center">
+                                        <div className="flex items-center justify-center">
                                             Contestants <MenuIcon />
-                                        </button>
+                                        </div>
                                     </SheetTrigger>
                                     <SheetContent side={'left'}>
                                         <div>
@@ -262,7 +262,7 @@ const Main = (props: Props) => {
                                                 {data.users.map(
                                                     (contestant, index) =>
                                                         contestant.status ===
-                                                            'skipped' && (
+                                                        'skipped' && (
                                                             <div
                                                                 key={
                                                                     contestant.id
@@ -402,7 +402,7 @@ const Main = (props: Props) => {
                                                                     {contestant
                                                                         .user
                                                                         .type ===
-                                                                    'Group' ? (
+                                                                        'Group' ? (
                                                                         <span className="font-bold">
                                                                             {
                                                                                 contestant
@@ -495,12 +495,11 @@ const Main = (props: Props) => {
                                                 {/* Yes, No, Maybe buttons */}
                                                 <div className="col-span-full card flex justify-center gap-3">
                                                     <button
-                                                        className={`rounded-full p-5 btn text-center bg-green-600 ${
-                                                            selectedOption ===
-                                                            20
+                                                        className={`rounded-full p-5 btn text-center bg-green-600 ${selectedOption ===
+                                                                20
                                                                 ? 'opacity-10'
                                                                 : ''
-                                                        }`}
+                                                            }`}
                                                         style={{
                                                             width: '25%',
                                                         }}
@@ -517,12 +516,11 @@ const Main = (props: Props) => {
                                                         Yes
                                                     </button>
                                                     <button
-                                                        className={`rounded-full p-5 btn text-center bg-yellow-500 ${
-                                                            selectedOption ===
-                                                            10
+                                                        className={`rounded-full p-5 btn text-center bg-yellow-500 ${selectedOption ===
+                                                                10
                                                                 ? 'opacity-10'
                                                                 : ''
-                                                        }`}
+                                                            }`}
                                                         style={{
                                                             width: '25%',
                                                         }}
@@ -539,11 +537,10 @@ const Main = (props: Props) => {
                                                         Maybe
                                                     </button>
                                                     <button
-                                                        className={`rounded-full p-5 btn text-center bg-red-500 ${
-                                                            selectedOption === 0
+                                                        className={`rounded-full p-5 btn text-center bg-red-500 ${selectedOption === 0
                                                                 ? 'opacity-10'
                                                                 : ''
-                                                        }`}
+                                                            }`}
                                                         style={{
                                                             width: '25%',
                                                         }}
@@ -561,11 +558,10 @@ const Main = (props: Props) => {
                                             {/* Next button */}
                                             <div className="flex mt-5 gap-10 justify-center">
                                                 <button
-                                                    className={`btn b-solid btn-primary-solid btn-lg mt-6 w-full ${
-                                                        selectedOption === null
+                                                    className={`btn b-solid btn-primary-solid btn-lg mt-6 w-full ${selectedOption === null
                                                             ? 'opacity-50 cursor-not-allowed'
                                                             : ''
-                                                    }`}
+                                                        }`}
                                                     onClick={() =>
                                                         handleNext(
                                                             contestant.id

@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
 
     // Validate input
     if (!id || vote === undefined) {
-        return errorHandler('Missing Vote', 400);
+        return errorHandler('Missing Vote', 400);  // Use 400 for bad request
     }
 
     try {
@@ -48,9 +48,21 @@ export const POST = async (req: Request) => {
             });
 
             return sucessHandler('Vote Registered', 200);
-        } else {
-            return errorHandler('Invalid vote', 400);
         }
+
+        // Handle the case where vote === 0
+        if (vote === 0) {
+            // Update the status to 'voted' even though no judge votes were added
+            await prisma.user_session.update({
+                where: { id: id },
+                data: {
+                    status: 'voted'  // Update status to 'voted'
+                },
+            });
+
+            return sucessHandler('Vote Registered', 200);
+        }
+
     } catch (error) {
         return errorHandler(`Something went wrong with the server: ${error}`, 500);
     }

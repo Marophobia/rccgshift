@@ -1,7 +1,6 @@
 import '../../admin/admin.css'
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
-import Menu from './components/sidebar';
 import { getAuthSession } from '@/lib/auth';
 import Main from './components/main';
 

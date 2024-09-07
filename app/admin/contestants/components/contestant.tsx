@@ -20,24 +20,21 @@ const ContestantSingle = (props: Props) => {
                     <div className="col-span-full sm:col-span-6 xl:col-span-4 card p-0">
                         <div className="bg-white dark:bg-dark-card rounded-15 overflow-hidden">
                             <div className="relative w-full h-[250px]">
-                                <Image
-                                    width={500}
-                                    height={500}
+                                <img
                                     src="/images/profile/cover.png"
                                     alt="cover-image"
                                     className="w-full h-full"
                                 />
-                                <label
-                                    className="file-container bg-[url('https://template.codexshaper.com/assets/images/profile/profile.png')] bg-no-repeat bg-cover absolute left-1/2 -translate-x-1/2 w-[calc(theme('spacing.ins-pro-Image
-                                width={500}
-                                height={500}')_+_5px)] h-[theme('spacing.ins-pro-Image
-                                width={500}
-                                height={500}')] border-2 border-white dark:border-dark-border-two rounded-20"
-                                >
-                                    <span className="absolute bottom-0 right-0 border-2 border-white dark:border-dark-border-two rounded-full"></span>
-                                </label>
                             </div>
                             <div className="mt-7 px-6 text-center">
+                                <div className='h-60 flex-center' style={{ borderRadius: "100%" }}>
+                                    <img
+                                        src={`/images/contestants/${contestant.picture}`}
+                                        alt="cover-image"
+                                        className=" h-full"
+                                        style={{ borderRadius: "100%" }}
+                                    />
+                                </div>
                                 <div className="py-5">
                                     <div className="flex-center">
                                         <h4 className="text-[22px] leading-none text-heading font-semibold relative">
@@ -136,8 +133,8 @@ const ContestantSingle = (props: Props) => {
                                                     </div> */}
                                                     <ul className="flex flex-col gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4">
                                                         {contestant.user_sessions &&
-                                                        contestant.user_sessions
-                                                            .length > 0 ? (
+                                                            contestant.user_sessions
+                                                                .length > 0 ? (
                                                             contestant.user_sessions.map(
                                                                 (session) => {
                                                                     return (

@@ -187,7 +187,7 @@ const ContestantTable = (props: Props) => {
                                 {/* <TableCell>{contestant.province}</TableCell> */}
                                 <TableCell>
                                     {contestant.status ==
-                                    UserStatus.approved ? (
+                                        UserStatus.approved ? (
                                         <span className="text-green-600 font-bold">
                                             {contestant.status}
                                         </span>
@@ -226,13 +226,13 @@ const ContestantTable = (props: Props) => {
                                     >
                                         <Eye size={20} />
                                     </Link>
-                                    <Trash2
+                                    {/* <Trash2
                                         size={20}
                                         className="mt-3"
                                         onClick={() =>
                                             deleteUser(contestant.id)
                                         }
-                                    />
+                                    /> */}
                                 </TableCell>
                             </TableRow>
                         ))}

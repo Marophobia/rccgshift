@@ -19,15 +19,14 @@ const Vote = async () => {
                         <div className='grid'>
                             <div className='unit half'>
                                 <ol className='mb-10'>
-                                    <li className='pb-5'>Navigate to the Contestant Page of the Website and search for your Contestant using the search bar OR simply input
+                                    <li className='pb-5'>1. Navigate to the Contestant Page of the Website and search for your Contestant using the search bar OR simply input
                                         your contestant unique link on a Web browser
                                     </li>
-                                    <li className='pb-5'></li>
-                                    <li className='pb-5'>Click on View Profile</li>
-                                    <li className='pb-5'>Then, Click on Vote and follow the the instructions</li>
+                                    <li className='pb-5'>2. Click on View Profile</li>
+                                    <li className='pb-5'>3. Then, Click on Vote and follow the the instructions</li>
                                 </ol>
 
-                                <button className='button'> Contestants Page <i className='fa fa-arrow-right'></i></button>
+                                <Link href="/contestants" className='button'>Go to Contestants Page <i className='fa fa-arrow-right'></i></Link>
                             </div>
                         </div>
                     </div>
