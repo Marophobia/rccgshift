@@ -1,14 +1,21 @@
-import { Diamond, Gavel, List, MenuIcon, PersonStanding, Settings } from 'lucide-react'
-import Link from 'next/link'
+import SignOut from '@/app/admin/components/SignOut';
+import {
+    Diamond,
+    Gavel,
+    List,
+    MenuIcon,
+    PersonStanding,
+    Settings,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-
-type Props = {
-
-};
+type Props = {};
 
 const Menu = (props: Props) => {
     return (
-        <div
+        <>
+            {/* <div
             id="app-menu-drawer"
             className="app-menu h-[100dvh] flex flex-col gap-y-2.5 bg-white dark:bg-dark-card w-app-menu fixed top-0 left-0 bottom-0 -translate-x-full group-data-[sidebar-size=sm]:min-h-screen group-data-[sidebar-size=sm]:h-max xl:translate-x-0 rounded-r-10 xl:rounded-15 xl:group-data-[sidebar-size=lg]:w-app-menu xl:group-data-[sidebar-size=sm]:w-app-menu-sm xl:group-data-[sidebar-size=sm]:absolute xl:group-data-[sidebar-size=lg]:fixed xl:top-4 xl:left-4 xl:group-data-[sidebar-size=lg]:bottom-4 z-backdrop ac-transition"
         >
@@ -39,9 +46,31 @@ const Menu = (props: Props) => {
                     </a>
                 </div>
             </div>
-        </div>
+        </div> */}
+            <div
+                id="app-menu-drawer"
+                className="app-menu h-[100dvh] flex flex-col gap-y-2.5 bg-white dark:bg-dark-card w-app-menu fixed top-0 left-0 bottom-0 -translate-x-full group-data-[sidebar-size=sm]:min-h-screen group-data-[sidebar-size=sm]:h-max xl:translate-x-0 rounded-r-10 xl:rounded-15 xl:group-data-[sidebar-size=lg]:w-app-menu xl:group-data-[sidebar-size=sm]:w-app-menu-sm xl:group-data-[sidebar-size=sm]:absolute xl:group-data-[sidebar-size=lg]:fixed xl:top-4 xl:left-4 xl:group-data-[sidebar-size=lg]:bottom-4 z-backdrop ac-transition"
+            >
+                <div className="px-4 h-header flex items-center shrink-0 group-data-[sidebar-size=sm]:px-2 group-data-[sidebar-size=sm]:justify-center">
+                    <Link
+                        href="/judge"
+                        className="group-data-[sidebar-size=lg]:block"
+                    >
+                        <Image
+                            width={80}
+                            height={40}
+                            src="/images/logo.png"
+                            alt="logo"
+                            className="w-fit h-full"
+                        />
+                    </Link>
+                </div>
+                <div className="mt-auto px-7 py-6 fixed -left-1 bottom-0 w-[100%] group-data-[sidebar-size=sm]:px-2">
+                    <SignOut />
+                </div>
+            </div>
+        </>
+    );
+};
 
-    )
-}
-
-export default Menu
+export default Menu;
