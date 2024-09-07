@@ -1,14 +1,14 @@
-import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/db";
-import { errorHandler, sucessHandler } from "@/lib/functions";
-import { getServerSession } from "next-auth";
+import { authOptions } from '@/lib/auth';
+import prisma from '@/lib/db';
+import { errorHandler, sucessHandler } from '@/lib/functions';
+import { getServerSession } from 'next-auth';
 
 export const POST = async (req: Request) => {
     const session = await getServerSession(authOptions);
 
     // Check if the user is authenticated and has the correct role
     if (!session || session.user.role !== 'judge') {
-        return errorHandler("Unauthenticated", 401);  // 401 for unauthorized
+        return errorHandler('Unauthenticated', 401); // 401 for unauthorized
     }
 
     // Extract id and vote from the request body
@@ -20,13 +20,13 @@ export const POST = async (req: Request) => {
     }
 
     try {
-
-
         // Check if skipping is allowed
         const settings = await prisma.settings.findFirst({});
         if (!settings) {
             return errorHandler('Settings Not Found', 404);
         }
+
+        console.log(settings.status);
 
         if (!settings.status) {
             return errorHandler('You are not allowed to skip', 405);
@@ -35,7 +35,7 @@ export const POST = async (req: Request) => {
         // Check the current status of the contestant
         const contestant = await prisma.user_session.findUnique({
             where: { id: id },
-            select: { status: true } // Only select the status field
+            select: { status: true }, // Only select the status field
         });
 
         if (!contestant) {
@@ -51,16 +51,18 @@ export const POST = async (req: Request) => {
 
         if (contestant.status === 'pending') {
             await prisma.user_session.update({
-                where: { id: id },  // Ensure `id` is unique in the schema
+                where: { id: id }, // Ensure `id` is unique in the schema
                 data: {
-                    status: 'skipped'  // Update status to 'skipped'
+                    status: 'skipped', // Update status to 'skipped'
                 },
             });
         }
 
-
         return sucessHandler('Vote Skipped', 200);
     } catch (error) {
-        return errorHandler(`Something went wrong with the server: ${error}`, 500);
+        return errorHandler(
+            `Something went wrong with the server: ${error}`,
+            500
+        );
     }
 };

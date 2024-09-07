@@ -1,26 +1,27 @@
-"use client"
+'use client';
 import CountUp from 'react-countup';
-import dynamic from "next/dynamic";
-import { ApexOptions } from "apexcharts";
+import dynamic from 'next/dynamic';
+import { ApexOptions } from 'apexcharts';
 
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 type Props = {
-    name: String,
-    count: number
-}
+    name: String;
+    count: number;
+    synmbol?: string;
+};
 
 const StatsComp = (props: Props) => {
-    const { name, count } = props
+    const { name, count, synmbol } = props;
     const revenueOptions: ApexOptions = {
         series: [
             {
-                name: "Revenue",
+                name: 'Revenue',
                 data: [5, 30, 10, 25, 11, 30, 15, 28, 33],
             },
         ],
         chart: {
-            type: "area", // Make sure this is one of the allowed types
+            type: 'area', // Make sure this is one of the allowed types
             height: 70,
             zoom: {
                 enabled: false,
@@ -42,7 +43,7 @@ const StatsComp = (props: Props) => {
             y: {
                 title: {
                     formatter: function () {
-                        return "";
+                        return '';
                     },
                 },
             },
@@ -50,13 +51,13 @@ const StatsComp = (props: Props) => {
                 show: false,
             },
         },
-        colors: ["#795DED"],
+        colors: ['#795DED'],
         stroke: {
             width: 1.2,
-            curve: "smooth",
+            curve: 'smooth',
         },
         fill: {
-            type: "gradient",
+            type: 'gradient',
             gradient: {
                 opacityFrom: 0.5,
                 opacityTo: 0.2,
@@ -66,10 +67,11 @@ const StatsComp = (props: Props) => {
     };
     return (
         <>
-
             <div className="col-span-full sm:col-span-6 p-[10px_16px] dk-border-one rounded-xl h-full">
                 <div className="flex-center-between">
-                    <h6 className="leading-none text-gray-500 dark:text-white font-semibold">{name}</h6>
+                    <h6 className="leading-none text-gray-500 dark:text-white font-semibold">
+                        {name}
+                    </h6>
                     <div className="leading-none shrink-0 text-xs text-gray-900 dark:text-dark-text dk-border-one rounded-full px-2 py-1">
                         All Time
                     </div>
@@ -78,7 +80,14 @@ const StatsComp = (props: Props) => {
                     <div className="pb-8 shrink-0">
                         <div className="flex items-center gap-2 mb-3">
                             <div className="card-title">
-                                <CountUp className="counter-value" end={count} suffix="+" redraw={true} enableScrollSpy={true} />
+                                {synmbol}
+                                <CountUp
+                                    className="counter-value"
+                                    end={count}
+                                    suffix="+"
+                                    redraw={true}
+                                    enableScrollSpy={true}
+                                />
                             </div>
                         </div>
                     </div>
@@ -93,7 +102,7 @@ const StatsComp = (props: Props) => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default StatsComp
+export default StatsComp;
