@@ -40,11 +40,11 @@ const LoginForm = () => {
                 const session = await getSession();
                 console.log();
 
-                if (session?.user.role === 'judge') {
-                    router.push('/judge');
+                if (session?.user?.role === 'admin') {
+                    router.push('/admin');
                     router.refresh();
                 } else {
-                    router.push('/admin');
+                    router.push('/judge');
                     router.refresh();
                 }
             }

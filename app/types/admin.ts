@@ -1,7 +1,7 @@
-
 export interface Iadmin {
-    id: number,
-    name: string,
-    email: string,
-    role: string,
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    status: Boolean;
 }

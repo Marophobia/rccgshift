@@ -16,7 +16,12 @@ export const middleware = async (req: any) => {
     if (pathname.startsWith('/admin') && userRole !== 'admin') {
         return NextResponse.redirect(new URL('/auth', req.url));
     }
-    if (pathname.startsWith('/judge') && userRole !== 'judge') {
+    if (
+        pathname.startsWith('/judge') &&
+        userRole !== 'judge1' &&
+        userRole !== 'judge2' &&
+        userRole !== 'judge3'
+    ) {
         return NextResponse.redirect(new URL('/auth', req.url));
     }
 

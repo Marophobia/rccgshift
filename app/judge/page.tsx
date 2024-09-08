@@ -27,6 +27,7 @@ const Judges = async () => {
     const settings = await getData();
     const session = await getAuthSession();
     const userSession = session?.user;
+    console.log(userSession);
 
     return (
         <div className="flex bg-body-light w-full dark:bg-dark-body">

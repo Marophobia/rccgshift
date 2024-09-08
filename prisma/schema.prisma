@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Admin {
-  id       Int    @id @default(autoincrement())
-  name     String @db.VarChar(255)
-  email    String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
   role     Role
+  status   Boolean? @default(true)
 }
 
 model User {
@@ -56,15 +57,19 @@ model Settings {
 }
 
 model User_session {
-  id          Int               @id @default(autoincrement())
-  round_id    Int
-  votes       Int               @default(0)
-  judge_votes Int               @default(0)
-  score       Int               @default(0)
-  status      UserSessionStatus @default(pending)
-  user_id     Int
-  round       Round             @relation(fields: [round_id], references: [id])
-  user        User              @relation(fields: [user_id], references: [id])
+  id           Int               @id @default(autoincrement())
+  round_id     Int
+  votes        Int               @default(0)
+  judge_votes1 Int               @default(0)
+  judge_votes2 Int               @default(0)
+  judge_votes3 Int               @default(0)
+  score        Int               @default(0)
+  status1      UserSessionStatus @default(pending)
+  status2      UserSessionStatus @default(pending)
+  status3      UserSessionStatus @default(pending)
+  user_id      Int
+  round        Round             @relation(fields: [round_id], references: [id])
+  user         User              @relation(fields: [user_id], references: [id])
 
   @@unique([user_id, round_id]) // Add this line for composite unique constraint
   @@index([user_id], map: "user_id")
@@ -72,7 +77,9 @@ model User_session {
 }
 
 enum Role {
-  judge
+  judge1
+  judge2
+  judge3
   admin
 }
 
