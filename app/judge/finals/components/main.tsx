@@ -1,18 +1,20 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { IuserSession } from '@/app/types/user_session';
-import { MenuIcon, MoveRight } from 'lucide-react';
+import { MenuIcon, MinusIcon, MoveRight, PlusIcon } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { UserSessionStatus } from '@prisma/client';
 import SignOut from '@/app/admin/components/SignOut';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 
 type Props = {
     data: {
@@ -32,6 +34,14 @@ const Main = (props: Props) => {
     const statusKey = 'status' + id; // Concatenate the id to get the status key i.e status1 or status2 etc..
 
     const [currentContestantIndex, setCurrentContestantIndex] = useState(0); // Initial state
+
+    // State for the 6 parameters
+    const [delivery, setDelivery] = useState([0]);
+    const [expression, setExpression] = useState([0]);
+    const [appearance, setAppearance] = useState([0]);
+    const [communication, setCommunication] = useState([0]);
+    const [technical, setTechnical] = useState([0]);
+    const [overallValue, setOverallValue] = useState([0]);
 
     // useEffect to run on component mount or when data changes
     useEffect(() => {
@@ -491,70 +501,138 @@ const Main = (props: Props) => {
                                                         </ScrollArea>
                                                     </div>
                                                 </div>
-                                                {/* Yes, No, Maybe buttons */}
-                                                <div className="col-span-full card flex justify-center gap-3">
-                                                    <button
-                                                        className={`rounded-full p-5 btn text-center bg-green-600 ${
-                                                            selectedOption ===
-                                                            20
-                                                                ? 'opacity-10'
-                                                                : ''
-                                                        }`}
-                                                        style={{
-                                                            width: '25%',
-                                                        }}
-                                                        onClick={() =>
-                                                            handleOptionClick(
-                                                                20
-                                                            )
-                                                        }
-                                                        disabled={
-                                                            selectedOption ===
-                                                            20
-                                                        }
-                                                    >
-                                                        Yes
-                                                    </button>
-                                                    <button
-                                                        className={`rounded-full p-5 btn text-center bg-yellow-500 ${
-                                                            selectedOption ===
-                                                            10
-                                                                ? 'opacity-10'
-                                                                : ''
-                                                        }`}
-                                                        style={{
-                                                            width: '25%',
-                                                        }}
-                                                        onClick={() =>
-                                                            handleOptionClick(
-                                                                10
-                                                            )
-                                                        }
-                                                        disabled={
-                                                            selectedOption ===
-                                                            10
-                                                        }
-                                                    >
-                                                        Maybe
-                                                    </button>
-                                                    <button
-                                                        className={`rounded-full p-5 btn text-center bg-red-500 ${
-                                                            selectedOption === 0
-                                                                ? 'opacity-10'
-                                                                : ''
-                                                        }`}
-                                                        style={{
-                                                            width: '25%',
-                                                        }}
-                                                        onClick={() =>
-                                                            handleOptionClick(0)
-                                                        }
-                                                        disabled={
-                                                            selectedOption === 0
-                                                        }
-                                                    >
-                                                        No
-                                                    </button>
+
+                                                {/* parameters form */}
+                                                <div className="col-span-full gap-5 ">
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Delivery
+                                                        </h2>
+                                                        <div className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {delivery}
+                                                        </div>
+                                                        <div className="w-full max-w-sm align-middle col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    delivery
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setDelivery
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Expression
+                                                        </h2>
+                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {expression}
+                                                        </div>
+                                                        <div className="w-full max-w-sm col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    expression
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setExpression
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Appearance
+                                                        </h2>
+                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {appearance}
+                                                        </div>
+                                                        <div className="w-full max-w-sm col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    appearance
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setAppearance
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Communication
+                                                        </h2>
+                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {communication}
+                                                        </div>
+                                                        <div className="w-full max-w-sm col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    communication
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setCommunication
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Technical Skills
+                                                        </h2>
+                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {technical}
+                                                        </div>
+                                                        <div className="w-full max-w-sm col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    technical
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setTechnical
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="w-full mx-auto grid grid-cols-9">
+                                                        <h2 className="text-lg font-semibold col-span-3">
+                                                            Overal impact and
+                                                            entertainment value
+                                                        </h2>
+                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
+                                                            {overallValue}
+                                                        </div>
+                                                        <div className="w-full max-w-sm col-span-4">
+                                                            <Slider
+                                                                defaultValue={
+                                                                    overallValue
+                                                                }
+                                                                max={10}
+                                                                min={0}
+                                                                step={1}
+                                                                onValueChange={
+                                                                    setOverallValue
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             {/* Next button */}

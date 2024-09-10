@@ -5,9 +5,10 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { getAuthSession } from '@/lib/auth';
 import Form from './components/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import JudgeSettings from './components/judgeSettings';
+import VoteSettings from './components/voteSettings';
 import prisma from '@/lib/db';
 import { errorHandler } from '@/lib/functions';
+import JudgeForm from './components/judgeForm';
 
 const Settings = async () => {
     const session = await getAuthSession();
@@ -42,13 +43,16 @@ const Settings = async () => {
                                     <TabsTrigger value="voting">
                                         Voting
                                     </TabsTrigger>
+                                    <TabsTrigger value="judge">
+                                        Judge
+                                    </TabsTrigger>
                                     <TabsTrigger value="password">
                                         Password
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="voting">
                                     <div className="col-span-full">
-                                        <JudgeSettings
+                                        <VoteSettings
                                             status={settings?.status}
                                         />
                                     </div>
@@ -56,6 +60,11 @@ const Settings = async () => {
                                 <TabsContent value="password">
                                     <div className="col-span-full">
                                         <Form />
+                                    </div>
+                                </TabsContent>
+                                <TabsContent value="judge">
+                                    <div className="col-span-full">
+                                        <JudgeForm />
                                     </div>
                                 </TabsContent>
                             </Tabs>

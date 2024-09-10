@@ -1,12 +1,11 @@
-import { genSalt, hash, compare } from "bcrypt-ts";
+import { genSalt, hash, compare } from 'bcrypt-ts';
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/db';
-import { NextApiRequest, NextApiResponse } from "next";
-
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export async function hashPassword(password: string) {
-    const salt = await genSalt(10)
+    const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
     return hashedPassword;
 }
@@ -15,7 +14,6 @@ export async function verifyPassword(password: string, hashedPassword: string) {
     const isValid = await compare(password, hashedPassword);
     return isValid;
 }
-
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -31,8 +29,8 @@ export const authOptions: NextAuthOptions = {
                 },
                 expires: {
                     label: 'Expires',
-                    type: 'boolean'
-                }
+                    type: 'boolean',
+                },
             },
             authorize: async (credentials, req) => {
                 if (!credentials?.email || !credentials?.password) {
@@ -51,16 +49,19 @@ export const authOptions: NextAuthOptions = {
                 if (credentials.password !== user.password) {
                     throw new Error('Password does not match');
                 }
-                console.log(credentials.expires);
+                if (!user.status) {
+                    throw new Error('User is not active');
+                }
 
-                const expires = credentials.expires ? '45h' : '2h'
+                const expires = credentials.expires ? '45h' : '2h';
+                console.log(credentials.expires);
 
                 return {
                     id: user.id,
                     name: user.name,
                     role: user.role,
                     email: user.email,
-                    expires: expires
+                    expires: expires,
                 };
             },
         }),
@@ -79,10 +80,9 @@ export const authOptions: NextAuthOptions = {
                 token.name = user.name;
                 token.email = user.email;
                 token.role = user.role;
-                token.expires = user.expires
+                token.expires = user.expires;
             }
             return token;
-
         },
         session: ({ session, token }) => {
             if (token && session.user) {
@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.name = token.name;
                 session.user.email = token.email;
                 session.user.role = token.role;
-                session.expires = token.expires
+                session.expires = token.expires;
             }
             return session;
         },
@@ -102,6 +102,5 @@ export const getAuthSession = async () => {
 };
 
 export async function getAPISession(req: NextApiRequest, res: NextApiResponse) {
-    return getServerSession(req, res, authOptions)
+    return getServerSession(req, res, authOptions);
 }
-
