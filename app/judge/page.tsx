@@ -9,25 +9,26 @@ import { LogOut, MenuIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SignOut from '../admin/components/SignOut';
 
-const getData = async () => {
-    const authorization = headers().get('authorization');
-    const headersInit: HeadersInit = authorization ? { authorization } : {};
-    const res = await fetch(`${apiUrl}/api/judges/settings`, {
-        method: 'POST',
-        cache: 'no-store',
-        headers: headersInit,
-    });
-    if (!res.ok) {
-        throw new Error('Failed to fetch data');
-    }
-    return res.json();
-};
-
 const Judges = async () => {
-    const settings = await getData();
+    const getData = async (id?: string) => {
+        const authorization = headers().get('authorization');
+        const headersInit: HeadersInit = authorization ? { authorization } : {};
+        const res = await fetch(`${apiUrl}/api/judges/settings`, {
+            method: 'POST',
+            cache: 'no-store',
+            headers: headersInit,
+            body: JSON.stringify({ id: id }),
+        });
+        if (!res.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        return res.json();
+    };
+
     const session = await getAuthSession();
     const userSession = session?.user;
-    console.log(userSession);
+    const sessionId = userSession?.role.slice(5);
+    const settings = await getData(sessionId);
 
     return (
         <div className="flex bg-body-light w-full dark:bg-dark-body">

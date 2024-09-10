@@ -3,17 +3,7 @@ import prisma from '@/lib/db';
 import { getAuthSession } from '@/lib/auth';
 
 export const POST = async (req: Request) => {
-    const session = await getAuthSession();
-    if (
-        !session ||
-        (session.user.role !== 'judge1' &&
-            session.user.role !== 'judge2' &&
-            session.user.role !== 'judge3')
-    ) {
-        return errorHandler('Unauthenticated', 401); // 401 for unauthorized
-    }
-
-    const judgeId = session.user.role.slice(5);
+    const { id } = await req.json();
 
     try {
         const settings = await prisma.settings.findFirst({
@@ -40,7 +30,7 @@ export const POST = async (req: Request) => {
             return errorHandler('No contestant found', 404);
         }
 
-        const concatStatus = 'status' + judgeId;
+        const concatStatus = 'status' + id;
 
         const allVoted = contestants.users.every(
             (user) => (user as any)[concatStatus] === 'voted'
