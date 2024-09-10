@@ -21,6 +21,7 @@ export const POST = async (req: Request) => {
         });
 
         if (!round) {
+            console.error('No round found');
             return errorHandler('No round found', 404);
         }
 
@@ -34,6 +35,7 @@ export const POST = async (req: Request) => {
         });
 
         if (!contestants || contestants.length < 1) {
+            console.error('No contestants found');
             return errorHandler('No contestants found', 404);
         }
 
@@ -64,6 +66,23 @@ export const POST = async (req: Request) => {
 
         // Select the top `qualifiers` contestants
         const topContestants = sortedContestants.slice(0, qualifiers);
+        const disqualified = sortedContestants.slice(qualifiers);
+
+        console.log(disqualified);
+
+        // Update the database for the qualified and disqualified contestants
+        await Promise.all(
+            disqualified.map(async (contestant) => {
+                await prisma.user_session.update({
+                    where: {
+                        id: contestant.id,
+                    },
+                    data: {
+                        qualified: false,
+                    },
+                });
+            })
+        );
 
         // Update the current round in settings
         const newRound = current_round + 1;
@@ -74,12 +93,23 @@ export const POST = async (req: Request) => {
 
         await prisma.round.update({
             where: { id: current_round },
-            data: { qualifiers: qualifiers, status: false },
+            data: { qualifiers: Number(qualifiers), status: false },
         });
 
         // Create new user sessions for the top contestants in the new round
         const newSessions = await Promise.all(
             topContestants.map(async (contestant) => {
+                // Update qualifiers status in the concluded round
+                await prisma.user_session.update({
+                    where: {
+                        id: contestant.id,
+                    },
+                    data: {
+                        qualified: true,
+                    },
+                });
+
+                // Create new session in the new round for the qualifiers
                 return await prisma.user_session.create({
                     data: {
                         user_id: contestant.user_id,
@@ -95,6 +125,7 @@ export const POST = async (req: Request) => {
             { topContestants, newSessions }
         );
     } catch (error) {
+        console.error(error);
         return errorHandler(`Something went wrong: ${error}`, 500);
     }
 };

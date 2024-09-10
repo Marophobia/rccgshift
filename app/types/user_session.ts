@@ -8,7 +8,6 @@ export enum UserSessionStatus {
 }
 
 export interface IuserSession {
-    get(concatId: string): unknown;
     id: number;
     round_id: number;
     votes: number;
@@ -22,5 +21,18 @@ export interface IuserSession {
     status1: UserSessionStatus;
     status2: UserSessionStatus;
     status3: UserSessionStatus;
+    qualified?: Boolean;
     [key: string]: any;
+}
+
+export interface Iparameters {
+    id: number;
+    judge: number;
+    session_id: number;
+    Delivery: number;
+    Expression: number;
+    Appearance: number;
+    Communication: number;
+    Technical_skills: number;
+    value: number;
 }

@@ -29,19 +29,19 @@ const Main = (props: Props) => {
     const { data, id } = props;
     const router = useRouter();
 
-    const concatId = 'status' + id; // Concatenate the id to get the status key
+    const statusKey = 'status' + id; // Concatenate the id to get the status key i.e status1 or status2 etc..
 
     const [currentContestantIndex, setCurrentContestantIndex] = useState(0); // Initial state
 
-    // Function to find the index of the first contestant with a specific status
-    const findContestantIndex = (status: string) => {
-        return data.users.findIndex(
-            (contestant) => contestant[concatId] === status
-        );
-    };
-
     // useEffect to run on component mount or when data changes
     useEffect(() => {
+        // Function to find the index of the first contestant with a specific status
+        const findContestantIndex = (status: string) => {
+            return data.users.findIndex(
+                (contestant) => contestant[statusKey] === status
+            );
+        };
+
         const index = findContestantIndex('pending');
         if (index === -1) {
             const skippedIndex = findContestantIndex('skipped');
@@ -66,7 +66,7 @@ const Main = (props: Props) => {
         } else {
             setCurrentContestantIndex(index); // Set the index to the first pending contestant
         }
-    }, [data]); // Re-run if data changes
+    }, [data, router, statusKey]); // Re-run if data changes
 
     // Rest of your component logic (e.g., rendering the current contestant)
     const contestant = data.users[currentContestantIndex];
@@ -169,7 +169,7 @@ const Main = (props: Props) => {
 
                         {data.users.map(
                             (contestant, index) =>
-                                contestant[concatId] === 'skipped' && (
+                                contestant[statusKey] === 'skipped' && (
                                     <div key={contestant.id}>
                                         <button
                                             onClick={() =>
@@ -261,8 +261,9 @@ const Main = (props: Props) => {
 
                                                 {data.users.map(
                                                     (contestant, index) =>
-                                                        contestant[concatId] ===
-                                                            'skipped' && (
+                                                        contestant[
+                                                            statusKey
+                                                        ] === 'skipped' && (
                                                             <div
                                                                 key={
                                                                     contestant.id
