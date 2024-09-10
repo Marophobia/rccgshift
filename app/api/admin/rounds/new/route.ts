@@ -65,7 +65,7 @@ export const POST = async (req: Request) => {
 
         await prisma.round.update({
             where: { id: current_round },
-            data: { qualifiers: qualifiers, status: false },
+            data: { qualifiers: Number(qualifiers), status: false },
         });
 
         // Create new user sessions for the top contestants in the new round
@@ -84,6 +84,7 @@ export const POST = async (req: Request) => {
         return sucessHandler("Top contestants selected and new round created", 200, { topContestants, newSessions });
 
     } catch (error) {
+        console.error(error)
         return errorHandler(`Something went wrong: ${error}`, 500);
     }
 };

@@ -12,8 +12,7 @@ const About = (props: Props) => {
             <div className="main-container">
                 <Header />
                 <main id="main">
-                    <div id="featured-image-container">
-                        {/* <div className="img-loading"></div> */}
+                    {/* <div id="featured-image-container">
                         <div
                             id="featured-image"
                             style={{
@@ -27,6 +26,9 @@ const About = (props: Props) => {
                                 <h1>About Us</h1>
                             </div>
                         </div>
+                    </div> */}
+                    <div id="page-title">
+                        <h1><span>About Us</span></h1>
                     </div>
                     <div id="page-container">
                         <AboutBody />

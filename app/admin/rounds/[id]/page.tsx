@@ -32,7 +32,6 @@ const Round = async ({ params }: { params: { id: number } }) => {
         const responseData2 = await response2.json();
         round = responseData.data
         settings = responseData2.data
-        // console.log(round)
 
     } catch (error) {
         console.error('Error:', error);
@@ -44,7 +43,6 @@ const Round = async ({ params }: { params: { id: number } }) => {
                 <Menu />
                 <div className='w-full xl:pl-[300px] '>
                     <Header session={userSession} />
-
                     <div className="main-content group-data-[sidebar-size=lg]:xl:ml-[52px] group-data-[sidebar-size=sm]:xl:ml-[32px] px-4 ac-transition">
                         <div className="card">
                             <div className="card-title">

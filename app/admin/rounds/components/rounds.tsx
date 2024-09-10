@@ -76,9 +76,9 @@ const RoundsCard = (props: Props) => {
             <AlertDialog>
                 <AlertDialogTrigger>
                     <div className="mb-4 w-full d-flex justify-center">
-                        <button className="gap-1 btn b-solid btn-primary-solid my-3">
+                        <div className="gap-1 btn b-solid btn-primary-solid my-3">
                             Start New Round
-                        </button>
+                        </div>
                     </div>
                 </AlertDialogTrigger>
 

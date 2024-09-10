@@ -5,11 +5,9 @@ import Link from 'next/link';
 type Props = {};
 
 const Header = (props: Props) => {
-    const [nav, setNav] = React.useState(true);
+    const [nav, setNav] = React.useState(false);
 
     const handleToggle = () => {
-        console.log('Toggling nav');
-        console.log(nav);
         setNav(!nav); // Toggle the nav state
     };
 
@@ -19,7 +17,7 @@ const Header = (props: Props) => {
                 <div id="header-top">
                     <div id="header-logo">
                         <Link href="/">
-                            <img src="images/logo-white.png" alt="Logo" />
+                            <img src="../images/logo-white.png" alt="Logo" />
                         </Link>
                     </div>
                     <div id="header-icons">
@@ -45,21 +43,21 @@ const Header = (props: Props) => {
                         </ul>
                     </div>
                 </div>
-                <div className="bg-gray-700">
+                <div style={{ background: "#111216" }}>
                     <div className="lg:hidden">
-                        <ul className=" nav" onClick={handleToggle}>
+                        <ul className="nav" onClick={handleToggle}>
                             <li>
                                 <a href="#">
                                     <div className="flex justify-between items-center">
-                                        Menu{' '}
-                                        <span className="fa fa-bars"></span>
+                                        Menu <span className="fa fa-bars"></span>
                                     </div>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    {/* */}
-                    <div className={`${nav ? ' max-lg:hidden' : ''}`}>
+
+                    {/* Toggle the nav-menu class based on the nav state */}
+                    <div className={`nav-menu ${nav ? 'open' : ''} lg:block`}>
                         <nav>
                             <ul className="nav">
                                 <li>
