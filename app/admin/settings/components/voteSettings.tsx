@@ -10,7 +10,7 @@ type Props = {
     status?: boolean;
 };
 
-const JudgeSettings = (props: Props) => {
+const VoteSettings = (props: Props) => {
     const { status } = props;
 
     const [isSkipped, setIsSkipped] = useState(status);
@@ -58,4 +58,4 @@ const JudgeSettings = (props: Props) => {
     );
 };
 
-export default JudgeSettings;
+export default VoteSettings;

@@ -1,33 +1,34 @@
-import '../../admin/admin.css'
+import '../../admin/admin.css';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-import { headers } from 'next/headers'
+import { headers } from 'next/headers';
 import { getAuthSession } from '@/lib/auth';
 import Main from './components/main';
 
-
 const getData = async () => {
-    const authorization = headers().get('authorization')
+    const authorization = headers().get('authorization');
     const headersInit: HeadersInit = authorization ? { authorization } : {};
-    const res = await fetch(`${apiUrl}/api/judges/fetch`,
-        {
-            method: 'POST',
-            cache: 'no-store',
-            headers: headersInit
-        })
+    const res = await fetch(`${apiUrl}/api/judges/fetch`, {
+        method: 'POST',
+        cache: 'no-store',
+        headers: headersInit,
+    });
     if (!res.ok) {
-        throw new Error('Failed to fetch data')
+        throw new Error('Failed to fetch data');
     }
     return res.json();
-}
+};
 
 const Judges = async () => {
-    const fetch = await getData()
-    const session = await getAuthSession()
-    const userSession = session?.user
+    const fetch = await getData();
+    const session = await getAuthSession();
 
-    return (
-        <Main data={fetch.data} />
-    )
-}
+    const id = session?.user.role.slice(5);
+    if (!id) {
+        throw new Error('Invalid session');
+    }
+    const userSession = session?.user;
 
-export default Judges
+    return <Main data={fetch.data} id={id} />;
+};
+
+export default Judges;

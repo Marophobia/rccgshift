@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Admin {
-  id       Int    @id @default(autoincrement())
-  name     String @db.VarChar(255)
-  email    String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
   role     Role
+  status   Boolean? @default(true)
 }
 
 model User {
@@ -24,8 +25,8 @@ model User {
   regional_pastor   String?
   gender            String?
   age_grade         String?
-  category          String?
-  type              String?
+  category          String? // Music, Drama, Unusual creativity
+  type              String? // Group Single
   number_of_members Int            @default(1)
   country           String?
   state             String?
@@ -33,7 +34,7 @@ model User {
   province          String?
   picture           String?
   date              DateTime       @default(now())
-  status            UserStatus     @default(registered)
+  status            UserStatus     @default(registered) // registered approved disqualified
   user_sessions     User_session[]
 }
 
@@ -56,23 +57,48 @@ model Settings {
 }
 
 model User_session {
-  id          Int               @id @default(autoincrement())
-  round_id    Int
-  votes       Int               @default(0)
-  judge_votes Int               @default(0)
-  score       Int               @default(0)
-  status      UserSessionStatus @default(pending)
-  user_id     Int
-  round       Round             @relation(fields: [round_id], references: [id])
-  user        User              @relation(fields: [user_id], references: [id])
+  id           Int               @id @default(autoincrement())
+  round_id     Int
+  votes        Int               @default(0)
+  judge_votes1 Int               @default(0)
+  judge_votes2 Int               @default(0)
+  judge_votes3 Int               @default(0)
+  score        Int               @default(0)
+  status1      UserSessionStatus @default(pending)
+  status2      UserSessionStatus @default(pending)
+  status3      UserSessionStatus @default(pending)
+  user_id      Int
+  qualified    Boolean?
+  round        Round             @relation(fields: [round_id], references: [id])
+  user         User              @relation(fields: [user_id], references: [id])
+  parameters   Parameters[]
 
-  @@unique([user_id, round_id]) // Add this line for composite unique constraint
+  @@unique([user_id, round_id])
   @@index([user_id], map: "user_id")
   @@index([round_id], map: "round_id")
 }
 
+model Parameters {
+  id               Int @id @default(autoincrement())
+  judge            Int //judge 1 or 2 or 3
+  session_id       Int
+  Delivery         Int @default(0)
+  Expression       Int @default(0)
+  Appearance       Int @default(0)
+  Communication    Int @default(0)
+  Technical_skills Int @default(0)
+  value            Int @default(0)
+  // I did not put the total here because we can just store it on the normal judge_votes in the user session.
+
+  user_session User_session @relation(fields: [session_id], references: [id])
+
+  @@index([session_id], map: "session_id")
+}
+
 enum Role {
-  judge
+  judge1
+  judge2
+  judge3
   admin
 }
 
