@@ -89,8 +89,7 @@ const Single = (props: Props) => {
         publicKey: publicKey,
         text: "Pay with Card",
         onSuccess: (response: any) => {
-            const { reference } = response; // Paystack reference (transaction ID)
-            console.log(reference)
+            const { reference } = response;
             fetch(`${apiUrl}/api/vote`, {
                 method: 'POST',
                 body: JSON.stringify({ data, reference }), // Send transaction ID to backend

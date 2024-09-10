@@ -35,6 +35,72 @@ FOOTER
 
 */
 
+.sliderItem {
+    height: 500px;
+    background: url(../../public/img/carousel-1.jpg) no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-blend-mode: darken;
+}
+
+.sliderItem1 {
+    height: 500px;
+    background: url(../../public/img/carousel-2.jpg) no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-blend-mode: darken;
+}
+
+.sliderItem2 {
+    height: 500px;
+    background: url(../../public/img/carousel-3.jpg) no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-blend-mode: darken;
+}
+/* Default styling for larger screens */
+.sliderCaptionContainer {
+  position: absolute;
+  top: 0; /* Example position */
+  left: 0;
+  text-align: center;
+  z-index: 10;
+}
+@media (max-width: 1024px) {
+    .nav-menu {
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    .nav-menu.open {
+        max-height: 500px; /* Adjust according to your content */
+        opacity: 1;
+    }
+}
+
+
+
+
+/* Styling for smaller screens */
+@media (max-width: 768px) {
+  .sliderCaptionContainer {
+    top: auto;
+    bottom: 10px; /* Move it to the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+  }
+}
+
+
+.sliderImag {
+    width: 200px;
+}
+
 body,p,input,textarea {
     font-family: 'ralewayregular';
     font-weight: normal;
