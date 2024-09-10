@@ -20,12 +20,20 @@ export const POST = async (req: Request) => {
     const concatStatus = 'status' + judgeId;
 
     // Extract id and vote from the request body
-    const { id, vote } = await req.json();
-
+    const { id, voteData } = await req.json();
     // Validate input
-    if (!id || vote === undefined) {
+    if (!id || voteData === undefined) {
         return errorHandler('Missing Vote', 400); // Use 400 for bad request
     }
+
+    const {
+        delivery,
+        expression,
+        appearance,
+        communication,
+        technical,
+        overallValue,
+    } = voteData;
 
     try {
         // Check the current status of the contestant
@@ -41,6 +49,33 @@ export const POST = async (req: Request) => {
         if ((contestant as any)[concatStatus] === 'voted') {
             return errorHandler('Vote already registered', 400);
         }
+
+        const voteparams = await prisma.parameters.create({
+            data: {
+                session_id: id,
+                judge: Number(judgeId),
+                Delivery: delivery[0],
+                Expression: expression[0],
+                Appearance: appearance[0],
+                Communication: communication[0],
+                Technical_skills: technical[0],
+                value: overallValue[0],
+            },
+        });
+
+        if (!voteparams) {
+            return errorHandler('something went wrong', 400);
+        }
+
+        // the total vote from that judge, sum of all parameters / 3 = maximum 20
+        const vote =
+            (delivery[0] +
+                expression[0] +
+                appearance[0] +
+                communication[0] +
+                technical[0] +
+                overallValue[0]) /
+            3;
 
         if (judgeId === '1') {
             await prisma.user_session.update({

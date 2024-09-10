@@ -95,17 +95,32 @@ const Main = (props: Props) => {
     const handleNext = async (id: number) => {
         toast.loading('Please Wait');
 
+        const voteData = {
+            delivery,
+            expression,
+            appearance,
+            communication,
+            technical,
+            overallValue,
+        };
+
         try {
-            const update = await fetch(`${apiUrl}/api/judges/vote`, {
+            const update = await fetch(`${apiUrl}/api/judges/vote/final`, {
                 method: 'POST',
                 cache: 'no-store',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ vote: selectedOption, id }),
+                body: JSON.stringify({ voteData, id }),
             });
             if (update.ok) {
                 // router.prefetch('/judge/vote')
                 toast.dismiss();
-                setSelectedOption(null);
+                toast.success('Vote Recorded');
+                setDelivery([0]);
+                setExpression([0]);
+                setAppearance([0]);
+                setCommunication([0]);
+                setTechnical([0]);
+                setOverallValue([0]);
 
                 router.refresh();
                 // router.refresh()
@@ -503,130 +518,147 @@ const Main = (props: Props) => {
                                                 </div>
 
                                                 {/* parameters form */}
-                                                <div className="col-span-full gap-5 ">
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Delivery
-                                                        </h2>
-                                                        <div className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {delivery}
+                                                <div className="col-span-full space-y-5 ">
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Delivery
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {delivery}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm align-middle col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     delivery
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setDelivery
                                                                 }
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Expression
-                                                        </h2>
-                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {expression}
+                                                    <Separator />
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Expression
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {expression}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     expression
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setExpression
                                                                 }
                                                             />
                                                         </div>
                                                     </div>
-
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Appearance
-                                                        </h2>
-                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {appearance}
+                                                    <Separator />
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Appearance
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {appearance}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     appearance
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setAppearance
                                                                 }
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Communication
-                                                        </h2>
-                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {communication}
+                                                    <Separator />
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Communication
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {communication}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     communication
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setCommunication
                                                                 }
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Technical Skills
-                                                        </h2>
-                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {technical}
+                                                    <Separator />
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Technical Skills
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {technical}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     technical
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setTechnical
                                                                 }
                                                             />
                                                         </div>
                                                     </div>
-
-                                                    <div className="w-full mx-auto grid grid-cols-9">
-                                                        <h2 className="text-lg font-semibold col-span-3">
-                                                            Overal impact and
-                                                            entertainment value
-                                                        </h2>
-                                                        <div className="bg-secondary col-span-2 text-secondary-foreground px-3 py-1 rounded-md font-mono">
-                                                            {overallValue}
+                                                    <Separator />
+                                                    <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                            <h2 className="text-lg font-semibold col-span-6">
+                                                                Overal impact
+                                                                and
+                                                                entertainment
+                                                                value
+                                                            </h2>
+                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                                {overallValue}
+                                                            </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm col-span-4">
+                                                        <div className="w-full max-w-sm text-center">
                                                             <Slider
                                                                 defaultValue={
                                                                     overallValue
                                                                 }
                                                                 max={10}
                                                                 min={0}
-                                                                step={1}
+                                                                step={0.1}
                                                                 onValueChange={
                                                                     setOverallValue
                                                                 }
@@ -638,18 +670,11 @@ const Main = (props: Props) => {
                                             {/* Next button */}
                                             <div className="flex mt-5 gap-10 justify-center">
                                                 <button
-                                                    className={`btn b-solid btn-primary-solid btn-lg mt-6 w-full ${
-                                                        selectedOption === null
-                                                            ? 'opacity-50 cursor-not-allowed'
-                                                            : ''
-                                                    }`}
+                                                    className={`btn b-solid btn-primary-solid btn-lg mt-6 w-full `}
                                                     onClick={() =>
                                                         handleNext(
                                                             contestant.id
                                                         )
-                                                    }
-                                                    disabled={
-                                                        selectedOption === null
                                                     }
                                                 >
                                                     Next <MoveRight />

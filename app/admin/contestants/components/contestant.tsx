@@ -1,5 +1,13 @@
 'use client';
 import { Icontestants } from '@/app/types/contestants';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import { Mail, Phone, Star } from 'lucide-react';
 import Image from 'next/image';
 
@@ -27,12 +35,15 @@ const ContestantSingle = (props: Props) => {
                                 />
                             </div>
                             <div className="mt-7 px-6 text-center">
-                                <div className='h-60 flex-center' style={{ borderRadius: "100%" }}>
+                                <div
+                                    className="h-60 flex-center"
+                                    style={{ borderRadius: '100%' }}
+                                >
                                     <img
                                         src={`/images/contestants/${contestant.picture}`}
                                         alt="cover-image"
                                         className=" h-full"
-                                        style={{ borderRadius: "100%" }}
+                                        style={{ borderRadius: '100%' }}
                                     />
                                 </div>
                                 <div className="py-5">
@@ -124,17 +135,100 @@ const ContestantSingle = (props: Props) => {
                                                     Rounds
                                                 </h6>
                                             </div>
-                                            <ul className="flex flex-col gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4">
-                                                <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
-                                                    {/* <div className="flex-center-between">
+                                            {/* <ul className="flex flex-col gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4"> */}
+                                            <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
+                                                {/* <div className="flex-center-between">
                                                         <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
                                                             Rounds
                                                         </h6>
                                                     </div> */}
-                                                    <ul className="flex flex-col gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4">
+                                                <Table>
+                                                    <TableHeader>
+                                                        <TableRow>
+                                                            <TableHead>
+                                                                S/N
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                Round
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                Votes
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                judge1 Votes
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                judge2 Votes
+                                                            </TableHead>
+                                                            <TableHead>
+                                                                judge3 Votes
+                                                            </TableHead>
+                                                        </TableRow>
+                                                    </TableHeader>
+                                                    <TableBody>
                                                         {contestant.user_sessions &&
-                                                            contestant.user_sessions
-                                                                .length > 0 ? (
+                                                        contestant.user_sessions
+                                                            .length > 0 ? (
+                                                            contestant.user_sessions.map(
+                                                                (
+                                                                    session,
+                                                                    index
+                                                                ) => (
+                                                                    <TableRow
+                                                                        className={`${
+                                                                            index %
+                                                                                2 ==
+                                                                            0
+                                                                                ? 'bg-gray-50'
+                                                                                : ''
+                                                                        }`}
+                                                                    >
+                                                                        <TableCell>
+                                                                            {index +
+                                                                                1}
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                session
+                                                                                    .round
+                                                                                    .name
+                                                                            }
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                session.votes
+                                                                            }
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                session.judge_votes1
+                                                                            }
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                session.judge_votes2
+                                                                            }
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            {
+                                                                                session.judge_votes3
+                                                                            }
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                )
+                                                            )
+                                                        ) : (
+                                                            <div>
+                                                                No contestants
+                                                                found
+                                                            </div>
+                                                        )}
+                                                    </TableBody>
+                                                </Table>
+                                                {/* <ul className="flex flex-col w-full gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4">
+                                                        {contestant.user_sessions &&
+                                                        contestant.user_sessions
+                                                            .length > 0 ? (
                                                             contestant.user_sessions.map(
                                                                 (session) => {
                                                                     return (
@@ -142,21 +236,43 @@ const ContestantSingle = (props: Props) => {
                                                                             key={
                                                                                 session.id
                                                                             }
+                                                                            className="flex justify-between items-center w-full"
                                                                         >
-                                                                            <a
-                                                                                href="#"
-                                                                                className="hover:text-heading dark:hover:text-dark-text-two"
-                                                                            >
+                                                                            <h1>
                                                                                 {
                                                                                     session
                                                                                         .round
                                                                                         .name
-                                                                                }{' '}
-                                                                                votes:{' '}
-                                                                                {
-                                                                                    session.votes
                                                                                 }
-                                                                            </a>
+                                                                            </h1>
+
+                                                                            <div className="flex items-center justify-between">
+                                                                                <div>
+                                                                                    votes:{' '}
+                                                                                    {
+                                                                                        session.votes
+                                                                                    }
+                                                                                </div>
+                                                                                <div>
+                                                                                    Judge
+                                                                                    votes:{' '}
+                                                                                    {
+                                                                                        session.judge_votes1
+                                                                                    }
+                                                                                    {
+                                                                                        ', '
+                                                                                    }
+                                                                                    {
+                                                                                        session.judge_votes2
+                                                                                    }
+                                                                                    {
+                                                                                        ', '
+                                                                                    }
+                                                                                    {
+                                                                                        session.judge_votes3
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
                                                                         </li>
                                                                     );
                                                                 }
@@ -173,9 +289,9 @@ const ContestantSingle = (props: Props) => {
                                                                 </a>
                                                             </li>
                                                         )}
-                                                    </ul>
-                                                </div>
-                                            </ul>
+                                                    </ul> */}
+                                            </div>
+                                            {/* </ul> */}
                                         </div>
                                     </div>
                                 </div>

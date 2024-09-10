@@ -1,6 +1,8 @@
 'use client';
 import { Isettings } from '@/app/types/settings';
 import { IuserSession } from '@/app/types/user_session';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'; // To generate table in PDF
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -14,6 +16,11 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
+import { EyeIcon } from 'lucide-react';
 
 type Props = {
     participants: IuserSession[];
@@ -26,6 +33,7 @@ type Props = {
 const Participants = (props: Props) => {
     const { id, participants, status, qualifiers } = props;
     const router = useRouter();
+    const [searchQuery, setSearchQuery] = useState('');
 
     const changeVoting = async (id: number, type: string) => {
         try {
@@ -73,10 +81,61 @@ const Participants = (props: Props) => {
         }
     };
 
+    // Format tags to always be three digits
+    const formatTag = (tag: number) => tag.toString().padStart(3, '0');
+    const filteredParticipants = participants.filter((participant) => {
+        const tag = formatTag(participant.user_id); // Format the tag
+        const name = participant.user.name.toLowerCase(); // Participant name in lowercase
+        return (
+            tag.includes(searchQuery) ||
+            name.includes(searchQuery.toLowerCase())
+        );
+    });
+
+    // Download the table data as a PDF
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        const tableColumn = [
+            'Tags',
+            'Name',
+            'Category',
+            'Vote Points',
+            'Judge Votes',
+            'Total Score',
+            'Verdict',
+        ];
+        const tableRows: any[] = [];
+
+        participants.forEach((participant, index) => {
+            const rowData = [
+                index + 1,
+                formatTag(participant.user.id),
+                participant.user.name,
+                participant.user.category,
+                participant.votes,
+                [
+                    participant.judge_votes1,
+                    participant.judge_votes2,
+                    participant.judge_votes3,
+                ],
+                participant.score,
+                participant.qualified,
+            ];
+            tableRows.push(rowData);
+        });
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+        });
+
+        doc.save('participants.pdf');
+    };
+
     return (
         <>
             <div className="card p-5">
-                <div>
+                <div className="flex flex-wrap justify-between items-center">
                     <div className="flex my-5">
                         <h1 className="mr-5 mt-2">Actions: </h1>
                         {status ? (
@@ -96,12 +155,32 @@ const Participants = (props: Props) => {
                         )}
                     </div>
                 </div>
+                <Separator />
+                <div className="flex flex-wrap space-y-5 mb-5 items-center justify-between">
+                    <div className="">
+                        <Input
+                            type="text"
+                            placeholder="Search by name or tag"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    <button
+                        onClick={downloadPDF}
+                        className="btn btn-primary-solid text-white"
+                    >
+                        <i className="fa fa-download mr-3"></i>
+                        Download as PDF
+                    </button>
+                </div>
+                <Separator />
 
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[100px]">S/N</TableHead>
                             <TableHead>Name</TableHead>
+                            <TableHead>Tag No.</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Category</TableHead>
                             <TableHead>Type</TableHead>
@@ -129,6 +208,9 @@ const Participants = (props: Props) => {
                                     {index + 1}
                                 </TableCell>
                                 <TableCell>{participant.user.name}</TableCell>
+                                <TableCell>
+                                    {formatTag(participant.user.id)}
+                                </TableCell>
                                 <TableCell>{participant.user.email}</TableCell>
                                 <TableCell>
                                     {participant.user.category}
@@ -172,6 +254,14 @@ const Participants = (props: Props) => {
                                             Pending
                                         </span>
                                     )}
+                                </TableCell>
+
+                                <TableCell>
+                                    <Link
+                                        href={`/admin/contestants/${participant.user_id}`}
+                                    >
+                                        <EyeIcon />
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         ))}
