@@ -106,7 +106,7 @@ const Card = (props: Props) => {
                                             <div className="h-80">
                                                 <img
                                                     src={`/images/contestants/${contestant.picture}`}
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                                                     alt="Contestant"
                                                 />
                                             </div>

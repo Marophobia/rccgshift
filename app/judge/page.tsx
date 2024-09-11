@@ -39,13 +39,12 @@ const Judges = async () => {
                         <div className="card col-span-full flex-center flex items-center justify-center xl:hidden">
                             <Sheet>
                                 <SheetTrigger>
-                                    <button
-                                        type="button"
+                                    <div
                                         id="app-menu-hamburger"
                                         className="menu-hamburger"
                                     >
                                         <MenuIcon />
-                                    </button>
+                                    </div>
                                 </SheetTrigger>
                                 <SheetContent side={'top'}>
                                     <SignOut />
