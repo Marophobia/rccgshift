@@ -77,7 +77,8 @@ const Single = (props: Props) => {
 
     const data = {
         id: contestant.id,
-        vote: votes
+        vote: votes,
+        email: contestant.email
 
     }
 
@@ -167,6 +168,7 @@ const Single = (props: Props) => {
                                             type="number"
                                             placeholder='Input number of Votes'
                                             value={votes}
+                                            min={1}
                                             onChange={handleInputChange}
                                         />
                                     </div>

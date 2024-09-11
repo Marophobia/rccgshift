@@ -10,7 +10,7 @@ const Reward = (props: Props) => {
             <div className="grid">
                 <div className="unit one-third">
                     <div className="icon-container">
-                        <a href="models-2-columns.html" className="fa fa-trophy"></a>
+                        <a className="fa fa-trophy"></a>
                     </div>
                     <div className="icon-text">
                         <h3>Winner <br />  ₦10 Million</h3>
@@ -19,7 +19,7 @@ const Reward = (props: Props) => {
                 </div>
                 <div className="unit one-third">
                     <div className="icon-container">
-                        <a href="models-2-columns.html" className="fa fa-medal"></a>
+                        <a className="fa fa-medal"></a>
                     </div>
                     <div className="icon-text">
                         <h3>First Runner Up <br /> ₦1 Million</h3>
@@ -28,7 +28,7 @@ const Reward = (props: Props) => {
                 </div>
                 <div className="unit one-third">
                     <div className="icon-container">
-                        <a href="models-2-columns.html" className="fa fa-medal"></a>
+                        <a className="fa fa-medal"></a>
                     </div>
                     <div className="icon-text">
                         <h3>Second Runner Up <br />  ₦500K</h3>

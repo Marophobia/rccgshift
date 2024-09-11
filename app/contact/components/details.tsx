@@ -1,23 +1,76 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 
 type Props = {}
 
 const Details = (props: Props) => {
+    const [senderName, setSenderName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [senderEmail, setSenderEmail] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        // Handle form submission here (e.g., send the data to an API or log it)
+        console.log({
+            senderName,
+            phoneNumber,
+            senderEmail,
+            message,
+        });
+    };
     return (
         <>
             <div className="grid">
                 <div className="unit half">
-                    <p>Have an enquiry? Do not hesistate to reach out.</p>
-                    <form className="form-box" action="https://thememasters.club/html-templates/ombre/processform.php" method="post">
+                    <p>Have an enquiry? Do not hesitate to reach out.</p>
+                    <form className="form-box" onSubmit={handleSubmit}>
                         <label>Full name :</label>
-                        <input type="text" name="senderName" id="senderName" required maxLength={50} />
+                        <input
+                            type="text"
+                            name="senderName"
+                            id="senderName"
+                            required
+                            maxLength={50}
+                            value={senderName}
+                            onChange={(e) => setSenderName(e.target.value)}
+                        />
+
                         <label>Phone Number :</label>
-                        <input type="number" name="phoneNumber" id="phoneNumber" required />
+                        <input
+                            type="number"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            required
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+
                         <label>Email address :</label>
-                        <input type="email" name="senderEmail" id="senderEmail" required maxLength={50} />
+                        <input
+                            type="email"
+                            name="senderEmail"
+                            id="senderEmail"
+                            required
+                            maxLength={50}
+                            value={senderEmail}
+                            onChange={(e) => setSenderEmail(e.target.value)}
+                        />
+
                         <label>Message :</label>
-                        <textarea name="message" id="message"></textarea>
-                        <input type="submit" id="sendMessage" name="sendMessage" value="Send Message" />
+                        <textarea
+                            name="message"
+                            id="message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        ></textarea>
+
+                        <input
+                            type="submit"
+                            id="sendMessage"
+                            name="sendMessage"
+                            value="Send Message"
+                        />
                     </form>
                 </div>
                 <div className="unit half">

@@ -41,6 +41,11 @@ const Team = (props: Props) => {
                 <TeamCard image='usoro.jpg' name='Samuel Usoro' position='Director of Programs / Region 47 Shift Cord.' />
 
                 <h4 className='borderr'>Judges</h4>
+                <TeamCard image='tosin.jpg' name='Min. Tosin Bee' position='Beezle Nation Record' />
+                <TeamCard image='lekun.jpg' name='Pst Bamigboye Lekun' position='Aviation expert, public speaker & Gospel min' />
+                <TeamCard image='chioma.jpg' name='Chioma G. Ifemeludike ' position='Movie Director & Producer, CEO CGI production' />
+                <TeamCard image='paul.jpg' name='Min. Paul Nams' position='Gospel minister, CEO Paul Nams & De Unveilers' />
+                <TeamCard image='michael.jpg' name='Michael Adeniyan' position='Educational Consultant, CEO Sophia-Brooks Academy, Shift Anchor & Ambassador' />
             </div>
         </>
     )

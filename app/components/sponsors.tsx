@@ -37,7 +37,7 @@ const Sponsor = (props: Props) => {
                                     <img src="img/team-4.jpg" alt="" />
                                 </CarouselItem>
                                 <CarouselItem className="basis-[320px]">
-                                    <img src="img/team-2.jpg" alt="" />
+                                    <img src="img/team-5.jpg" alt="" />
                                 </CarouselItem>
                             </CarouselContent>
                         </Carousel>
