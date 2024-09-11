@@ -13,7 +13,7 @@ import {
     TableRow,
 } from '../../../components/ui/table';
 import Link from 'next/link';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, TrophyIcon } from 'lucide-react';
 
 type Props = {
     participants: IuserSession[];
@@ -186,7 +186,33 @@ const Participants = (props: Props) => {
                                                         {participant.score}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {participant.qualified ? (
+                                                        {participant.position ? (
+                                                            participant.position ===
+                                                            1 ? (
+                                                                <span className="text-yellow-500">
+                                                                    <TrophyIcon />{' '}
+                                                                    Winner
+                                                                </span>
+                                                            ) : participant.position ===
+                                                              2 ? (
+                                                                <span className="text-gray-500">
+                                                                    1st Runner
+                                                                    Up
+                                                                </span>
+                                                            ) : participant.position ===
+                                                              3 ? (
+                                                                <span className="text-gray-500">
+                                                                    2nd Runner
+                                                                    Up
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-green-500">
+                                                                    {
+                                                                        participant.position
+                                                                    }
+                                                                </span>
+                                                            )
+                                                        ) : participant.qualified ? (
                                                             <span className="text-green-500">
                                                                 Qualified
                                                             </span>

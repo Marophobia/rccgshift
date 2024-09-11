@@ -60,12 +60,14 @@ export const POST = async (req: Request) => {
         );
 
         // Sort contestants by score in descending order
-        const sortedContestants = updatedContestants.sort((a, b) => b.score - a.score);
+        const sortedContestants = updatedContestants.sort(
+            (a, b) => b.score - a.score
+        );
 
         // If current round is the final round (round 5), select only the top 3
         if (current_round === 5) {
             const topThree = sortedContestants.slice(0, 3);
-            const disqualified = sortedContestants.slice(3)
+            const disqualified = sortedContestants.slice(3);
 
             // Update the database for the qualified and disqualified contestants
             await Promise.all(
@@ -124,55 +126,19 @@ export const POST = async (req: Request) => {
             })
         );
 
-        // Update the current round in settings
-        const newRound = current_round + 1;
-        await prisma.settings.update({
-            where: { id: round.id },
-            data: { current_round: newRound },
-        });
-
-        await prisma.round.update({
-            where: { id: current_round },
-            data: { qualifiers: Number(qualifiers), status: false },
-        });
-
-        // Create new user sessions for the top contestants in the new round
-        const newSessions = await Promise.all(
-            topContestants.map(async (contestant) => {
-                // Update qualifiers status in the concluded round
-                await prisma.user_session.update({
-                    where: {
-                        id: contestant.id,
-                    },
-                    data: {
-                        qualified: true,
-                    },
-                });
-
-                // Create new session in the new round for the qualifiers
-                return await prisma.user_session.create({
-                    data: {
-                        user_id: contestant.user_id,
-                        round_id: newRound,
-                    },
-                });
-            })
-        );
-
         if (topContestants > qualifiers) {
             return sucessHandler(
                 `More than ${qualifiers} contestants qualified because we had ties, Please check the round for more details`,
                 200,
-                { topContestants, newSessions }
+                { topContestants }
             );
         } else {
             return sucessHandler(
                 'Top contestants selected and new round created',
                 200,
-                { topContestants, newSessions }
+                { topContestants }
             );
         }
-
     } catch (error) {
         console.error(error);
         return errorHandler(`Something went wrong: ${error}`, 500);

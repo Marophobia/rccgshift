@@ -82,14 +82,7 @@ const Main = (props: Props) => {
     const contestant = data.users[currentContestantIndex];
 
     // State to track selected option (yes, no, maybe)
-    const [selectedOption, setSelectedOption] = useState<null | 20 | 10 | 0>(
-        null
-    );
-
-    // Handle button click for Yes, No, Maybe
-    const handleOptionClick = (option: 20 | 10 | 0) => {
-        setSelectedOption(option);
-    };
+    const [selectedOption, setSelectedOption] = useState(false);
 
     // Move to next contestant
     const handleNext = async (id: number) => {
@@ -115,6 +108,7 @@ const Main = (props: Props) => {
                 // router.prefetch('/judge/vote')
                 toast.dismiss();
                 toast.success('Vote Recorded');
+                setSelectedOption(false);
                 setDelivery([0]);
                 setExpression([0]);
                 setAppearance([0]);
@@ -152,7 +146,13 @@ const Main = (props: Props) => {
             if (update.ok) {
                 // router.prefetch('/judge/vote')
                 toast.dismiss();
-                setSelectedOption(null);
+                setSelectedOption(false);
+                setDelivery([0]);
+                setExpression([0]);
+                setAppearance([0]);
+                setCommunication([0]);
+                setTechnical([0]);
+                setOverallValue([0]);
                 router.refresh();
                 // setCurrentContestantIndex(getStartingIndex())
             } else if (update.status === 400) {
@@ -524,7 +524,7 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Delivery
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {delivery}
                                                             </div>
                                                         </div>
@@ -536,9 +536,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setDelivery
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setDelivery(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -548,7 +555,7 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Expression
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {expression}
                                                             </div>
                                                         </div>
@@ -560,9 +567,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setExpression
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setExpression(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -572,7 +586,7 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Appearance
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {appearance}
                                                             </div>
                                                         </div>
@@ -584,9 +598,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setAppearance
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setAppearance(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -596,7 +617,7 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Communication
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {communication}
                                                             </div>
                                                         </div>
@@ -608,9 +629,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setCommunication
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setCommunication(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -620,7 +648,7 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Technical Skills
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {technical}
                                                             </div>
                                                         </div>
@@ -632,9 +660,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setTechnical
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setTechnical(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -647,7 +682,7 @@ const Main = (props: Props) => {
                                                                 entertainment
                                                                 value
                                                             </h2>
-                                                            <div className="bg-secondary text-secondary-foreground  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
+                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {overallValue}
                                                             </div>
                                                         </div>
@@ -659,9 +694,16 @@ const Main = (props: Props) => {
                                                                 max={10}
                                                                 min={0}
                                                                 step={0.1}
-                                                                onValueChange={
-                                                                    setOverallValue
-                                                                }
+                                                                onValueChange={(
+                                                                    value
+                                                                ) => {
+                                                                    setSelectedOption(
+                                                                        true
+                                                                    );
+                                                                    setOverallValue(
+                                                                        value
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -675,6 +717,9 @@ const Main = (props: Props) => {
                                                         handleNext(
                                                             contestant.id
                                                         )
+                                                    }
+                                                    disabled={
+                                                        selectedOption === false
                                                     }
                                                 >
                                                     Next <MoveRight />

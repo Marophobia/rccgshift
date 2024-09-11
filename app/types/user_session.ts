@@ -24,6 +24,7 @@ export interface IuserSession {
     qualified?: Boolean;
     [key: string]: any;
     parameters: Iparameters[] | null;
+    position: number | null;
 }
 
 export interface Iparameters {
