@@ -52,7 +52,7 @@ const RoundsCard = (props: Props) => {
             );
 
         try {
-            const update = await fetch(`${apiUrl}/api/admin/rounds/new`, {
+            const update = await fetch(`${apiUrl}/api/admin/rounds/compile`, {
                 method: 'POST',
                 cache: 'no-store',
                 headers: { 'Content-Type': 'application/json' },
@@ -60,7 +60,28 @@ const RoundsCard = (props: Props) => {
             });
 
             if (update.ok) {
-                toast.success('New Round Set');
+                toast.success('Results Compiled');
+                router.refresh();
+            } else {
+                toast.error('Something went wrong');
+            }
+        } catch (error: any) {
+            console.error('Error:', error);
+            toast.error('An error occurred');
+        }
+    };
+
+    const publish = async () => {
+        try {
+            const update = await fetch(`${apiUrl}/api/admin/rounds/publish`, {
+                method: 'POST',
+                cache: 'no-store',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ qualifiers }),
+            });
+
+            if (update.ok) {
+                toast.success('New Round Set and Results Published');
                 router.refresh();
             } else {
                 toast.error('Something went wrong');
@@ -73,47 +94,61 @@ const RoundsCard = (props: Props) => {
 
     return (
         <>
-            <AlertDialog>
-                <AlertDialogTrigger>
-                    <div className="mb-4 w-full d-flex justify-center">
-                        <div className="gap-1 btn b-solid btn-primary-solid my-3">
-                            Start New Round
-                        </div>
-                    </div>
-                </AlertDialogTrigger>
+            <ToastContainer />
 
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            <div>
-                                <label className="form-label">
-                                    Input number of Qualifiers
-                                </label>
-                                <input
-                                    type="number"
-                                    value={qualifiers}
-                                    onChange={handleChange}
-                                    className="form-input"
-                                    autoComplete="off"
-                                    required
-                                />
+            <div className="flex justify-between gap-5 items-center">
+                <AlertDialog>
+                    <AlertDialogTrigger>
+                        <div className="mb-4 w-full d-flex justify-center">
+                            <div className="gap-1 btn b-solid btn-primary-solid my-3">
+                                Compile Results
                             </div>
-                            <p className="text-red-600">
-                                Please Note that this action cannot be undone
-                            </p>
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={continuer}>
-                            Continue
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+                        </div>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                <div>
+                                    <label className="form-label">
+                                        Input number of Qualifiers
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={qualifiers}
+                                        onChange={handleChange}
+                                        className="form-input"
+                                        autoComplete="off"
+                                        required
+                                    />
+                                </div>
+                                <p className="text-red-600">
+                                    Please Note that this action cannot be
+                                    undone
+                                </p>
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={continuer}>
+                                Continue
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+
+                <div className="mb-4 w-full d-flex justify-center">
+                    <div
+                        className="gap-1 btn b-solid btn-primary-solid my-3 cursor-pointer"
+                        onClick={publish}
+                    >
+                        Publish Result
+                    </div>
+                </div>
+            </div>
 
             <div className="grid 2xl:grid-cols-12 md:grid-cols-9">
                 {rounds.map((round, index) => (

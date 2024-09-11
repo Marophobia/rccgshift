@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, TrophyIcon } from 'lucide-react';
 
 type Props = {
     participants: IuserSession[];
@@ -238,7 +238,23 @@ const Participants = (props: Props) => {
                                     {participant.score}
                                 </TableCell>
                                 <TableCell>
-                                    {participant.qualified !== null ? (
+                                    {participant.position ? (
+                                        participant.position === 1 ? (
+                                            <span className="text-yellow-500">
+                                                <TrophyIcon /> Winner
+                                            </span>
+                                        ) : participant.position === 2 ? (
+                                            <span className="text-gray-500">
+                                                <TrophyIcon /> 1st Runner Up
+                                            </span>
+                                        ) : participant.position === 3 ? (
+                                            <span className="text-gray-500">
+                                                <TrophyIcon /> 2nd Runner Up
+                                            </span>
+                                        ) : (
+                                            <span>{participant.position}</span>
+                                        )
+                                    ) : participant.qualified !== null ? (
                                         participant.qualified ? (
                                             <span className="text-green-500">
                                                 Qualified

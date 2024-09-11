@@ -22,7 +22,7 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Mail, Phone, Star } from 'lucide-react';
+import { EyeIcon, ListIcon, Mail, Phone, Star } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -32,6 +32,11 @@ type Props = {
 
 const ContestantSingle = (props: Props) => {
     const { contestant } = props;
+
+    if (!contestant.user_sessions) {
+        return <div>No sessions found</div>;
+    }
+    const parameters1 = contestant.user_sessions[0].parameters;
 
     return (
         <>
@@ -78,7 +83,7 @@ const ContestantSingle = (props: Props) => {
                                         {contestant.bio}
                                     </p>
                                 </div>
-                                <div className="grid lg:grid-cols-12">
+                                <div className="grid lg:grid-cols-12 w-full">
                                     <div className="col-span-6">
                                         <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
                                             <div className="flex-center-between">
@@ -143,171 +148,173 @@ const ContestantSingle = (props: Props) => {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className="col-span-6">
-                                        <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
-                                            <div className="flex-center-between">
+                                    <div className="col-span-6 ">
+                                        <div className="py-5 border-t border-gray-200 text-left">
+                                            <div className="flex-center-between h-20">
                                                 <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
                                                     Rounds
                                                 </h6>
                                             </div>
-                                            <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
-                                                <Table>
-                                                    <TableHeader>
-                                                        <TableRow>
-                                                            <TableHead>
-                                                                S/N
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                Round
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                Votes
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                judge1 Votes
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                judge2 Votes
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                judge3 Votes
-                                                            </TableHead>
-                                                        </TableRow>
-                                                    </TableHeader>
-                                                    <TableBody>
-                                                        {contestant.user_sessions &&
-                                                        contestant.user_sessions
-                                                            .length > 0 ? (
-                                                            contestant.user_sessions.map(
-                                                                (
-                                                                    session,
-                                                                    index
-                                                                ) => (
-                                                                    <TableRow
-                                                                        className={`${
-                                                                            index %
-                                                                                2 ==
-                                                                            0
-                                                                                ? 'bg-gray-50'
-                                                                                : ''
-                                                                        }`}
-                                                                        key={
-                                                                            session.id
+
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead>
+                                                            S/N
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            Round
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            Votes
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            judge1 Votes
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            judge2 Votes
+                                                        </TableHead>
+                                                        <TableHead>
+                                                            judge3 Votes
+                                                        </TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {contestant.user_sessions &&
+                                                    contestant.user_sessions
+                                                        .length > 0 ? (
+                                                        contestant.user_sessions.map(
+                                                            (
+                                                                session,
+                                                                index
+                                                            ) => (
+                                                                <TableRow
+                                                                    className={`${
+                                                                        index %
+                                                                            2 ==
+                                                                        0
+                                                                            ? 'bg-gray-50'
+                                                                            : ''
+                                                                    }`}
+                                                                    key={
+                                                                        session.id
+                                                                    }
+                                                                >
+                                                                    <TableCell>
+                                                                        {index +
+                                                                            1}
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            session
+                                                                                .round
+                                                                                .name
                                                                         }
-                                                                    >
-                                                                        <TableCell>
-                                                                            {index +
-                                                                                1}
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                session
-                                                                                    .round
-                                                                                    .name
-                                                                            }
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                session.votes
-                                                                            }
-                                                                        </TableCell>
-                                                                        <DropdownMenu>
-                                                                            <DropdownMenuTrigger>
-                                                                                <TableCell className="cursor-pointer bg-purple-400">
-                                                                                    {
-                                                                                        session.judge_votes1
-                                                                                    }
-                                                                                </TableCell>
-                                                                            </DropdownMenuTrigger>
-                                                                            <DropdownMenuContent>
-                                                                                {session.parameters !==
-                                                                                    null &&
-                                                                                session
-                                                                                    .parameters
-                                                                                    .length >
-                                                                                    0 ? (
-                                                                                    <>
-                                                                                        <DropdownMenuItem>
-                                                                                            Appearance:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .Appearance
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                        <DropdownMenuItem>
-                                                                                            Delivery:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .Delivery
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                        <DropdownMenuItem>
-                                                                                            Communication:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .Communication
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                        <DropdownMenuItem>
-                                                                                            Expression:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .Expression
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                        <DropdownMenuItem>
-                                                                                            Technical
-                                                                                            skills:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .Technical_skills
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                        <DropdownMenuItem>
-                                                                                            Overall
-                                                                                            Value:{' '}
-                                                                                            {
-                                                                                                session
-                                                                                                    .parameters[0]
-                                                                                                    .value
-                                                                                            }
-                                                                                        </DropdownMenuItem>
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <div>
-                                                                                        No
-                                                                                        Parameters
-                                                                                    </div>
-                                                                                )}
-                                                                            </DropdownMenuContent>
-                                                                        </DropdownMenu>
-                                                                        <TableCell>
-                                                                            {
-                                                                                session.judge_votes2
-                                                                            }
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                session.judge_votes3
-                                                                            }
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                )
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            session.votes
+                                                                        }
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            session.judge_votes1
+                                                                        }
+                                                                    </TableCell>
+
+                                                                    <TableCell>
+                                                                        {
+                                                                            session.judge_votes2
+                                                                        }
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        {
+                                                                            session.judge_votes3
+                                                                        }
+                                                                    </TableCell>
+                                                                    <DropdownMenu>
+                                                                        <DropdownMenuTrigger>
+                                                                            <TableCell>
+                                                                                <ListIcon />
+                                                                            </TableCell>
+                                                                        </DropdownMenuTrigger>
+                                                                        <DropdownMenuContent>
+                                                                            {session.parameters !==
+                                                                                null &&
+                                                                            session
+                                                                                .parameters
+                                                                                .length >
+                                                                                0 ? (
+                                                                                session.parameters.map(
+                                                                                    (
+                                                                                        parameter
+                                                                                    ) => (
+                                                                                        <>
+                                                                                            <DropdownMenuLabel>
+                                                                                                Judge:
+                                                                                                {
+                                                                                                    parameter.judge
+                                                                                                }
+                                                                                            </DropdownMenuLabel>
+                                                                                            <DropdownMenuItem>
+                                                                                                Appearance:{' '}
+                                                                                                {
+                                                                                                    parameter.Appearance
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                            <DropdownMenuItem>
+                                                                                                Delivery:{' '}
+                                                                                                {
+                                                                                                    parameter.Delivery
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                            <DropdownMenuItem>
+                                                                                                Communication:{' '}
+                                                                                                {
+                                                                                                    parameter.Communication
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                            <DropdownMenuItem>
+                                                                                                Expression:{' '}
+                                                                                                {
+                                                                                                    parameter.Expression
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                            <DropdownMenuItem>
+                                                                                                Technical
+                                                                                                skills:{' '}
+                                                                                                {
+                                                                                                    parameter.Technical_skills
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                            <DropdownMenuItem>
+                                                                                                Overall
+                                                                                                Value:{' '}
+                                                                                                {
+                                                                                                    parameter.value
+                                                                                                }
+                                                                                            </DropdownMenuItem>
+                                                                                        </>
+                                                                                    )
+                                                                                )
+                                                                            ) : (
+                                                                                <div>
+                                                                                    No
+                                                                                    Parameters
+                                                                                </div>
+                                                                            )}
+                                                                        </DropdownMenuContent>
+                                                                    </DropdownMenu>
+                                                                </TableRow>
                                                             )
-                                                        ) : (
-                                                            <div>
-                                                                No contestants
-                                                                found
-                                                            </div>
-                                                        )}
-                                                    </TableBody>
-                                                </Table>
-                                            </div>
+                                                        )
+                                                    ) : (
+                                                        <div>
+                                                            No contestants found
+                                                        </div>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
                                         </div>
                                     </div>
                                 </div>
