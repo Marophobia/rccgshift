@@ -92,34 +92,45 @@ const Participants = (props: Props) => {
         );
     });
 
-    // Download the table data as a PDF
+    // Function to download the table as a PDF
     const downloadPDF = () => {
         const doc = new jsPDF();
+
         const tableColumn = [
-            'Tags',
+            'S/N',
             'Name',
+            'Tag No.',
+            'Email',
             'Category',
-            'Vote Points',
+            'Type',
+            'Votes',
             'Judge Votes',
             'Total Score',
-            'Verdict',
+            'Status',
         ];
+
         const tableRows: any[] = [];
 
         participants.forEach((participant, index) => {
             const rowData = [
-                index + 1,
-                formatTag(participant.user.id),
-                participant.user.name,
-                participant.user.category,
-                participant.votes,
+                index + 1, // S/N
+                participant.user.name, // Name
+                formatTag(participant.user.id), // Tag No.
+                participant.user.email, // Email
+                participant.user.category, // Category
+                participant.user.type, // Type
+                participant.votes, // Votes
                 [
-                    participant.judge_votes1,
+                    participant.judge_votes1, // Judge Votes
                     participant.judge_votes2,
                     participant.judge_votes3,
-                ],
-                participant.score,
-                participant.qualified,
+                ].join(', '),
+                participant.score, // Total Score
+                participant.qualified !== null // Status
+                    ? participant.qualified
+                        ? 'Qualified'
+                        : 'Disqualified'
+                    : 'Pending',
             ];
             tableRows.push(rowData);
         });
@@ -131,7 +142,6 @@ const Participants = (props: Props) => {
 
         doc.save('participants.pdf');
     };
-
     return (
         <>
             <div className="card p-5">

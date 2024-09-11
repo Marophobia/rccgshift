@@ -8,8 +8,23 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import { Mail, Phone, Star } from 'lucide-react';
 import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
 
 type Props = {
     contestant: Icontestants;
@@ -135,13 +150,7 @@ const ContestantSingle = (props: Props) => {
                                                     Rounds
                                                 </h6>
                                             </div>
-                                            {/* <ul className="flex flex-col gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4"> */}
                                             <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
-                                                {/* <div className="flex-center-between">
-                                                        <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
-                                                            Rounds
-                                                        </h6>
-                                                    </div> */}
                                                 <Table>
                                                     <TableHeader>
                                                         <TableRow>
@@ -182,6 +191,9 @@ const ContestantSingle = (props: Props) => {
                                                                                 ? 'bg-gray-50'
                                                                                 : ''
                                                                         }`}
+                                                                        key={
+                                                                            session.id
+                                                                        }
                                                                     >
                                                                         <TableCell>
                                                                             {index +
@@ -199,11 +211,81 @@ const ContestantSingle = (props: Props) => {
                                                                                 session.votes
                                                                             }
                                                                         </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                session.judge_votes1
-                                                                            }
-                                                                        </TableCell>
+                                                                        <DropdownMenu>
+                                                                            <DropdownMenuTrigger>
+                                                                                <TableCell className="cursor-pointer bg-purple-400">
+                                                                                    {
+                                                                                        session.judge_votes1
+                                                                                    }
+                                                                                </TableCell>
+                                                                            </DropdownMenuTrigger>
+                                                                            <DropdownMenuContent>
+                                                                                {session.parameters !==
+                                                                                    null &&
+                                                                                session
+                                                                                    .parameters
+                                                                                    .length >
+                                                                                    0 ? (
+                                                                                    <>
+                                                                                        <DropdownMenuItem>
+                                                                                            Appearance:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .Appearance
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem>
+                                                                                            Delivery:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .Delivery
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem>
+                                                                                            Communication:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .Communication
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem>
+                                                                                            Expression:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .Expression
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem>
+                                                                                            Technical
+                                                                                            skills:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .Technical_skills
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                        <DropdownMenuItem>
+                                                                                            Overall
+                                                                                            Value:{' '}
+                                                                                            {
+                                                                                                session
+                                                                                                    .parameters[0]
+                                                                                                    .value
+                                                                                            }
+                                                                                        </DropdownMenuItem>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        No
+                                                                                        Parameters
+                                                                                    </div>
+                                                                                )}
+                                                                            </DropdownMenuContent>
+                                                                        </DropdownMenu>
                                                                         <TableCell>
                                                                             {
                                                                                 session.judge_votes2
@@ -225,73 +307,7 @@ const ContestantSingle = (props: Props) => {
                                                         )}
                                                     </TableBody>
                                                 </Table>
-                                                {/* <ul className="flex flex-col w-full gap-y-3 *:flex *:items-center *:gap-x-2.5 *:leading-none *:text-gray-500 dark:*:text-dark-text *:font-medium mt-4">
-                                                        {contestant.user_sessions &&
-                                                        contestant.user_sessions
-                                                            .length > 0 ? (
-                                                            contestant.user_sessions.map(
-                                                                (session) => {
-                                                                    return (
-                                                                        <li
-                                                                            key={
-                                                                                session.id
-                                                                            }
-                                                                            className="flex justify-between items-center w-full"
-                                                                        >
-                                                                            <h1>
-                                                                                {
-                                                                                    session
-                                                                                        .round
-                                                                                        .name
-                                                                                }
-                                                                            </h1>
-
-                                                                            <div className="flex items-center justify-between">
-                                                                                <div>
-                                                                                    votes:{' '}
-                                                                                    {
-                                                                                        session.votes
-                                                                                    }
-                                                                                </div>
-                                                                                <div>
-                                                                                    Judge
-                                                                                    votes:{' '}
-                                                                                    {
-                                                                                        session.judge_votes1
-                                                                                    }
-                                                                                    {
-                                                                                        ', '
-                                                                                    }
-                                                                                    {
-                                                                                        session.judge_votes2
-                                                                                    }
-                                                                                    {
-                                                                                        ', '
-                                                                                    }
-                                                                                    {
-                                                                                        session.judge_votes3
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
-                                                                    );
-                                                                }
-                                                            )
-                                                        ) : (
-                                                            <li>
-                                                                <i className="ri-global-line text-inherit"></i>
-                                                                <a
-                                                                    href="#"
-                                                                    className="hover:text-heading dark:hover:text-dark-text-two"
-                                                                >
-                                                                    No rounds
-                                                                    found
-                                                                </a>
-                                                            </li>
-                                                        )}
-                                                    </ul> */}
                                             </div>
-                                            {/* </ul> */}
                                         </div>
                                     </div>
                                 </div>

@@ -23,6 +23,7 @@ export interface IuserSession {
     status3: UserSessionStatus;
     qualified?: Boolean;
     [key: string]: any;
+    parameters: Iparameters[] | null;
 }
 
 export interface Iparameters {

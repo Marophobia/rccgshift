@@ -13,6 +13,7 @@ export const POST = async (req: Request) => {
                 user_sessions: {
                     include: {
                         round: true,
+                        parameters: true,
                     },
                 },
             },
