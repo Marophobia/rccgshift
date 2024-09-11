@@ -60,15 +60,55 @@ export const POST = async (req: Request) => {
         );
 
         // Sort contestants by score in descending order
-        const sortedContestants = updatedContestants.sort(
-            (a, b) => b.score - a.score
+        const sortedContestants = updatedContestants.sort((a, b) => b.score - a.score);
+
+        // If current round is the final round (round 5), select only the top 3
+        if (current_round === 5) {
+            const topThree = sortedContestants.slice(0, 3);
+            const disqualified = sortedContestants.slice(3)
+
+            // Update the database for the qualified and disqualified contestants
+            await Promise.all(
+                disqualified.map(async (contestant) => {
+                    await prisma.user_session.update({
+                        where: {
+                            id: contestant.id,
+                        },
+                        data: {
+                            qualified: false,
+                        },
+                    });
+                })
+            );
+
+            // Assign positions: 1 (winner), 2 (first runner-up), 3 (second runner-up)
+            await Promise.all(
+                topThree.map(async (contestant, index) => {
+                    await prisma.user_session.update({
+                        where: { id: contestant.id },
+                        data: { position: index + 1, qualified: true }, // 1 for winner, 2 for 1st runner-up, 3 for 2nd runner-up
+                    });
+                })
+            );
+
+            return sucessHandler(
+                'Top 3 contestants selected and positions updated',
+                200,
+                { topThree }
+            );
+        }
+
+        // Get the score of the contestant at the last qualifying spot
+        const lastQualifiedScore = sortedContestants[qualifiers - 1]?.score;
+
+        // Select all contestants with a score >= lastQualifiedScore
+        const topContestants = sortedContestants.filter(
+            (contestant) => contestant.score >= lastQualifiedScore
         );
 
-        // Select the top `qualifiers` contestants
-        const topContestants = sortedContestants.slice(0, qualifiers);
-        const disqualified = sortedContestants.slice(qualifiers);
-
-        console.log(disqualified);
+        const disqualified = sortedContestants.filter(
+            (contestant) => contestant.score < lastQualifiedScore
+        );
 
         // Update the database for the qualified and disqualified contestants
         await Promise.all(
@@ -119,11 +159,20 @@ export const POST = async (req: Request) => {
             })
         );
 
-        return sucessHandler(
-            'Top contestants selected and new round created',
-            200,
-            { topContestants, newSessions }
-        );
+        if (topContestants > qualifiers) {
+            return sucessHandler(
+                `More than ${qualifiers} contestants qualified because we had ties, Please check the round for more details`,
+                200,
+                { topContestants, newSessions }
+            );
+        } else {
+            return sucessHandler(
+                'Top contestants selected and new round created',
+                200,
+                { topContestants, newSessions }
+            );
+        }
+
     } catch (error) {
         console.error(error);
         return errorHandler(`Something went wrong: ${error}`, 500);

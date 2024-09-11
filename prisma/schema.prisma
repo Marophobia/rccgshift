@@ -69,6 +69,7 @@ model User_session {
   status3      UserSessionStatus @default(pending)
   user_id      Int
   qualified    Boolean?
+  position     Int?
   round        Round             @relation(fields: [round_id], references: [id])
   user         User              @relation(fields: [user_id], references: [id])
   parameters   Parameters[]

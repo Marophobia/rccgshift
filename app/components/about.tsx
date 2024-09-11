@@ -14,7 +14,7 @@ const About = (props: Props) => {
                 </div>
                 <div className="unit one-third">
                     <p>
-                        The is a talent competition organized by the Redeemed
+                        Shift is a talent competition organized by the Redeemed
                         Christian Church of God (RCCG) Young Adults and Youth
                         Affairs (YAYA). It is a platform for young people to
                         showcase their talents and to be rewarded for their
@@ -30,7 +30,7 @@ const About = (props: Props) => {
                             <span>12 Judges</span>
                         </li>
                         <li>
-                            <span>639 Contestants</span>
+                            <span>235 Contestants</span>
                         </li>
                     </ol>
                     <p>.</p>

@@ -215,7 +215,7 @@ const Single = (props: Props) => {
                                         <li key={session.id}>
                                             <div className="timeline-content">
                                                 <h6>{session.round.name}</h6>
-                                                <p>Number of Votes: {session.votes} <br /> Judges Vote: {session.judge_votes} <br /> Score: {session.score} </p>
+                                                <p>Number of Votes: {session.votes} <br /> Score: {session.score} </p>
                                             </div>
                                         </li>
                                     ))

@@ -67,6 +67,9 @@ const Header = (props: Props) => {
                                     <Link href="/about">About Shift</Link>
                                 </li>
                                 <li>
+                                    <Link href="/executives">Our Leaders</Link>
+                                </li>
+                                <li>
                                     <Link href="/contestants">Contestants</Link>
                                 </li>
                                 <li>
