@@ -13,18 +13,10 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from '@/components/ui/hover-card';
-import { EyeIcon, ListIcon, Mail, Phone, Star } from 'lucide-react';
+import { ListIcon, Mail, Phone, Star } from 'lucide-react';
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
 
 type Props = {
     contestant: Icontestants;
@@ -36,7 +28,6 @@ const ContestantSingle = (props: Props) => {
     if (!contestant.user_sessions) {
         return <div>No sessions found</div>;
     }
-    const parameters1 = contestant.user_sessions[0].parameters;
 
     return (
         <>

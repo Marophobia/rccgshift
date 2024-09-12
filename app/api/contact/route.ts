@@ -1,36 +1,29 @@
-
-import nodemailer from 'nodemailer'
-const PASSWORD = process.env.PASSWORD
-import { errorHandler, sucessHandler } from "@/lib/functions";
+import nodemailer from 'nodemailer';
+const PASSWORD = process.env.PASSWORD;
+import { errorHandler, sucessHandler } from '@/lib/functions';
 
 export async function POST(req: Request) {
     try {
-
         const data = await req.json();
-        const {
-            name,
-            phone,
-            email,
-            message,
-        } = data
+        const { name, phone, email, message } = data;
 
         const transporter = nodemailer.createTransport({
             port: 465,
-            host: "mail.privateemail.com",
+            host: 'mail.privateemail.com',
             auth: {
-                user: 'contact@rccgyayaglobal.org',
-                pass: 'rccgyayaglobal@@##',
+                user: 'info@rccgshift.org',
+                pass: process.env.PASSWORD,
             },
             secure: true,
         });
 
         const fromName = 'RCCG SHIFT TALENT';
-        const fromEmail = 'contact@rccgyayaglobal.org';
+        const fromEmail = 'info@rccgshift.org';
 
         const mailData = {
             from: `"${fromName}" <${fromEmail}>`,
             to: email,
-            subject: "We have received your message!",
+            subject: 'We have received your message!',
             html: `
 
          <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -156,7 +149,7 @@ export async function POST(req: Request) {
         const mailData2 = {
             from: `"${fromName}" <${fromEmail}>`,
             to: 'info@rccgshift.org',
-            subject: "New Contact Message!",
+            subject: 'New Contact Message!',
             html: `
                <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
@@ -280,17 +273,19 @@ export async function POST(req: Request) {
             }
         });
 
-        transporter.sendMail(mailData2, function (err: Error | null, info: any) {
-            if (err) {
-                console.error(err);
-                return errorHandler(`Unable to send mail`, 500);
-            } else {
-                return sucessHandler("Success", 200);
+        transporter.sendMail(
+            mailData2,
+            function (err: Error | null, info: any) {
+                if (err) {
+                    console.error(err);
+                    return errorHandler(`Unable to send mail`, 500);
+                } else {
+                    return sucessHandler('Success', 200);
+                }
             }
-        });
+        );
 
-        return sucessHandler("Success", 200);
-
+        return sucessHandler('Success', 200);
     } catch (error) {
         console.error(error);
         return errorHandler(`Error`, 500);

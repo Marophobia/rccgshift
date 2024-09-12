@@ -1,6 +1,6 @@
-import prisma from "@/lib/db";
-import { errorHandler, sucessHandler } from "@/lib/functions";
-import nodemailer from 'nodemailer'
+import prisma from '@/lib/db';
+import { errorHandler, sucessHandler } from '@/lib/functions';
+import nodemailer from 'nodemailer';
 
 const PAYSTACK_SECRET_KEY = 'sk_test_59ab9cc716783cee32bd8ac11973d553a70f6155'; // Your secret key
 
@@ -14,11 +14,14 @@ export const POST = async (req: Request) => {
 
     // Verify transaction with Paystack
     try {
-        const verifyResponse = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
-            headers: {
-                Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-            },
-        });
+        const verifyResponse = await fetch(
+            `https://api.paystack.co/transaction/verify/${reference}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+                },
+            }
+        );
 
         const verifyData = await verifyResponse.json();
 
@@ -47,38 +50,40 @@ export const POST = async (req: Request) => {
                 (round) => round.round_id === current_round.current_round
             );
 
-            const update = await prisma.user_session.update({
-                where: {
-                    id: userCurrentSession?.id,
-                },
-                data: {
-                    votes: {
-                        increment: vote,
+            const update = await prisma.user_session
+                .update({
+                    where: {
+                        id: userCurrentSession?.id,
                     },
-                },
-            }).catch((e) => {
-                console.log(`Unable to update vote: ${e}`);
-                return errorHandler(`Unable to update vote: ${e}`);
-            });
+                    data: {
+                        votes: {
+                            increment: vote,
+                        },
+                    },
+                })
+                .catch((e) => {
+                    console.log(`Unable to update vote: ${e}`);
+                    return errorHandler(`Unable to update vote: ${e}`);
+                });
 
             if (update) {
                 const transporter = nodemailer.createTransport({
                     port: 465,
-                    host: "mail.privateemail.com",
+                    host: 'mail.privateemail.com',
                     auth: {
-                        user: 'contact@rccgyayaglobal.org',
-                        pass: 'rccgyayaglobal@@##',
+                        user: 'info@rccgshift.org',
+                        pass: process.env.PASSWORD,
                     },
                     secure: true,
                 });
 
                 const fromName = 'RCCG SHIFT TALENT';
-                const fromEmail = 'contact@rccgyayaglobal.org';
+                const fromEmail = 'info@rccgshift.org';
 
                 const mailData = {
                     from: `"${fromName}" <${fromEmail}>`,
                     to: email,
-                    subject: "Vote Placed!",
+                    subject: 'Vote Placed!',
                     html: `
 
          <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -191,17 +196,19 @@ export const POST = async (req: Request) => {
         `,
                 };
 
-                transporter.sendMail(mailData, function (err: Error | null, info: any) {
-                    if (err) {
-                        console.error(err);
-                        return errorHandler(`Unable to send mail`, 500);
+                transporter.sendMail(
+                    mailData,
+                    function (err: Error | null, info: any) {
+                        if (err) {
+                            console.error(err);
+                            return errorHandler(`Unable to send mail`, 500);
+                        }
                     }
-                });
+                );
             }
-
         }
 
-        return sucessHandler("Vote Successful", 201);
+        return sucessHandler('Vote Successful', 201);
     } catch (error) {
         return errorHandler(`Something went wrong with the server: ${error}`);
     }

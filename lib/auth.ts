@@ -11,8 +11,12 @@ export async function hashPassword(password: string) {
 }
 
 export async function verifyPassword(password: string, hashedPassword: string) {
-    const isValid = await compare(password, hashedPassword);
-    return isValid;
+    try {
+        const isValid = await compare(password, hashedPassword);
+        return isValid;
+    } catch (error) {
+        return false;
+    }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -106,3 +110,7 @@ export const authOptions: NextAuthOptions = {
 export const getAuthSession = async () => {
     return getServerSession(authOptions);
 };
+
+export async function getAPISession(req: NextApiRequest, res: NextApiResponse) {
+    return getServerSession(req, res, authOptions);
+}
