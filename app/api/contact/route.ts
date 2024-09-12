@@ -273,16 +273,15 @@ export async function POST(req: Request) {
             }
         });
 
-        transporter.sendMail(
-            mailData2,
-            function (err: Error | null, info: any) {
-                if (err) {
-                    console.error(err);
-                    return errorHandler(`Unable to send mail`, 500);
-                } else {
-                    return sucessHandler('Success', 200);
-                }
+        transporter.sendMail(mailData2, function (err: Error | null, info: any) {
+            if (err) {
+                console.error(err);
+                return errorHandler(`Unable to send mail`, 500);
+            } else {
+                return sucessHandler('Success', 200);
             }
+        }
+
         );
 
         return sucessHandler('Success', 200);

@@ -2,7 +2,7 @@ import prisma from '@/lib/db';
 import { errorHandler, sucessHandler } from '@/lib/functions';
 import nodemailer from 'nodemailer';
 
-const PAYSTACK_SECRET_KEY = 'sk_test_59ab9cc716783cee32bd8ac11973d553a70f6155'; // Your secret key
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET; // Your secret key
 
 export const POST = async (req: Request) => {
     const { data, reference } = await req.json();

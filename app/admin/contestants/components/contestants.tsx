@@ -126,14 +126,14 @@ const ContestantTable = (props: Props) => {
     return (
         <>
             <div className="card p-5">
-                <div className="w-full flex justify-end">
+                {/* <div className="w-full flex justify-end">
                     <button
                         className="btn b-solid btn-primary-solid text-white mb-5"
                         onClick={download}
                     >
                         Download PDF <Download size={15} />{' '}
                     </button>
-                </div>
+                </div> */}
                 <Table>
                     <TableHeader>
                         <TableRow>

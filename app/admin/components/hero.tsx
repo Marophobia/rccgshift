@@ -1,5 +1,6 @@
 import React from 'react'
 import { MoveRight } from 'lucide-react';
+import Link from 'next/link';
 
 type Props = {}
 
@@ -11,8 +12,7 @@ const Hero = (props: Props) => {
             <div className="col-span-full 2xl:col-span-7 card p-0">
                 <div className="grid grid-cols-12 px-5 sm:px-12 py-11 relative overflow-hidden h-full">
                     <div className="col-span-full md:col-span-7 self-center inline-flex flex-col 2xl:block">
-                        <p className="!leading-none text-sm lg:text-base text-gray-900 dark:text-dark-text">
-                            Today is <span className="today">Thursday, 25 Jul 2024</span>
+                        <p className="!leading-none text-sm lg:text-base text-gray-900 dark:text-dark-text"> <span className="today">RCCG SHIFT INTERNATIONAL</span>
                         </p>
                         <h1 className="text-4xl xl:text-[42px] leading-[1.23] font-semibold mt-3">
                             <span className="flex-center justify-start">
@@ -22,10 +22,10 @@ const Hero = (props: Props) => {
                             </span>
                             Pastor Steve
                         </h1>
-                        <a href="#" className="btn b-solid btn-primary-solid btn-lg mt-6">
+                        <Link href="/admin/contestants" className="btn b-solid btn-primary-solid btn-lg mt-6">
                             <MoveRight />
                             View Contestants
-                        </a>
+                        </Link>
                     </div>
                     <div
                         className="col-span-full md:col-span-5 flex-col items-center justify-center 2xl:block hidden md:flex">

@@ -15,6 +15,7 @@ const Details = (props: Props) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        toast.loading('Please wait')
         // Handle form submission here (e.g., send the data to an API or log it)
         const formData = {
             name: senderName,
@@ -34,12 +35,15 @@ const Details = (props: Props) => {
             );
 
             if (update.ok) {
+                toast.dismiss()
                 toast.success('Message Sent, We will get back to you');
                 router.refresh();
             } else {
+                toast.dismiss()
                 toast.error('Something went wrong');
             }
         } catch (error: any) {
+            toast.dismiss()
             console.error('Error:', error);
             toast.error('An error occurred');
         }
@@ -47,6 +51,7 @@ const Details = (props: Props) => {
     };
     return (
         <>
+            <ToastContainer />
             <div className="grid">
                 <div className="unit half">
                     <p>Have an enquiry? Do not hesitate to reach out.</p>

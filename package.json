@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev -p 3001",
         "build": "npx prisma generate && next build",
-        "start": "next start",
+        "start": "next start -p 3001",
         "lint": "next lint"
     },
     "dependencies": {
@@ -45,6 +45,7 @@
         "react-hook-form": "^7.53.0",
         "react-paystack": "^6.0.0",
         "react-toastify": "^10.0.5",
+        "sharp": "^0.33.5",
         "sweetalert2": "^11.13.2",
         "swiper": "^11.1.12",
         "tailwind-merge": "^2.5.2",

@@ -97,7 +97,7 @@ const LoginForm = () => {
                                     <Input
                                         type="email"
                                         id="email"
-                                        placeholder="debra.holt@example.com"
+                                        placeholder="example@rccgshift.org"
                                         value={email}
                                         onChange={(e) =>
                                             setEmail(e.target.value)
@@ -125,24 +125,12 @@ const LoginForm = () => {
                                             required
                                             className="form-input px-4 py-3.5 rounded-lg"
                                         />
-                                        <label
-                                            htmlFor="toggleInputType"
-                                            className="size-8 rounded-md flex-center hover:bg-gray-200 dark:hover:bg-dark-icon foucs:bg-gray-200 dark:foucs:bg-dark-icon position-center left-[95%]"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                id="toggleInputType"
-                                                className="inputTypeToggle peer/it"
-                                                hidden
-                                            />
-                                            <i className="ri-eye-off-line text-gray-500 dark:text-dark-text peer-checked/it:before:content-['\ecb5']"></i>
-                                        </label>
                                     </div>
                                 </div>
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="btn b-solid btn-primary-solid w-full"
+                                    className="btn b-solid btn-primary-solid w-full mt-5"
                                     onClick={login}
                                 >
                                     Sign In

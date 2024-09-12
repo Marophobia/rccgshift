@@ -19,6 +19,7 @@ import {
 import { useState } from 'react';
 import { PaystackButton } from 'react-paystack';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -74,11 +75,6 @@ const Single = (props: Props) => {
 
     // Calculate the total amount
     const totalAmount = votes * voteCost;
-    const publicKey = process.env.NEXT_PAYSTACK_PUBLIC_KEY as string;
-
-    console.log('url', apiUrl);
-
-    console.log('pkey', publicKey);
 
     const data = {
         id: contestant.id,
