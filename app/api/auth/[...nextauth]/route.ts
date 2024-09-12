@@ -1,10 +1,26 @@
-
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import { createEdgeMiddlewareAdapter } from '@/lib/edgeMiddlewareAdapter';
 
-const handler = (req: NextApiRequest, res: NextApiResponse) =>
-    NextAuth(req, res, authOptions);
+export async function GET(req: NextRequest) {
+    const { req: adaptedReq, res: adaptedRes } =
+        await createEdgeMiddlewareAdapter(req);
 
-export { handler as GET, handler as POST };
+    // Handle NextAuth
+    const result = await NextAuth(adaptedReq, adaptedRes, authOptions);
 
+    // Return a NextResponse
+    return NextResponse.json(result);
+}
+
+export async function POST(req: NextRequest) {
+    const { req: adaptedReq, res: adaptedRes } =
+        await createEdgeMiddlewareAdapter(req);
+
+    // Handle NextAuth
+    const result = await NextAuth(adaptedReq, adaptedRes, authOptions);
+
+    // Return a NextResponse
+    return NextResponse.json(result);
+}

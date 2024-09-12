@@ -2,7 +2,7 @@
 import { Isettings } from '@/app/types/settings';
 import { IuserSession } from '@/app/types/user_session';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // To generate table in PDF
+import 'jspdf-autotable';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -29,6 +29,13 @@ type Props = {
     id: number;
     qualifiers: number;
 };
+
+// jspdf-autotable.d.ts
+declare module 'jspdf' {
+    interface jsPDF {
+        autoTable: (options: any) => jsPDF;
+    }
+}
 
 const Participants = (props: Props) => {
     const { id, participants, status, qualifiers } = props;
@@ -68,7 +75,7 @@ const Participants = (props: Props) => {
                 body: JSON.stringify({ user_id, id }),
             });
 
-            const response = await update.json()
+            const response = await update.json();
 
             if (update.ok) {
                 toast.success('Contestant qualified');

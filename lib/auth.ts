@@ -46,7 +46,10 @@ export const authOptions: NextAuthOptions = {
                     throw new Error('No user found');
                 }
 
-                const comparePassword = await verifyPassword(credentials.password, user.password)
+                const comparePassword = await verifyPassword(
+                    credentials.password,
+                    user.password
+                );
                 if (!comparePassword) {
                     throw new Error('Password does not match');
                 }
@@ -103,7 +106,3 @@ export const authOptions: NextAuthOptions = {
 export const getAuthSession = async () => {
     return getServerSession(authOptions);
 };
-
-export async function getAPISession(req: NextApiRequest, res: NextApiResponse) {
-    return getServerSession(req, res, authOptions);
-}
