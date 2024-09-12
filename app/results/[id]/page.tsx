@@ -7,6 +7,41 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
 import Participants from '../components/single'
 
+export async function generateMetadata({ params }: { params: { id: number } }) {
+    // read route params
+    const id = params.id
+
+    const data = await fetch(`${apiUrl}/api/admin/rounds//single`, { method: 'POST', body: JSON.stringify({ id }) }).then((res) => res.json())
+    const round = data.data
+
+    return {
+        title: `Results for ${round.name}`,
+        generator: 'RCCG SHIFT',
+        applicationName: 'RCCG SHIFT',
+        referrer: 'origin-when-cross-origin',
+        authors: [{ name: 'RCCG SHIFT' }],
+        creator: 'RCCG SHIFT',
+        formatDetection: {
+            email: false,
+            address: false,
+            telephone: false,
+        },
+
+        twitter: {
+            card: `Results for ${round.name}`,
+            title: `Results for ${round.name}`,
+            description: `View List of qualified and disqualified contestants for ${round.name}.`,
+            creator: 'RCCG SHIFT',
+        },
+        openGraph: {
+            title: round.title,
+            description: `View List of qualified and disqualified contestants for ${round.name}.`,
+            url: `https://rccgshift.org/results/${round.id}`,
+            siteName: 'RCCG SHIFT',
+        },
+    }
+}
+
 
 const RoundSingle = async ({ params }: { params: { id: number } }) => {
 

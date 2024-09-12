@@ -139,29 +139,6 @@ const LoginForm = () => {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between mt-3 mb-7">
-                                    <div className="flex items-center gap-1 select-none">
-                                        <input
-                                            type="checkbox"
-                                            checked={checked}
-                                            onClick={() => setChecked(!checked)}
-                                            name="remember-me"
-                                            id="rememberMe"
-                                        />
-                                        <label
-                                            htmlFor="rememberMe"
-                                            className="font-spline_sans text-sm leading-none text-gray-900 dark:text-dark-text cursor-pointer"
-                                        >
-                                            Remember Me
-                                        </label>
-                                    </div>
-                                    <a
-                                        href="forgot-password.html"
-                                        className="text-xs leading-none text-primary-500 font-semibold"
-                                    >
-                                        Forgot password?
-                                    </a>
-                                </div>
                                 {/* Submit Button */}
                                 <button
                                     type="submit"

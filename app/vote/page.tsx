@@ -4,6 +4,29 @@ import Header from '../components/header'
 import Footer from '../components/footer'
 import Link from 'next/link'
 
+export const metadata = {
+    title: "HOW TO VOTE | RCCG SHIFT",
+    generator: 'HOW TO VOTE | RCCG SHIFT',
+    applicationName: 'RCCG SHIFT',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+
+    twitter: {
+        card: 'HOW TO VOTE | RCCG SHIFT',
+        title: 'HOW TO VOTE | RCCG SHIFT',
+
+    },
+    openGraph: {
+        title: 'HOW TO VOTE | RCCG SHIFT',
+        description: 'How to Vote for your contestant | RCCG Shift',
+        url: 'https://rccgshift.org/vote',
+    },
+}
+
 
 const Vote = async () => {
 

@@ -1,5 +1,8 @@
 "use client"
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Props = {}
 
@@ -8,16 +11,39 @@ const Details = (props: Props) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [senderEmail, setSenderEmail] = useState('');
     const [message, setMessage] = useState('');
+    const router = useRouter()
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         // Handle form submission here (e.g., send the data to an API or log it)
-        console.log({
-            senderName,
-            phoneNumber,
-            senderEmail,
-            message,
-        });
+        const formData = {
+            name: senderName,
+            email: senderEmail,
+            phone: phoneNumber,
+            message: message
+        }
+        try {
+            const update = await fetch(
+                `${apiUrl}/api/contact`,
+                {
+                    method: 'POST',
+                    cache: 'no-store',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                }
+            );
+
+            if (update.ok) {
+                toast.success('Message Sent, We will get back to you');
+                router.refresh();
+            } else {
+                toast.error('Something went wrong');
+            }
+        } catch (error: any) {
+            console.error('Error:', error);
+            toast.error('An error occurred');
+        }
+
     };
     return (
         <>

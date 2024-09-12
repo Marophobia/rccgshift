@@ -77,76 +77,75 @@ const Card = (props: Props) => {
     return (
         <>
             <div className="grid">
-                <div className="unit whole">
-                    {/* Search Box */}
-                    <div className="unit whole" style={{ padding: "0px" }}>
-                        <div className='searchbox'>
-                            <input
-                                className='form-control w-50'
-                                type='text'
-                                placeholder='Search By Name'
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)} // Update search term on keystroke
-                            />
-                        </div>
-                        <div className="showing-description text-center" style={{ marginBottom: '15px' }}>
-                            Showing {showingStart}-{showingEnd} of {totalDataCount} Contestants
-                        </div>
+                {/* Search Box */}
+                <div className="unit whole" style={{ padding: "0px" }}>
+                    <div className='searchbox'>
+                        <input
+                            className='form-control w-50'
+                            type='text'
+                            placeholder='Search By Name'
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // Update search term on keystroke
+                        />
                     </div>
+                    <div className="showing-description text-center" style={{ marginBottom: '15px' }}>
+                        Showing {showingStart}-{showingEnd} of {totalDataCount} Contestants
+                    </div>
+                </div>
 
 
 
-                    {/* Contestant Cards */}
-                    {
-                        currentContestants.map(contestant => (
-                            <div className='unit one-third' key={contestant.id}>
-                                <div className="grid-container">
-                                    <div className="grid-img">
-                                        <Link href={`/contestants/${contestant.id}`} className="gallery link">
-                                            <div className="h-80">
-                                                <img
-                                                    src={`/images/contestants/${contestant.picture}`}
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
-                                                    alt="Contestant"
-                                                />
-                                            </div>
-                                        </Link>
-                                    </div>
-
-                                    <div className="grid-content" style={{ padding: "20px" }}>
-                                        <h5>
-                                            <Link href={`/contestants/${contestant.id}`}>{contestant.name}</Link>
-                                        </h5>
-                                    </div>
-                                    <Link className="arrow-button" href={`/contestants/${contestant.id}`}>View Profile</Link>
+                {/* Contestant Cards */}
+                {
+                    currentContestants.map(contestant => (
+                        <div className='unit one-third' key={contestant.id}>
+                            <div className="grid-container">
+                                <div className="grid-img">
+                                    <Link href={`/contestants/${contestant.id}`} className="gallery link">
+                                        <div className="h-80">
+                                            <img
+                                                src={`/images/contestants/${contestant.picture}`}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                                                alt="Contestant"
+                                            />
+                                        </div>
+                                    </Link>
                                 </div>
+
+                                <div className="grid-content" style={{ padding: "20px" }}>
+                                    <p style={{ fontSize: '19px' }}>
+                                        <Link href={`/contestants/${contestant.id}`}>{contestant.name}</Link>
+                                    </p>
+                                </div>
+                                <Link className="arrow-button" href={`/contestants/${contestant.id}`}>View Profile</Link>
                             </div>
-                        ))
-                    }
+                        </div>
+                    ))
+                }
 
-                    {/* Pagination Controls */}
-                    <div className="blogpager unit whole" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                        {/* Previous button */}
-                        <button
-                            onClick={() => paginate(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="button"
-                        >
-                            <i className="fa fa-chevron-left"></i> Prev
-                        </button>
+                {/* Pagination Controls */}
+                <div className="blogpager unit whole" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                    {/* Previous button */}
+                    <button
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="button"
+                    >
+                        <i className="fa fa-chevron-left"></i> Prev
+                    </button>
 
-                        {/* Render only previous, current, and next page numbers */}
-                        {renderPagination()}
+                    {/* Render only previous, current, and next page numbers */}
+                    {renderPagination()}
 
-                        {/* Next button */}
-                        <button
-                            onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="button"
-                        >
-                            Next <i className="fa fa-chevron-right"></i>
-                        </button>
-                    </div>
+                    {/* Next button */}
+                    <button
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="button"
+                    >
+                        Next <i className="fa fa-chevron-right"></i>
+                    </button>
+
                 </div>
             </div>
         </>

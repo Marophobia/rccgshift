@@ -7,6 +7,51 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
 import Single from '../components/single'
 
+export async function generateMetadata({ params }: { params: { id: number } }) {
+    // read route params
+    const id = params.id
+
+    const data = await fetch(`${apiUrl}/api/contestant/single`, { method: 'POST', body: JSON.stringify({ id }) }).then((res) => res.json())
+    const contestant = data.data.contestant
+
+    return {
+        title: `Vote for ${contestant.name}`,
+        generator: 'RCCG SHIFT',
+        applicationName: 'RCCG SHIFT',
+        referrer: 'origin-when-cross-origin',
+        authors: [{ name: 'RCCG SHIFT' }],
+        creator: 'RCCG SHIFT',
+        formatDetection: {
+            email: false,
+            address: false,
+            telephone: false,
+        },
+
+        metadataBase: new URL('https://rccgshift.org/images/contestants/'),
+
+        twitter: {
+            card: `Vote for ${contestant.name}`,
+            title: `Vote for ${contestant.name}`,
+            description: `Vote for and View Contestant Profile - ${contestant.name}.`,
+            creator: 'RCCG SHIFT',
+            images: contestant.picture,
+        },
+        openGraph: {
+            title: contestant.title,
+            description: `Vote for and View Contestant Profile - ${contestant.name}.`,
+            url: `https://rccgshift.org/contestants/${contestant.id}`,
+            siteName: 'RCCG SHIFT',
+            images: [
+                {
+                    url: `https://rccgshift.org/images/contestants/${contestant.picture}`,
+                    width: 800,
+                    height: 600,
+                },
+            ],
+        },
+    }
+}
+
 
 const ContestantSingle = async ({ params }: { params: { id: number } }) => {
 
@@ -28,6 +73,7 @@ const ContestantSingle = async ({ params }: { params: { id: number } }) => {
         console.error('Error:', error);
     }
     const { contestant, settings } = data
+    // console.log(contestant)
 
     return (
         <>

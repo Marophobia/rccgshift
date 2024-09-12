@@ -1,21 +1,7 @@
 import { errorHandler, sucessHandler } from "@/lib/functions"
 import prisma from "@/lib/db"
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { NextApiRequest } from "next";
-import { getToken } from "next-auth/jwt";
-import { roleCheck } from "@/lib/role";
 
-export const POST = async (req: NextApiRequest) => {
-
-    // const session = await getServerSession(authOptions)
-    // if (!session) {
-    //     return errorHandler("Unauthenticated", 404)
-    // }
-    // console.log(session)
-
-    // const cookies = req.cookies
-    // console.log(cookies)
+export const POST = async (req: Request) => {
 
     try {
         const rounds = await prisma.round.findMany({

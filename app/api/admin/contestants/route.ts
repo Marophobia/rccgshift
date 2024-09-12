@@ -5,7 +5,7 @@ export const POST = async (req: Request) => {
     try {
         const contestants = await prisma.user.findMany({
             orderBy: {
-                id: "desc"
+                id: "asc"
             }
         });
         if (!contestants || contestants.length < 1) {

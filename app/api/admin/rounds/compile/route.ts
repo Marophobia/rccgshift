@@ -93,6 +93,11 @@ export const POST = async (req: Request) => {
                 })
             );
 
+            await prisma.settings.update({
+                where: { id: round.id },
+                data: { compiled: true },
+            });
+
             return sucessHandler(
                 'Top 3 contestants selected and positions updated',
                 200,
@@ -124,7 +129,26 @@ export const POST = async (req: Request) => {
                     },
                 });
             })
+
         );
+
+        await Promise.all(
+            topContestants.map(async (contestant) => {
+                await prisma.user_session.update({
+                    where: {
+                        id: contestant.id,
+                    },
+                    data: {
+                        qualified: true,
+                    },
+                });
+            })
+        )
+
+        await prisma.settings.update({
+            where: { id: round.id },
+            data: { compiled: true },
+        });
 
         if (topContestants > qualifiers) {
             return sucessHandler(

@@ -287,7 +287,7 @@ const Main = (props: Props) => {
                                                 {data.users.map(
                                                     (contestant, index) =>
                                                         contestant[
-                                                            statusKey
+                                                        statusKey
                                                         ] === 'skipped' && (
                                                             <div
                                                                 key={
@@ -426,7 +426,7 @@ const Main = (props: Props) => {
                                                                     {contestant
                                                                         .user
                                                                         .type ===
-                                                                    'Group' ? (
+                                                                        'Group' ? (
                                                                         <span className="font-bold">
                                                                             {
                                                                                 contestant
@@ -520,192 +520,198 @@ const Main = (props: Props) => {
                                                 {/* parameters form */}
                                                 <div className="col-span-full space-y-5 ">
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Delivery
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center ">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        delivery
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setDelivery(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {delivery}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    delivery
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setDelivery(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Expression
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        expression
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setExpression(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {expression}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    expression
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setExpression(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Appearance
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        appearance
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setAppearance(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {appearance}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    appearance
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setAppearance(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Communication
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        communication
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setCommunication(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {communication}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    communication
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setCommunication(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Technical Skills
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        technical
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setTechnical(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {technical}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    technical
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setTechnical(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
-                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full">
+                                                        <div className="lg:grid lg:grid-cols-12 flex items-center max-w-[70%] justify-between w-full gap-10">
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Overal impact
                                                                 and
                                                                 entertainment
                                                                 value
                                                             </h2>
+                                                            <div className="w-full max-w-sm text-center">
+                                                                <Slider
+                                                                    defaultValue={
+                                                                        overallValue
+                                                                    }
+                                                                    max={10}
+                                                                    min={0}
+                                                                    step={0.1}
+                                                                    onValueChange={(
+                                                                        value
+                                                                    ) => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setOverallValue(
+                                                                            value
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
                                                                 {overallValue}
                                                             </div>
                                                         </div>
-                                                        <div className="w-full max-w-sm text-center">
-                                                            <Slider
-                                                                defaultValue={
-                                                                    overallValue
-                                                                }
-                                                                max={10}
-                                                                min={0}
-                                                                step={0.1}
-                                                                onValueChange={(
-                                                                    value
-                                                                ) => {
-                                                                    setSelectedOption(
-                                                                        true
-                                                                    );
-                                                                    setOverallValue(
-                                                                        value
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>

@@ -42,9 +42,9 @@ export const POST = async (req: Request) => {
             return errorHandler('No contestant found', 404);
         }
 
-        if (contestant.status !== 'approved') {
-            return errorHandler('Contestant is inactive', 401);
-        }
+        // if (contestant.status !== 'approved') {
+        //     return errorHandler('Contestant is inactive', 401);
+        // }
 
         // update the settings to qualified
         await prisma.user_session

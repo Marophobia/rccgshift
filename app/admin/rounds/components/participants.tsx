@@ -67,13 +67,14 @@ const Participants = (props: Props) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id, id }),
             });
+
+            const response = await update.json()
+
             if (update.ok) {
                 toast.success('Contestant qualified');
                 router.refresh();
-            } else if (update.status === 401) {
-                toast.error('Denied! This round is not the current round');
             } else {
-                toast.error('Something went wrong');
+                toast.error(response.error);
             }
         } catch (error: any) {
             console.error('Error:', error);

@@ -1,7 +1,7 @@
 import { errorHandler, sucessHandler } from '@/lib/functions';
 import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { authOptions, hashPassword, verifyPassword } from '@/lib/auth';
 
 export const POST = async (req: Request) => {
     const session = await getServerSession(authOptions);
@@ -27,9 +27,11 @@ export const POST = async (req: Request) => {
             return errorHandler('Judge not Found', 404);
         }
 
-        //make sure to compare hashes
-        if (admin.password !== oldPassword)
-            return errorHandler('incorrect old Password', 401);
+        const comparePassword = await verifyPassword(oldPassword, admin.password)
+        if (!comparePassword) {
+            return errorHandler("incorrect old Password", 401)
+        }
+        const hashedPassword = await hashPassword(newPassword)
 
         //make sure to hash password
         await prisma.admin.update({
@@ -37,7 +39,7 @@ export const POST = async (req: Request) => {
                 id: admin.id,
             },
             data: {
-                password: newPassword,
+                password: hashedPassword,
             },
         });
 

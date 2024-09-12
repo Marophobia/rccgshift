@@ -7,6 +7,29 @@ import Card from './components/card'
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
 
+export const metadata = {
+    title: "CONTESTANTS | RCCG SHIFT",
+    generator: 'CONTESTANTS | RCCG SHIFT',
+    applicationName: 'RCCG SHIFT',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+
+    twitter: {
+        card: 'CONTESTANTS | RCCG SHIFT',
+        title: 'CONTESTANTS | RCCG SHIFT',
+
+    },
+    openGraph: {
+        title: 'CONTESTANTS | RCCG SHIFT',
+        description: 'List of all contestants | RCCG Shift Talent Hunt | Season 2',
+        url: 'https://rccgshift.org/contestants',
+    },
+}
+
 
 const getContestants = async () => {
     const authorization = headers().get('authorization')

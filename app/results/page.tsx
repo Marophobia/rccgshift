@@ -8,6 +8,29 @@ import Rounds from './components/rounds'
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
 
+export const metadata = {
+    title: "RESULTS | RCCG SHIFT",
+    generator: 'RESULTS | RCCG SHIFT',
+    applicationName: 'RCCG SHIFT',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+
+    twitter: {
+        card: 'RESULTS | RCCG SHIFT',
+        title: 'RESULTS | RCCG SHIFT',
+
+    },
+    openGraph: {
+        title: 'RESULTS | RCCG SHIFT',
+        description: 'Results of Concluded Auditions in RCCG Shift Talent Hunt Season 2',
+        url: 'https://rccgshift.org/results',
+    },
+}
+
 
 const getData = async () => {
 

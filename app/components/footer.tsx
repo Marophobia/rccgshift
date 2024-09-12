@@ -11,7 +11,7 @@ const Footer = (props: Props) => {
                 <div id="footer-widgets" className="grid">
                     <div className="footer-widget unit half">
                         <h5>Get In Touch</h5>
-                        <p>Exposure: The RCCG SHIFT Talent Hunt is a great opportunity to showcase your talents to a wide audience.
+                        <p>The RCCG SHIFT Talent Hunt is a great opportunity to showcase your talents to a wide audience.
                             The competition is televised and streamed live online, so you have the chance to be seen by millions of people around the world.</p>
                         <p><span className="fa fa-map-marker"></span>Redemption City of God
                         </p>

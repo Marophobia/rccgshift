@@ -5,6 +5,29 @@ import Footer from '../components/footer';
 import AboutBody from './components/body';
 
 type Props = {};
+export const metadata = {
+    title: "ABOUT US | RCCG SHIFT",
+    generator: 'ABOUT US | RCCG SHIFT',
+    applicationName: 'RCCG SHIFT',
+    referrer: 'origin-when-cross-origin',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+
+    twitter: {
+        card: 'ABOUT US | RCCG SHIFT',
+        title: 'ABOUT US | RCCG SHIFT',
+
+    },
+    openGraph: {
+        title: 'ABOUT US | RCCG SHIFT',
+        description: 'Learn more about us, our structure, leaders and culture in RCCG Shift',
+        url: 'https://rccgshift.org/about',
+    },
+}
+
 
 const About = (props: Props) => {
     return (

@@ -46,9 +46,11 @@ export const authOptions: NextAuthOptions = {
                     throw new Error('No user found');
                 }
 
-                if (credentials.password !== user.password) {
+                const comparePassword = await verifyPassword(credentials.password, user.password)
+                if (!comparePassword) {
                     throw new Error('Password does not match');
                 }
+
                 if (!user.status) {
                     throw new Error('User is not active');
                 }
@@ -69,6 +71,7 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: 'jwt',
+        maxAge: 12 * 60 * 60,
     },
     pages: {
         signIn: '/auth',

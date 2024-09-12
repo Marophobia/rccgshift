@@ -49,7 +49,8 @@ type Props = {
         id: number,
         current_round: number,
         status: boolean,
-        round: Iround
+        round: Iround,
+        competition: number
     }
 }
 
@@ -134,14 +135,21 @@ const Single = (props: Props) => {
         },
     };
 
+    let highestSession
+    let isActive
+    let statusText = 'Registered'
 
-    const highestSession = contestant.user_sessions.reduce((prev, current) =>
-        prev.round_id > current.round_id ? prev : current
-    );
+    if (settings.competition) {
+        highestSession = contestant.user_sessions.reduce((prev, current) =>
+            prev.round_id > current.round_id ? prev : current
+        );
 
-    // Determine status based on highestSession and settings.current_round
-    const isActive = highestSession.round_id === settings.current_round;
-    const statusText = isActive ? "Active" : "Eliminated";
+        // Determine status based on highestSession and settings.current_round
+        isActive = highestSession.round_id === settings.current_round;
+        statusText = isActive ? "Active" : "Eliminated";
+    }
+
+
 
     return (
         <>
@@ -263,8 +271,11 @@ const Single = (props: Props) => {
                                 <div className="ombre-table-right">{contestant.country}</div>
                             </li>
                             <li>
-                                <div className="ombre-table-left">CURRENT STATUS</div>
-                                <div className="ombre-table-right text-white">{statusText}</div>
+                                <>
+                                    <div className="ombre-table-left">CURRENT STATUS</div>
+                                    <div className="ombre-table-right text-white">{statusText}</div>
+                                </>
+
                             </li>
 
                         </ul>
