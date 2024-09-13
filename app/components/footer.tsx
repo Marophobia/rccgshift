@@ -1,13 +1,28 @@
+"use client"
 import React from 'react'
 import Link from 'next/link'
 
 type Props = {}
 
 const Footer = (props: Props) => {
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Adds smooth scrolling effect
+        });
+    };
+
     return (
         <>
             <footer id="footer">
-                <div id="back-to-top" className="tooltip-gototop" title="Back to Top"></div>
+                <div
+                    id="back-to-top"
+                    className="tooltip-gototop"
+                    title="Back to Top"
+                    onClick={scrollToTop} // Added onClick event
+                    style={{ cursor: 'pointer' }} // Optional: Changes cursor to pointer when hovering over button
+                >
+                </div>
                 <div id="footer-widgets" className="grid">
                     <div className="footer-widget unit half">
                         <h5>Get In Touch</h5>
