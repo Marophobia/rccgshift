@@ -88,7 +88,7 @@ const Single = (props: Props) => {
         fname: contestant.name,
         lname: contestant.name,
         publicKey: publicKey,
-        text: 'Pay with Card',
+        text: 'Pay Now',
         onSuccess: (response: any) => {
             const { reference } = response;
             fetch(`${apiUrl}/api/vote`, {
@@ -155,15 +155,11 @@ const Single = (props: Props) => {
                 <div className="unit golden-large">
                     <div
                         className="flex-video experience-video"
-                        style={{ height: '600px' }}
+                        style={{ height: "650px" }}
                     >
                         <img
                             src={`/images/contestants/${contestant.picture}`}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                            }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                         />
                     </div>
                     <Dialog>
@@ -182,29 +178,38 @@ const Single = (props: Props) => {
                         <DialogContent
                             style={{ background: '#16171C', border: 'none' }}
                         >
-                            <DialogHeader>
-                                <DialogTitle>Please Note</DialogTitle>
-                                <DialogDescription>
-                                    One Vote costs ₦100 and you can vote as many
-                                    times as you wish. Be aware that your votes
-                                    only count if it is within the voting window
-                                    for the current round.
-                                    <div className="mt-8">
-                                        <h5>Amount: ₦{totalAmount}</h5>
-                                        <input
-                                            type="number"
-                                            placeholder="Input number of Votes"
-                                            value={votes}
-                                            min={1}
-                                            onChange={handleInputChange}
-                                        />
-                                    </div>
-                                    <PaystackButton
-                                        className="button w-100"
-                                        {...componentProps}
-                                    ></PaystackButton>
-                                </DialogDescription>
-                            </DialogHeader>
+                            {settings.competition ?
+                                <DialogHeader>
+                                    <DialogTitle>Please Note</DialogTitle>
+                                    <DialogDescription>
+                                        One Vote costs ₦100 and you can vote as many
+                                        times as you wish. Be aware that your votes
+                                        only count if it is within the voting window
+                                        for the current round.
+                                        <div className="mt-8">
+                                            <h5>Amount: ₦{totalAmount}</h5>
+                                            <input
+                                                type="number"
+                                                placeholder="Input number of Votes"
+                                                value={votes}
+                                                min={1}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                        <PaystackButton
+                                            className="button w-100"
+                                            {...componentProps}
+                                        ></PaystackButton>
+                                    </DialogDescription>
+                                </DialogHeader> :
+                                <DialogHeader>
+                                    <DialogTitle>Alert</DialogTitle>
+                                    <DialogDescription>
+                                        Competition has not started yet.
+                                    </DialogDescription>
+                                </DialogHeader>
+                            }
+
                         </DialogContent>
                     </Dialog>
 
@@ -274,6 +279,12 @@ const Single = (props: Props) => {
                     </div>
                     <div className="ombre-box mt-5">
                         <ul className="ombre-table">
+                            <li>
+                                <div className="ombre-table-left">TAG</div>
+                                <div className="ombre-table-right">
+                                    {String(contestant.id).padStart(3, '0')}
+                                </div>
+                            </li>
                             <li>
                                 <div className="ombre-table-left">CATEGORY</div>
                                 <div className="ombre-table-right">

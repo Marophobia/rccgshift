@@ -40,6 +40,15 @@ const Header = (props: Props) => {
                                     Instagram
                                 </a>
                             </li>
+                            <li>
+                                <a
+                                    href="https://www.tiktok.com/tag/rccgshift"
+                                    className="fa fa-tiktok tooltip-header"
+                                    title="Instagram"
+                                >
+                                    TikTok
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -70,13 +79,16 @@ const Header = (props: Props) => {
                                     <Link href="/executives">Our Leaders</Link>
                                 </li>
                                 <li>
+                                    <Link href="/judges">Judges</Link>
+                                </li>
+                                <li>
                                     <Link href="/contestants">Contestants</Link>
                                 </li>
                                 <li>
                                     <Link href="/results">Results</Link>
                                 </li>
                                 <li>
-                                    <Link href="/contact">Contact</Link>
+                                    <Link href="/contact">Contact and FAQs</Link>
                                 </li>
                             </ul>
                         </nav>

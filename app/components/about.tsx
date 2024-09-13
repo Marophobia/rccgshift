@@ -27,10 +27,10 @@ const About = (props: Props) => {
                     </p>
                     <ol className="rounded-list">
                         <li>
-                            <span>5 Judges</span>
+                            <span>4 Judges</span>
                         </li>
                         <li>
-                            <span>231 Contestants</span>
+                            <span>223 Contestants</span>
                         </li>
                     </ol>
                     <p>.</p>

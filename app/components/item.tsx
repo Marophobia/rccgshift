@@ -13,9 +13,9 @@ const Item = (props: Props) => {
         <>
             <CarouselItem className="basis-[320px]">
                 <figure className="ombre-carousel">
-                    <a href="single-model.html" className="gallery link">
+                    <div className="gallery link">
                         <img src={image} alt="" />
-                    </a>
+                    </div>
                     <figcaption>
                         <a className="arrow-button">Music Category</a>
                     </figcaption>

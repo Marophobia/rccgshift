@@ -7,7 +7,7 @@ const AboutBody = (props: Props) => {
         <div className="grid">
             <div className="unit half lg:mt-40">
                 <h3 className="borderr">ABOUT SHIFT</h3>
-                <p className="pl-4 border-left border-primary text-justify">
+                <p className="pl-4 border-left border-primary text-justify" style={{ color: "white" }}>
                     The<span className="text-sm text-[#CC3300]"> RCCG SHIFT Talent Hunt </span> is a talent competition organized by the
                     <span className="text-sm text-[#CC3300]"> Redeemed Christian Church of God (RCCG) Young Adults and Youth Affairs (YAYA). </span>
                     It is a platform for young people to showcase their talents and to be rewarded for their creativity and excellence. The RCCG SHIFT Talent Hunt is open to
@@ -85,7 +85,7 @@ const AboutBody = (props: Props) => {
             </div>
             <div className="unit half">
                 <h3 className="borderr">ABOUT YAYA</h3>
-                <p className="pl-4 border-left border-primary">
+                <p className="pl-4 border-left border-primary" style={{ color: "white" }}>
                     <small className="text-sm text-[#CC3300]">
                         The Redeemed Christian Church of God (RCCG)
                         Young Adults and Youth Affairs (YAYA)

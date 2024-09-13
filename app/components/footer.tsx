@@ -15,7 +15,7 @@ const Footer = (props: Props) => {
                             The competition is televised and streamed live online, so you have the chance to be seen by millions of people around the world.</p>
                         <p><span className="fa fa-map-marker"></span>Redemption City of God
                         </p>
-                        <p><span className="fa fa-phone"></span>+447424483987, +2347060626135
+                        <p><span className="fa fa-phone"></span>+447424483987, +2347060626135, +2348104238564
                         </p>
                         <p><span className="fa fa-paper-plane"></span>info@rccgshift.org
                         </p>
@@ -35,6 +35,9 @@ const Footer = (props: Props) => {
                             <li>
                                 <Link href="/contestants">Contestants</Link>
                             </li>
+                            <li>
+                                <Link href="/contact">Contact and FAQs</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -46,6 +49,9 @@ const Footer = (props: Props) => {
                         </li>
                         <li>
                             <a href="https://www.instagram.com/rccgshift/?igsh=MTFtbWRybHRuNHp6dQ%3D%3D" className="fa fa-instagram tooltip-pink" title="Instagram">Instagram</a>
+                        </li>
+                        <li>
+                            <a href="https://www.tiktok.com/tag/rccgshift" className="fa fa-tiktok tooltip-pink" title="Tiktok">Tiktok</a>
                         </li>
                     </ul>
                 </div>
