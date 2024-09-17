@@ -24,7 +24,7 @@ export const POST = async (req: Request) => {
                         user: true
                     },
                     orderBy: {
-                        id: 'asc'
+                        user_id: 'asc'
                     }
                 }
             }

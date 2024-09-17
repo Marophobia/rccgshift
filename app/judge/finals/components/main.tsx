@@ -36,12 +36,12 @@ const Main = (props: Props) => {
     const [currentContestantIndex, setCurrentContestantIndex] = useState(0); // Initial state
 
     // State for the 6 parameters
-    const [delivery, setDelivery] = useState([0]);
-    const [expression, setExpression] = useState([0]);
-    const [appearance, setAppearance] = useState([0]);
-    const [communication, setCommunication] = useState([0]);
-    const [technical, setTechnical] = useState([0]);
-    const [overallValue, setOverallValue] = useState([0]);
+    const [delivery, setDelivery] = useState(0);
+    const [expression, setExpression] = useState(0);
+    const [appearance, setAppearance] = useState(0);
+    const [communication, setCommunication] = useState(0);
+    const [technical, setTechnical] = useState(0);
+    const [overallValue, setOverallValue] = useState(0);
 
     // useEffect to run on component mount or when data changes
     useEffect(() => {
@@ -109,12 +109,12 @@ const Main = (props: Props) => {
                 toast.dismiss();
                 toast.success('Vote Recorded');
                 setSelectedOption(false);
-                setDelivery([0]);
-                setExpression([0]);
-                setAppearance([0]);
-                setCommunication([0]);
-                setTechnical([0]);
-                setOverallValue([0]);
+                setDelivery(0);
+                setExpression(0);
+                setAppearance(0);
+                setCommunication(0);
+                setTechnical(0);
+                setOverallValue(0);
 
                 router.refresh();
                 // router.refresh()
@@ -147,12 +147,12 @@ const Main = (props: Props) => {
                 // router.prefetch('/judge/vote')
                 toast.dismiss();
                 setSelectedOption(false);
-                setDelivery([0]);
-                setExpression([0]);
-                setAppearance([0]);
-                setCommunication([0]);
-                setTechnical([0]);
-                setOverallValue([0]);
+                setDelivery(0);
+                setExpression(0);
+                setAppearance(0);
+                setCommunication(0);
+                setTechnical(0);
+                setOverallValue(0);
                 router.refresh();
                 // setCurrentContestantIndex(getStartingIndex())
             } else if (update.status === 400) {
@@ -372,8 +372,7 @@ const Main = (props: Props) => {
                                         <>
                                             <div
                                                 className="grid lg:grid-cols-12"
-                                                key={contestant.user.id}
-                                            >
+                                                key={contestant.user.id}>
                                                 <div className="col-span-3">
                                                     <div className="p-5">
                                                         <div>
@@ -524,31 +523,13 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Delivery
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center ">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        delivery
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setDelivery(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {delivery}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+
+                                                                <button className={`btn b-solid btn-danger-solid`} disabled={delivery < 1} onClick={() => { setSelectedOption(true); setDelivery(delivery - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3>{delivery}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={delivery > 9} onClick={() => { setSelectedOption(true); setDelivery(delivery + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -556,28 +537,10 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Expression
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        expression
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setExpression(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {expression}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+                                                                <button className='btn b-solid btn-danger-solid' disabled={expression < 1} onClick={() => { setSelectedOption(true); setExpression(expression - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3> {expression}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={expression > 9} onClick={() => { setSelectedOption(true); setExpression(expression + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
 
@@ -588,28 +551,10 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Appearance
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        appearance
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setAppearance(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {appearance}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+                                                                <button className='btn b-solid btn-danger-solid' disabled={appearance < 1} onClick={() => { setSelectedOption(true); setAppearance(appearance - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3> {appearance}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={appearance > 9} onClick={() => { setSelectedOption(true); setAppearance(appearance + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
 
@@ -620,28 +565,10 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Communication
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        communication
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setCommunication(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {communication}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+                                                                <button className='btn b-solid btn-danger-solid' disabled={communication < 1} onClick={() => { setSelectedOption(true); setCommunication(communication - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3> {communication}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={communication > 9} onClick={() => { setSelectedOption(true); setCommunication(communication + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
 
@@ -652,28 +579,10 @@ const Main = (props: Props) => {
                                                             <h2 className="text-lg font-semibold col-span-6">
                                                                 Technical Skills
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        technical
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setTechnical(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {technical}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+                                                                <button className='btn b-solid btn-danger-solid' disabled={technical < 1} onClick={() => { setSelectedOption(true); setTechnical(technical - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3> {technical}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={technical > 9} onClick={() => { setSelectedOption(true); setTechnical(technical + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
 
@@ -687,28 +596,10 @@ const Main = (props: Props) => {
                                                                 entertainment
                                                                 value
                                                             </h2>
-                                                            <div className="w-full max-w-sm text-center">
-                                                                <Slider
-                                                                    defaultValue={
-                                                                        overallValue
-                                                                    }
-                                                                    max={10}
-                                                                    min={0}
-                                                                    step={0.1}
-                                                                    onValueChange={(
-                                                                        value
-                                                                    ) => {
-                                                                        setSelectedOption(
-                                                                            true
-                                                                        );
-                                                                        setOverallValue(
-                                                                            value
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div className="btn b-solid btn-primary-solid text-white  w-[2.3rem] text-center py-1 rounded-md font-mono col-span-1">
-                                                                {overallValue}
+                                                            <div className="w-full max-w-sm text-center flex gap-10 items-center">
+                                                                <button className='btn b-solid btn-danger-solid' disabled={overallValue < 1} onClick={() => { setSelectedOption(true); setOverallValue(overallValue - 1) }}><i className='fa-solid fa-minus'></i></button>
+                                                                <h3> {overallValue}</h3>
+                                                                <button className='btn b-solid btn-success-solid' disabled={overallValue > 9} onClick={() => { setSelectedOption(true); setOverallValue(overallValue + 1) }}><i className='fa-solid fa-plus'></i></button>
                                                             </div>
                                                         </div>
 

@@ -21,20 +21,20 @@ model User {
   name              String
   email             String?        @unique @db.VarChar(255)
   telephone         String?
-  bio               String?
+  bio               String?        @db.Text
   regional_pastor   String?
   gender            String?
   age_grade         String?
-  category          String? // Music, Drama, Unusual creativity
-  type              String? // Group Single
+  category          String?
+  type              String?
   number_of_members Int            @default(1)
   country           String?
   state             String?
   region            String?
   province          String?
   picture           String?
-  date              DateTime       @default(now())
-  status            UserStatus     @default(registered) // registered approved disqualified
+  date              DateTime?      @default(now())
+  status            UserStatus     @default(registered)
   user_sessions     User_session[]
 }
 
@@ -62,19 +62,19 @@ model User_session {
   id           Int               @id @default(autoincrement())
   round_id     Int
   votes        Int               @default(0)
+  score        Int               @default(0)
+  user_id      Int
   judge_votes1 Int               @default(0)
   judge_votes2 Int               @default(0)
   judge_votes3 Int               @default(0)
-  score        Int               @default(0)
+  qualified    Boolean?
   status1      UserSessionStatus @default(pending)
   status2      UserSessionStatus @default(pending)
   status3      UserSessionStatus @default(pending)
-  user_id      Int
-  qualified    Boolean?
   position     Int?
+  parameters   Parameters[]
   round        Round             @relation(fields: [round_id], references: [id])
   user         User              @relation(fields: [user_id], references: [id])
-  parameters   Parameters[]
 
   @@unique([user_id, round_id])
   @@index([user_id], map: "user_id")
@@ -82,18 +82,16 @@ model User_session {
 }
 
 model Parameters {
-  id               Int @id @default(autoincrement())
-  judge            Int //judge 1 or 2 or 3
+  id               Int          @id @default(autoincrement())
+  judge            Int
   session_id       Int
-  Delivery         Int @default(0)
-  Expression       Int @default(0)
-  Appearance       Int @default(0)
-  Communication    Int @default(0)
-  Technical_skills Int @default(0)
-  value            Int @default(0)
-  // I did not put the total here because we can just store it on the normal judge_votes in the user session.
-
-  user_session User_session @relation(fields: [session_id], references: [id])
+  Delivery         Int          @default(0)
+  Expression       Int          @default(0)
+  Appearance       Int          @default(0)
+  Communication    Int          @default(0)
+  Technical_skills Int          @default(0)
+  value            Int          @default(0)
+  user_session     User_session @relation(fields: [session_id], references: [id])
 
   @@index([session_id], map: "session_id")
 }

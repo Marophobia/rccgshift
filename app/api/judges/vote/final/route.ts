@@ -54,12 +54,12 @@ export const POST = async (req: Request) => {
             data: {
                 session_id: id,
                 judge: Number(judgeId),
-                Delivery: delivery[0],
-                Expression: expression[0],
-                Appearance: appearance[0],
-                Communication: communication[0],
-                Technical_skills: technical[0],
-                value: overallValue[0],
+                Delivery: delivery,
+                Expression: expression,
+                Appearance: appearance,
+                Communication: communication,
+                Technical_skills: technical,
+                value: overallValue,
             },
         });
 
@@ -69,12 +69,12 @@ export const POST = async (req: Request) => {
 
         // the total vote from that judge, sum of all parameters / 3 = maximum 20
         const vote =
-            (delivery[0] +
-                expression[0] +
-                appearance[0] +
-                communication[0] +
-                technical[0] +
-                overallValue[0]) /
+            (delivery +
+                expression +
+                appearance +
+                communication +
+                technical +
+                overallValue) /
             3;
 
         if (judgeId === '1') {

@@ -11,13 +11,13 @@ type Props = {
         round: Iround;
     };
     user:
-        | {
-              id: number | string;
-              name: string;
-              email: string;
-              role: string;
-          }
-        | undefined;
+    | {
+        id: number | string;
+        name: string;
+        email: string;
+        role: string;
+    }
+    | undefined;
     status: string;
 };
 
@@ -55,7 +55,7 @@ const Welcome = (props: Props) => {
                         </h1>
                         {status === 'Finished' ? (
                             <div className="btn b-solid btn-primary-solid btn-lg mt-6">
-                                Voting Ended! Thanks!
+                                Assessment Ended! Thanks!
                             </div>
                         ) : (
                             <Link
@@ -63,7 +63,7 @@ const Welcome = (props: Props) => {
                                 className="btn b-solid btn-primary-solid btn-lg mt-6"
                             >
                                 <MoveRight />
-                                Start Voting
+                                Start Assessment
                             </Link>
                         )}
                     </div>
