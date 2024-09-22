@@ -5,7 +5,6 @@ enum UserStatus {
     Approved = 'approved',
     Disqualified = 'disqualified',
 }
-
 import { IuserSession } from '../../types/user_session';
 import { Iround } from '../../types/round';
 import {
@@ -19,7 +18,7 @@ import {
 import { useState } from 'react';
 import { PaystackButton } from 'react-paystack';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string
+const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -119,6 +118,7 @@ const Single = (props: Props) => {
                         toast.error('One or more fields are empty');
                         router.refresh();
                     } else {
+                        console.error('Error:', responseData.message);
                         toast.error('Something went wrong');
                         router.refresh();
                     }
@@ -155,11 +155,16 @@ const Single = (props: Props) => {
                 <div className="unit golden-large">
                     <div
                         className="flex-video experience-video"
-                        style={{ height: "650px" }}
+                        style={{ height: '650px' }}
                     >
                         <img
                             src={`/images/contestants/${contestant.picture}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                objectPosition: 'top',
+                            }}
                         />
                     </div>
                     <Dialog>
@@ -178,14 +183,14 @@ const Single = (props: Props) => {
                         <DialogContent
                             style={{ background: '#16171C', border: 'none' }}
                         >
-                            {settings.competition ?
+                            {settings.competition ? (
                                 <DialogHeader>
                                     <DialogTitle>Please Note</DialogTitle>
                                     <DialogDescription>
-                                        One Vote costs ₦100 and you can vote as many
-                                        times as you wish. Be aware that your votes
-                                        only count if it is within the voting window
-                                        for the current round.
+                                        One Vote costs ₦100 and you can vote as
+                                        many times as you wish. Be aware that
+                                        your votes only count if it is within
+                                        the voting window for the current round.
                                         <div className="mt-8">
                                             <h5>Amount: ₦{totalAmount}</h5>
                                             <input
@@ -201,15 +206,15 @@ const Single = (props: Props) => {
                                             {...componentProps}
                                         ></PaystackButton>
                                     </DialogDescription>
-                                </DialogHeader> :
+                                </DialogHeader>
+                            ) : (
                                 <DialogHeader>
                                     <DialogTitle>Alert</DialogTitle>
                                     <DialogDescription>
                                         Competition has not started yet.
                                     </DialogDescription>
                                 </DialogHeader>
-                            }
-
+                            )}
                         </DialogContent>
                     </Dialog>
 
@@ -220,17 +225,17 @@ const Single = (props: Props) => {
                             color: 'white',
                             cursor: 'pointer',
                         }}
-                        onClick={() => {
-                            const currentURL = window.location.href; // Get current page URL
-                            navigator.clipboard
-                                .writeText(currentURL) // Copy URL to clipboard
-                                .then(() => {
-                                    toast.success('Link copied to clipboard');
-                                })
-                                .catch((err) => {
-                                    toast.error('Failed to copy: ', err);
-                                });
-                        }}
+                        // onClick={() => {
+                        //     const currentURL = location.href; // Get current page URL
+                        //     navigator.clipboard
+                        //         .writeText(currentURL) // Copy URL to clipboard
+                        //         .then(() => {
+                        //             toast.success('Link copied to clipboard');
+                        //         })
+                        //         .catch((err) => {
+                        //             toast.error('Failed to copy: ', err);
+                        //         });
+                        // }}
                     >
                         <i className="fa fa-copy mr-3"></i>Copy Link
                     </div>

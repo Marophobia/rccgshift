@@ -29,62 +29,24 @@ export const POST = async (req: Request) => {
             return errorHandler('Transaction verification failed', 400);
         }
 
-        // Proceed to update the database
-        const current_round = await prisma.settings.findFirst({
-            include: {
-                round: true,
+        const transporter = nodemailer.createTransport({
+            port: 465,
+            host: 'mail.privateemail.com',
+            auth: {
+                user: 'info@rccgshift.org',
+                pass: process.env.PASSWORD,
             },
+            secure: true,
         });
 
-        if (current_round?.round.status) {
-            const user = await prisma.user.findFirst({
-                where: {
-                    id: id,
-                },
-                include: {
-                    user_sessions: true,
-                },
-            });
+        const fromName = 'RCCG SHIFT TALENT';
+        const fromEmail = 'info@rccgshift.org';
 
-            const userCurrentSession = user?.user_sessions.find(
-                (round) => round.round_id === current_round.current_round
-            );
-
-            const update = await prisma.user_session
-                .update({
-                    where: {
-                        id: userCurrentSession?.id,
-                    },
-                    data: {
-                        votes: {
-                            increment: vote,
-                        },
-                    },
-                })
-                .catch((e) => {
-                    console.log(`Unable to update vote: ${e}`);
-                    return errorHandler(`Unable to update vote: ${e}`);
-                });
-
-            if (update) {
-                const transporter = nodemailer.createTransport({
-                    port: 465,
-                    host: 'mail.privateemail.com',
-                    auth: {
-                        user: 'info@rccgshift.org',
-                        pass: process.env.PASSWORD,
-                    },
-                    secure: true,
-                });
-
-                const fromName = 'RCCG SHIFT TALENT';
-                const fromEmail = 'info@rccgshift.org';
-
-                const mailData = {
-                    from: `"${fromName}" <${fromEmail}>`,
-                    to: email,
-                    subject: 'Vote Placed!',
-                    html: `
+        const mailData = {
+            from: `"${fromName}" <${fromEmail}>`,
+            to: email,
+            subject: 'Vote Placed!',
+            html: `
 
          <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
@@ -194,20 +156,56 @@ export const POST = async (req: Request) => {
 </table>
  
         `,
-                };
+        };
 
-                transporter.sendMail(
-                    mailData,
-                    function (err: Error | null, info: any) {
-                        if (err) {
-                            console.error(err);
-                            return errorHandler(`Unable to send mail`, 500);
-                        }
-                    }
+        transporter.sendMail(mailData, function (err: Error | null, info: any) {
+            if (err) {
+                console.error(err);
+                return errorHandler(`Unable to send mail`, 500);
+            }
+        });
+
+        // Proceed to update the database
+        const current_round = await prisma.settings.findFirst({
+            include: {
+                round: true,
+            },
+        });
+
+        if (current_round?.round.status) {
+            // Fetch the user with user_sessions included
+            const user = await prisma.user.findFirst({
+                where: {
+                    id: id,
+                },
+                include: {
+                    user_sessions: true,
+                },
+            });
+
+            if (user && user.user_sessions) {
+                const userCurrentSession = user.user_sessions.find(
+                    (session) =>
+                        session.round_id === current_round.current_round
                 );
+
+                const update = await prisma.user_session
+                    .update({
+                        where: {
+                            id: userCurrentSession?.id,
+                        },
+                        data: {
+                            votes: {
+                                increment: vote,
+                            },
+                        },
+                    })
+                    .catch((e) => {
+                        console.log(`Unable to update vote: ${e}`);
+                        return errorHandler(`Unable to update vote: ${e}`);
+                    });
             }
         }
-
         return sucessHandler('Vote Successful', 201);
     } catch (error) {
         return errorHandler(`Something went wrong with the server: ${error}`);
