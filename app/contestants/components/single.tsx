@@ -155,7 +155,7 @@ const Single = (props: Props) => {
                 <div className="unit golden-large">
                     <div
                         className="flex-video experience-video"
-                        style={{ height: '650px' }}
+                        style={{ height: '450px' }}
                     >
                         <img
                             src={`/images/contestants/${contestant.picture}`}
