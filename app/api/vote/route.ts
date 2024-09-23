@@ -165,53 +165,81 @@ export const POST = async (req: Request) => {
             }
         });
 
-        // Proceed to update the database
-        const current_round = await prisma.settings.findFirst({
-            include: {
-                round: true,
-            },
-        });
+        // Start a transaction to handle the vote update process
+        try {
+            const result = await prisma.$transaction(async (tx) => {
+                // Fetch the current round settings
+                const current_round = await tx.settings.findFirst({
+                    include: {
+                        round: true,
+                    },
+                });
 
-        if (current_round?.round.status) {
-            // Fetch the user with user_sessions included
-            const user = await prisma.user.findFirst({
-                where: {
-                    id: id,
-                },
-                include: {
-                    user_sessions: true,
-                },
-            });
+                if (!current_round?.round?.status) {
+                    throw new Error('Current voting round is not active.');
+                }
 
-            if (!user) {
-                return errorHandler('User not found', 404);
-            }
-
-            const userCurrentSession = await prisma.user_session.findFirst({
-                where: {
-                    user_id: id,
-                    round_id: current_round.current_round,
-                },
-            });
-
-            const update = await prisma.user_session
-                .update({
+                // Fetch the user with their current voting session
+                const user = await tx.user.findFirst({
                     where: {
-                        id: userCurrentSession?.id,
+                        id: id,
+                    },
+                    include: {
+                        user_sessions: true,
+                    },
+                });
+
+                if (!user || !user.user_sessions) {
+                    throw new Error(
+                        'User not found or no voting session available.'
+                    );
+                }
+
+                // Find the user's current session for the active round
+                // const userCurrentSession = user.user_sessions.find(
+                //     (session) =>
+                //         session.round_id === current_round.current_round
+                // );
+
+                // lets just call the db again here abeg
+                const userCurrentSession = await tx.user_session.findFirst({
+                    where: {
+                        user_id: id,
+                        round_id: current_round.current_round,
+                    },
+                });
+
+                if (!userCurrentSession) {
+                    throw new Error(
+                        'User session for the current round not found.'
+                    );
+                }
+
+                // Update the user's votes in the transaction
+                const update = await tx.user_session.update({
+                    where: {
+                        id: userCurrentSession.id,
                     },
                     data: {
                         votes: {
                             increment: vote,
                         },
                     },
-                })
-                .catch((e) => {
-                    console.log(`Unable to update vote: ${e}`);
-                    return errorHandler(`Unable to update vote: ${e}`);
                 });
+
+                return update;
+            });
+
+            return sucessHandler('Vote Successful', 201);
+        } catch (transactionError) {
+            console.error(`Transaction failed: ${transactionError}`);
+            return errorHandler(
+                `Unable to update vote: ${transactionError}`,
+                500
+            );
         }
-        return sucessHandler('Vote Successful', 201);
     } catch (error) {
+        console.error(`General error: ${error}`);
         return errorHandler(`Something went wrong with the server: ${error}`);
     }
 };
