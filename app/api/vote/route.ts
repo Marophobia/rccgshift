@@ -6,9 +6,9 @@ const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET; // Your secret key
 
 export const POST = async (req: Request) => {
     const { data, reference } = await req.json();
-    const { id, vote, email } = data;
+    const { session, vote, email } = data;
 
-    if (!id || !vote || !email || !reference) {
+    if (!session || !vote || !email || !reference) {
         return errorHandler('Missing Vote or Reference', 400);
     }
 
@@ -177,64 +177,27 @@ export const POST = async (req: Request) => {
 
                 // Check if current_round or round status is null or inactive
                 if (!current_round) {
-                    throw new Error(
-                        'Current round settings could not be fetched.'
+                    return errorHandler(
+                        'Current round settings could not be fetched.',
+                        404
                     );
                 }
 
                 if (!current_round.round) {
-                    throw new Error('Current round data is missing.');
+                    return errorHandler('Current round data is missing.', 404);
                 }
 
                 if (!current_round.round.status) {
-                    throw new Error('Current voting round is not active.');
-                }
-
-                // Fetch the user with their current voting session
-                const user = await tx.user.findFirst({
-                    where: {
-                        id: id,
-                    },
-                    include: {
-                        user_sessions: true,
-                    },
-                });
-
-                // Validate if user and their voting sessions exist
-                if (!user) {
-                    throw new Error(`User with ID ${id} not found.`);
-                }
-
-                if (!user.user_sessions || user.user_sessions.length === 0) {
-                    throw new Error('No voting session found for this user.');
-                }
-
-                // Fetch the current session for the active round directly from the DB
-                const userCurrentSession = await tx.user_session.findFirst({
-                    where: {
-                        user_id: id,
-                        round_id: current_round.current_round,
-                    },
-                });
-
-                // Validate if the user session for the current round exists
-                if (!userCurrentSession) {
-                    throw new Error(
-                        `User session for round ${current_round.current_round} not found.`
-                    );
-                }
-
-                // Check if vote value is valid and a positive number
-                if (typeof vote !== 'number' || vote <= 0) {
-                    throw new Error(
-                        'Invalid vote value. It must be a positive number.'
+                    return errorHandler(
+                        'Current voting round is not active.',
+                        401
                     );
                 }
 
                 // Update the user's votes in the transaction
                 const update = await tx.user_session.update({
                     where: {
-                        id: userCurrentSession.id,
+                        id: session.id,
                     },
                     data: {
                         votes: {
@@ -245,11 +208,14 @@ export const POST = async (req: Request) => {
 
                 // Ensure the update was successful
                 if (!update) {
-                    throw new Error('Failed to update the user session votes.');
+                    return errorHandler(
+                        'Failed to update the user session votes.',
+                        402
+                    );
                 }
 
                 console.log(
-                    `User with id: ${update.user_id} updated with: ${vote}`
+                    `User with id: ${update.user_id} updated with: ${vote} votes`
                 );
 
                 return update;

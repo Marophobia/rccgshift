@@ -68,7 +68,6 @@ const Single = (props: Props) => {
         const newVotes = parseInt(event.target.value, 10);
         if (!isNaN(newVotes)) {
             setVotes(newVotes);
-            console.log(votes);
         } else {
             setVotes(0); // Reset votes if input is not a valid number
         }
@@ -89,11 +88,15 @@ const Single = (props: Props) => {
     // Calculate the total amount
     const totalAmount = votes * voteCost;
 
+    const session = contestant.user_sessions.find(
+        (session) => session.round_id === settings.current_round
+    );
+
     const data = {
-        id: contestant.id,
+        session,
         vote: votes,
         email: contestant.email,
-        name: fname
+        name: fname,
     };
 
     const componentProps = {
