@@ -29,24 +29,54 @@ export const POST = async (req: Request) => {
             return errorHandler('Transaction verification failed', 400);
         }
 
-        const transporter = nodemailer.createTransport({
-            port: 465,
-            host: 'mail.privateemail.com',
-            auth: {
-                user: 'info@rccgshift.org',
-                pass: process.env.PASSWORD,
-            },
-            secure: true,
-        });
+        // Start a transaction to handle the vote update process
+        try {
+            const result = await prisma.$transaction(async (tx) => {
+                // Fetch the current round settings
+                const current_round = await tx.settings.findFirst({
+                    include: {
+                        round: true,
+                    },
+                });
 
-        const fromName = 'RCCG SHIFT TALENT';
-        const fromEmail = 'info@rccgshift.org';
+                // Check if current_round or round status is null or inactive
+                if (!current_round) {
+                    return errorHandler(
+                        'Current round settings could not be fetched.',
+                        404
+                    );
+                }
 
-        const mailData = {
-            from: `"${fromName}" <${fromEmail}>`,
-            to: email,
-            subject: 'Vote Placed!',
-            html: `
+                if (!current_round.round) {
+                    return errorHandler('Current round data is missing.', 404);
+                }
+
+                if (!current_round.round.status) {
+                    return errorHandler(
+                        'Current voting round is not active.',
+                        401
+                    );
+                }
+
+                // send success mail
+                const transporter = nodemailer.createTransport({
+                    port: 465,
+                    host: 'mail.privateemail.com',
+                    auth: {
+                        user: 'info@rccgshift.org',
+                        pass: process.env.PASSWORD,
+                    },
+                    secure: true,
+                });
+
+                const fromName = 'RCCG SHIFT TALENT';
+                const fromEmail = 'info@rccgshift.org';
+
+                const mailData = {
+                    from: `"${fromName}" <${fromEmail}>`,
+                    to: email,
+                    subject: 'Vote Placed!',
+                    html: `
 
          <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
@@ -156,43 +186,17 @@ export const POST = async (req: Request) => {
 </table>
  
         `,
-        };
+                };
 
-        transporter.sendMail(mailData, function (err: Error | null, info: any) {
-            if (err) {
-                console.error(err);
-                return errorHandler(`Unable to send mail`, 500);
-            }
-        });
-
-        // Start a transaction to handle the vote update process
-        try {
-            const result = await prisma.$transaction(async (tx) => {
-                // Fetch the current round settings
-                const current_round = await tx.settings.findFirst({
-                    include: {
-                        round: true,
-                    },
-                });
-
-                // Check if current_round or round status is null or inactive
-                if (!current_round) {
-                    return errorHandler(
-                        'Current round settings could not be fetched.',
-                        404
-                    );
-                }
-
-                if (!current_round.round) {
-                    return errorHandler('Current round data is missing.', 404);
-                }
-
-                if (!current_round.round.status) {
-                    return errorHandler(
-                        'Current voting round is not active.',
-                        401
-                    );
-                }
+                transporter.sendMail(
+                    mailData,
+                    function (err: Error | null, info: any) {
+                        if (err) {
+                            console.error(err);
+                            return errorHandler(`Unable to send mail`, 500);
+                        }
+                    }
+                );
 
                 // Update the user's votes in the transaction
                 const update = await tx.user_session.update({
