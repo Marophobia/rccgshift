@@ -225,17 +225,17 @@ const Single = (props: Props) => {
                             color: 'white',
                             cursor: 'pointer',
                         }}
-                        // onClick={() => {
-                        //     const currentURL = location.href; // Get current page URL
-                        //     navigator.clipboard
-                        //         .writeText(currentURL) // Copy URL to clipboard
-                        //         .then(() => {
-                        //             toast.success('Link copied to clipboard');
-                        //         })
-                        //         .catch((err) => {
-                        //             toast.error('Failed to copy: ', err);
-                        //         });
-                        // }}
+                        onClick={() => {
+                            const currentURL = location.href; // Get current page URL
+                            navigator.clipboard
+                                .writeText(currentURL) // Copy URL to clipboard
+                                .then(() => {
+                                    toast.success('Link copied to clipboard');
+                                })
+                                .catch((err) => {
+                                    toast.error('Failed to copy: ', err);
+                                });
+                        }}
                     >
                         <i className="fa fa-copy mr-3"></i>Copy Link
                     </div>
