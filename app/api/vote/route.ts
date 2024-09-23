@@ -183,28 +183,32 @@ export const POST = async (req: Request) => {
                 },
             });
 
-            if (user && user.user_sessions) {
-                const userCurrentSession = user.user_sessions.find(
-                    (session) =>
-                        session.round_id === current_round.current_round
-                );
-
-                const update = await prisma.user_session
-                    .update({
-                        where: {
-                            id: userCurrentSession?.id,
-                        },
-                        data: {
-                            votes: {
-                                increment: vote,
-                            },
-                        },
-                    })
-                    .catch((e) => {
-                        console.log(`Unable to update vote: ${e}`);
-                        return errorHandler(`Unable to update vote: ${e}`);
-                    });
+            if (!user) {
+                return errorHandler('User not found', 404);
             }
+
+            const userCurrentSession = await prisma.user_session.findFirst({
+                where: {
+                    user_id: id,
+                    round_id: current_round.current_round,
+                },
+            });
+
+            const update = await prisma.user_session
+                .update({
+                    where: {
+                        id: userCurrentSession?.id,
+                    },
+                    data: {
+                        votes: {
+                            increment: vote,
+                        },
+                    },
+                })
+                .catch((e) => {
+                    console.log(`Unable to update vote: ${e}`);
+                    return errorHandler(`Unable to update vote: ${e}`);
+                });
         }
         return sucessHandler('Vote Successful', 201);
     } catch (error) {
