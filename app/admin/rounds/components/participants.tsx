@@ -211,7 +211,7 @@ const Participants = (props: Props) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {participants.map((participant, index) => (
+                        {filteredParticipants.map((participant, index) => (
                             <TableRow
                                 key={participant.id}
                                 className={

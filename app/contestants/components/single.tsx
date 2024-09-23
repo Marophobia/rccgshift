@@ -9,8 +9,10 @@ import { IuserSession } from '../../types/user_session';
 import { Iround } from '../../types/round';
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -184,29 +186,36 @@ const Single = (props: Props) => {
                             style={{ background: '#16171C', border: 'none' }}
                         >
                             {settings.competition ? (
-                                <DialogHeader>
-                                    <DialogTitle>Please Note</DialogTitle>
-                                    <DialogDescription>
-                                        One Vote costs ₦100 and you can vote as
-                                        many times as you wish. Be aware that
-                                        your votes only count if it is within
-                                        the voting window for the current round.
-                                        <div className="mt-8">
-                                            <h5>Amount: ₦{totalAmount}</h5>
-                                            <input
-                                                type="number"
-                                                placeholder="Input number of Votes"
-                                                value={votes}
-                                                min={1}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                        <PaystackButton
-                                            className="button w-100"
-                                            {...componentProps}
-                                        ></PaystackButton>
-                                    </DialogDescription>
-                                </DialogHeader>
+                                <>
+                                    <DialogHeader>
+                                        <DialogTitle>Please Note</DialogTitle>
+                                        <DialogDescription>
+                                            One Vote costs ₦100 and you can vote
+                                            as many times as you wish. Be aware
+                                            that your votes only count if it is
+                                            within the voting window for the
+                                            current round.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="mt-8">
+                                        <h5>Amount: ₦{totalAmount}</h5>
+                                        <input
+                                            type="number"
+                                            placeholder="Input number of Votes"
+                                            value={votes}
+                                            min={1}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <DialogFooter>
+                                        <DialogClose>
+                                            <PaystackButton
+                                                className="button w-100"
+                                                {...componentProps}
+                                            ></PaystackButton>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </>
                             ) : (
                                 <DialogHeader>
                                     <DialogTitle>Alert</DialogTitle>

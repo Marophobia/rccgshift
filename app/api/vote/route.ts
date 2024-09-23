@@ -175,7 +175,18 @@ export const POST = async (req: Request) => {
                     },
                 });
 
-                if (!current_round?.round?.status) {
+                // Check if current_round or round status is null or inactive
+                if (!current_round) {
+                    throw new Error(
+                        'Current round settings could not be fetched.'
+                    );
+                }
+
+                if (!current_round.round) {
+                    throw new Error('Current round data is missing.');
+                }
+
+                if (!current_round.round.status) {
                     throw new Error('Current voting round is not active.');
                 }
 
@@ -189,19 +200,16 @@ export const POST = async (req: Request) => {
                     },
                 });
 
-                if (!user || !user.user_sessions) {
-                    throw new Error(
-                        'User not found or no voting session available.'
-                    );
+                // Validate if user and their voting sessions exist
+                if (!user) {
+                    throw new Error(`User with ID ${id} not found.`);
                 }
 
-                // Find the user's current session for the active round
-                // const userCurrentSession = user.user_sessions.find(
-                //     (session) =>
-                //         session.round_id === current_round.current_round
-                // );
+                if (!user.user_sessions || user.user_sessions.length === 0) {
+                    throw new Error('No voting session found for this user.');
+                }
 
-                // lets just call the db again here abeg
+                // Fetch the current session for the active round directly from the DB
                 const userCurrentSession = await tx.user_session.findFirst({
                     where: {
                         user_id: id,
@@ -209,9 +217,17 @@ export const POST = async (req: Request) => {
                     },
                 });
 
+                // Validate if the user session for the current round exists
                 if (!userCurrentSession) {
                     throw new Error(
-                        'User session for the current round not found.'
+                        `User session for round ${current_round.current_round} not found.`
+                    );
+                }
+
+                // Check if vote value is valid and a positive number
+                if (typeof vote !== 'number' || vote <= 0) {
+                    throw new Error(
+                        'Invalid vote value. It must be a positive number.'
                     );
                 }
 
@@ -227,14 +243,27 @@ export const POST = async (req: Request) => {
                     },
                 });
 
+                // Ensure the update was successful
+                if (!update) {
+                    throw new Error('Failed to update the user session votes.');
+                }
+
+                console.log(
+                    `User with id: ${update.user_id} updated with: ${vote}`
+                );
+
                 return update;
             });
 
             return sucessHandler('Vote Successful', 201);
-        } catch (transactionError) {
-            console.error(`Transaction failed: ${transactionError}`);
+        } catch (transactionError: any) {
+            // Log the specific error that caused the transaction to fail
+            console.error(
+                `Transaction failed: ${transactionError.message}`,
+                transactionError
+            );
             return errorHandler(
-                `Unable to update vote: ${transactionError}`,
+                `Unable to update vote: ${transactionError.message}`,
                 500
             );
         }
