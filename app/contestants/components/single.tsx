@@ -74,6 +74,18 @@ const Single = (props: Props) => {
         }
     };
 
+    const [fname, setFname] = useState('');
+    const [email, setEmail] = useState('');
+
+    // Handlers to update state
+    const handleNameChange = (e: any) => {
+        setFname(e.target.value);
+    };
+
+    const handleEmailChange = (e: any) => {
+        setEmail(e.target.value);
+    };
+
     // Calculate the total amount
     const totalAmount = votes * voteCost;
 
@@ -81,13 +93,14 @@ const Single = (props: Props) => {
         id: contestant.id,
         vote: votes,
         email: contestant.email,
+        name: fname
     };
 
     const componentProps = {
-        email: contestant.email,
+        email: email,
         amount: totalAmount * 100,
-        fname: contestant.name,
-        lname: contestant.name,
+        fname: fname,
+        lname: fname,
         publicKey: publicKey,
         text: 'Pay Now',
         onSuccess: (response: any) => {
@@ -199,6 +212,19 @@ const Single = (props: Props) => {
                                     </DialogHeader>
                                     <div className="mt-8">
                                         <h5>Amount: ₦{totalAmount}</h5>
+                                        <input
+                                            type="text"
+                                            placeholder="Full Name"
+                                            value={fname}
+                                            onChange={handleNameChange}
+                                        />
+                                        <input
+                                            type="email"
+                                            placeholder="Email Address"
+                                            value={email}
+                                            onChange={handleEmailChange}
+                                        />
+                                        <label>Number of Votes</label>
                                         <input
                                             type="number"
                                             placeholder="Input number of Votes"
