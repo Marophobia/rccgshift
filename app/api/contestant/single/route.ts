@@ -1,41 +1,41 @@
-import { errorHandler, sucessHandler } from "../../../../lib/functions"
-import prisma from "../../../../lib/db"
+import { errorHandler, sucessHandler } from '../../../../lib/functions';
+import prisma from '../../../../lib/db';
 
 export const POST = async (req: Request) => {
-    const data = await req.json()
-    const { id } = data
+    const data = await req.json();
+    const { id } = data;
     try {
-        const contestant = await prisma.user.findUnique({
+        const contestant = await prisma.user.findFirst({
             where: {
-                id: Number(id)
+                id: Number(id),
             },
             include: {
                 user_sessions: {
                     include: {
-                        round: true
+                        round: true,
                     },
-                }
-            }
+                },
+            },
         });
 
         const settings = await prisma.settings.findFirst({
             include: {
-                round: true
-            }
-        })
+                round: true,
+            },
+        });
 
         if (!contestant) {
-            return errorHandler("No contestants found", 404)
+            return errorHandler('No contestants found', 404);
         }
 
         if (!settings) {
-            return errorHandler("No contestants found", 404)
+            return errorHandler('No contestants found', 404);
         }
 
-        const data = { contestant, settings }
+        const data = { contestant, settings };
 
-        return sucessHandler("Active Contestants", 200, data)
+        return sucessHandler('Active Contestants', 200, data);
     } catch (error) {
-        return errorHandler(`Something went wrong: ${error}`)
+        return errorHandler(`Something went wrong: ${error}`);
     }
-}
+};
