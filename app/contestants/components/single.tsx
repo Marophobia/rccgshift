@@ -30,6 +30,8 @@ const PaystackButton = dynamic(
     { ssr: false }
 );
 
+const paystackTest = 'pk_test_af7feb1b416ddf7843b1416bee73435f16eec86e';
+
 type Props = {
     contestant: {
         id: number;
@@ -116,13 +118,14 @@ const Single = (props: Props) => {
         vote: votes,
         email: contestant.email,
         name: fname,
+        amount: totalAmount,
     };
 
     const componentProps = {
         email: email,
         amount: totalAmount * 100,
-        fname: fname,
-        lname: fname,
+        fname: fname + `(${contestant.id})`,
+        lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
         text: 'Pay Now',
         onSuccess: (response: any) => {
@@ -152,18 +155,15 @@ const Single = (props: Props) => {
                         });
                         router.refresh();
                     } else if (responseData.message === 'empty') {
-                        toast.error('One or more fields are empty');
-                        router.refresh();
+                        toast.error(responseData.message);
                     } else {
                         console.error('Error:', responseData.message);
-                        toast.error('Something went wrong');
-                        router.refresh();
+                        toast.error(responseData.message);
                     }
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    toast.error('Something went wrong');
-                    router.refresh();
+                    toast.error('Something went wrong: ', error);
                 });
         },
         onClose: () => {
