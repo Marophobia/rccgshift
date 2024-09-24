@@ -156,13 +156,13 @@ const Single = (props: Props) => {
                         router.refresh();
                     } else {
                         console.error('Error:', responseData.message);
-                        toast.error('Something went wrong');
+                        toast.error(responseData.message);
                         router.refresh();
                     }
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    toast.error('Something went wrong');
+                    toast.error('Error');
                     router.refresh();
                 });
         },
