@@ -199,7 +199,7 @@ export const POST = async (req: Request) => {
                 );
 
                 // log action
-                let description = `Payment: #${amount}, from: ${name}, For user with id: ${session.user_id} 
+                let description = `Payment: #${amount}, Refernce: ${reference} from: ${name}, For user with id: ${session.user_id} 
                 Comfirmed updated with: ${vote} votes for session: ${current_round.round.name}`;
                 await prisma.logs.create({
                     data: {
