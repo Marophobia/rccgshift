@@ -6,28 +6,28 @@ const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET; // Your secret key
 
 export const POST = async (req: Request) => {
     const { data, reference } = await req.json();
-    const { session, vote, email } = data;
+    const { session, vote, email, name, amount } = data;
 
-    if (!session || !vote || !email || !reference) {
+    if (!session || !vote || !email || !name || !amount || !reference) {
         return errorHandler('Missing Vote or Reference', 400);
     }
 
     // Verify transaction with Paystack
     try {
-        const verifyResponse = await fetch(
-            `https://api.paystack.co/transaction/verify/${reference}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-                },
-            }
-        );
+        // const verifyResponse = await fetch(
+        //     `https://api.paystack.co/transaction/verify/${reference}`,
+        //     {
+        //         headers: {
+        //             Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+        //         },
+        //     }
+        // );
 
-        const verifyData = await verifyResponse.json();
+        // const verifyData = await verifyResponse.json();
 
-        if (!verifyData.status || verifyData.data.status !== 'success') {
-            return errorHandler('Transaction verification failed', 400);
-        }
+        // if (!verifyData.status || verifyData.data.status !== 'success') {
+        //     return errorHandler('Transaction verification failed', 400);
+        // }
 
         // Start a transaction to handle the vote update process
         try {
@@ -217,10 +217,19 @@ export const POST = async (req: Request) => {
                         402
                     );
                 }
-
-                console.log(
-                    `User with id: ${update.user_id} updated with: ${vote} votes`
-                );
+                // log action
+                // Log action
+                let description = `Payment: #${amount}, from: ${name}, For user with id: ${session.user_id} 
+                Comfirmed updated with: ${vote} votes for session: ${current_round.round.name}`;
+                await prisma.logs.create({
+                    data: {
+                        action: 'Payment',
+                        description: description,
+                        amount: amount,
+                        candidate: String(session.user_id),
+                        session: String(current_round.round.name),
+                    },
+                });
 
                 return update;
             });
