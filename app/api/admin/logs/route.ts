@@ -8,9 +8,11 @@ export const POST = async (req: Request) => {
                 id: 'asc',
             },
         });
+
         if (!contestants || contestants.length < 1) {
-            return errorHandler('No Logs found', 404);
+            return errorHandler('No Logs found', 404,);
         }
+
         return sucessHandler('Data logs', 200, contestants);
     } catch (error) {
         return errorHandler(`Something went wrong: ${error}`);

@@ -38,7 +38,7 @@ const LogsTable = ({ logs }: Props) => {
     let filteredLogs = logs.filter((log) => {
         const tag = log.candidate ? formatTag(Number(log.candidate)) : '';
         const name = log.action.toLowerCase();
-        const session = log.session.toLocaleLowerCase();
+        const session = log.session.toLowerCase();
         return (
             tag.includes(searchQuery) ||
             name.includes(searchQuery.toLowerCase())
@@ -52,6 +52,58 @@ const LogsTable = ({ logs }: Props) => {
 
     const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
 
+    // Function to export all logs as CSV
+    const exportCSV = () => {
+        const headers = [
+            'S/N',
+            'Action',
+            'Candidate Tag',
+            'Amount',
+            'Session',
+            'Description',
+            'Date',
+            'Time',
+        ];
+
+        const csvRows = filteredLogs.map((log, index) => {
+            const formattedDate = new Date(log.time).toLocaleDateString('en-GB');
+            {
+                new Date(log.time).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                })
+            }
+
+            return [
+                index + 1,
+                log.action.toUpperCase(),
+                log.candidate || 'N/A',
+                log.amount !== null ? `${log.amount} NGN` : 'N/A',
+                log.session || 'No session',
+                log.description || 'No description',
+                formattedDate,
+            ]
+                .map((cell) => `"${cell}"`) // Escape values with quotes
+                .join(',');
+        });
+
+        const csvContent = [headers.join(','), ...csvRows].join('\n');
+
+        // Create a Blob from the CSV content
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        // Create a link element to trigger the download
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'logs.csv';
+        link.click();
+
+        // Clean up URL object
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <>
             <div className="card p-5">
@@ -64,6 +116,12 @@ const LogsTable = ({ logs }: Props) => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
+                    <button
+                        className='btn b-solid btn-info-solid'
+                        onClick={exportCSV}
+                    >
+                        Export as CSV
+                    </button>
                 </div>
                 <Separator />
                 <Table>
@@ -80,35 +138,28 @@ const LogsTable = ({ logs }: Props) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {paginatedLogs.map((log, index) => (
+                        {logs && paginatedLogs.map((log, index) => (
                             <TableRow key={log.id}>
                                 <TableCell className="font-medium">
                                     {indexOfFirstLog + index + 1}
                                 </TableCell>
-                                <TableCell>
-                                    {log.action.toUpperCase()}
-                                </TableCell>
+                                <TableCell>{log.action.toUpperCase()}</TableCell>
                                 <TableCell>{log.candidate || 'N/A'}</TableCell>
                                 <TableCell>
                                     {log.amount !== null
-                                        ? log.amount + ' NGN'
+                                        ? `${log.amount} NGN`
                                         : 'N/A'}
                                 </TableCell>
+                                <TableCell>{log.session || 'No session'}</TableCell>
+                                <TableCell>{log.description || 'No description'}</TableCell>
                                 <TableCell>
-                                    {log.session || 'No session'}
+                                    {new Date(log.time).toLocaleDateString('en-GB')}
                                 </TableCell>
                                 <TableCell>
-                                    {log.description || 'No description'}
-                                </TableCell>
-                                <TableCell>
-                                    {new Date(log.time).toLocaleDateString(
-                                        'en-GB'
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    {new Date(log.time).toLocaleTimeString([], {
+                                    {new Date(log.time).toLocaleTimeString('en-US', {
                                         hour: '2-digit',
                                         minute: '2-digit',
+                                        hour12: true,
                                     })}
                                 </TableCell>
                             </TableRow>
@@ -138,9 +189,7 @@ const LogsTable = ({ logs }: Props) => {
                                         setCurrentPage(index + 1);
                                     }}
                                     className={
-                                        currentPage === index + 1
-                                            ? 'active'
-                                            : ''
+                                        currentPage === index + 1 ? 'active' : ''
                                     }
                                 >
                                     {index + 1}

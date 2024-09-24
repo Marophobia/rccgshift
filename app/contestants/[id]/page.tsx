@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: { id: number } }) {
             title: `Vote for ${contestant.name}`,
             description: `Vote for and View Contestant Profile - ${contestant.name}.`,
             creator: 'RCCG SHIFT',
-            images: contestant.picture,
+            images: `/images/${contestant.picture}`
         },
         openGraph: {
             title: contestant.title,
