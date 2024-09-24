@@ -198,6 +198,19 @@ export const POST = async (req: Request) => {
                     }
                 );
 
+                // log action
+                let description = `Payment: #${amount}, from: ${name}, For user with id: ${session.user_id} 
+                Comfirmed updated with: ${vote} votes for session: ${current_round.round.name}`;
+                await prisma.logs.create({
+                    data: {
+                        action: 'Payment',
+                        description: description,
+                        amount: amount,
+                        candidate: String(session.user_id),
+                        session: String(current_round.round.name),
+                    },
+                });
+
                 // Update the user's votes in the transaction
                 const update = await tx.user_session.update({
                     where: {
@@ -217,19 +230,6 @@ export const POST = async (req: Request) => {
                         402
                     );
                 }
-                // log action
-                // Log action
-                let description = `Payment: #${amount}, from: ${name}, For user with id: ${session.user_id} 
-                Comfirmed updated with: ${vote} votes for session: ${current_round.round.name}`;
-                await prisma.logs.create({
-                    data: {
-                        action: 'Payment',
-                        description: description,
-                        amount: amount,
-                        candidate: String(session.user_id),
-                        session: String(current_round.round.name),
-                    },
-                });
 
                 return update;
             });
