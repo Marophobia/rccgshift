@@ -1,18 +1,21 @@
-import '../../styles/new.css'
-import React from 'react'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
-import Link from 'next/link'
+import '../../styles/new.css';
+import React from 'react';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+import Link from 'next/link';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-import { headers } from 'next/headers'
-import Single from '../components/single'
+import { headers } from 'next/headers';
+import Single from '../components/single';
 
 export async function generateMetadata({ params }: { params: { id: number } }) {
     // read route params
-    const id = params.id
+    const id = params.id;
 
-    const data = await fetch(`${apiUrl}/api/contestant/single`, { method: 'POST', body: JSON.stringify({ id }) }).then((res) => res.json())
-    const contestant = data.data.contestant
+    const data = await fetch(`${apiUrl}/api/contestant/single`, {
+        method: 'POST',
+        body: JSON.stringify({ id }),
+    }).then((res) => res.json());
+    const contestant = data.data.contestant;
 
     return {
         title: `Vote for ${contestant.name}`,
@@ -49,30 +52,27 @@ export async function generateMetadata({ params }: { params: { id: number } }) {
                 },
             ],
         },
-    }
+    };
 }
 
-
 const ContestantSingle = async ({ params }: { params: { id: number } }) => {
-
-    const id = params.id
-    let data
+    const id = params.id;
+    let data;
     try {
-        const authorization = headers().get('authorization')
+        const authorization = headers().get('authorization');
         const headersInit: HeadersInit = authorization ? { authorization } : {};
         const response = await fetch(`${apiUrl}/api/contestant/single`, {
             method: 'POST',
             body: JSON.stringify({ id }),
             cache: 'no-store',
-            headers: headersInit
+            headers: headersInit,
         });
         const responseData = await response.json();
-        data = responseData.data
-
+        data = responseData.data;
     } catch (error) {
         console.error('Error:', error);
     }
-    const { contestant, settings } = data
+    const { contestant, settings } = data;
     // console.log(contestant)
 
     return (
@@ -81,7 +81,9 @@ const ContestantSingle = async ({ params }: { params: { id: number } }) => {
                 <Header />
                 <main id="main">
                     <div id="page-title">
-                        <h1><span>{contestant.name}</span></h1>
+                        <h1>
+                            <span>{contestant.name}</span>
+                        </h1>
                     </div>
                     <div id="page-container">
                         <Single contestant={contestant} settings={settings} />
@@ -89,9 +91,8 @@ const ContestantSingle = async ({ params }: { params: { id: number } }) => {
                 </main>
                 <Footer />
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default ContestantSingle
+export default ContestantSingle;

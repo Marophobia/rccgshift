@@ -18,12 +18,17 @@ import {
     DialogTrigger,
 } from '../../../components/ui/dialog';
 import { useState } from 'react';
-import { PaystackButton } from 'react-paystack';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+
+import dynamic from 'next/dynamic';
+const PaystackButton = dynamic(
+    () => import('react-paystack').then((mod) => mod.PaystackButton),
+    { ssr: false }
+);
 
 type Props = {
     contestant: {
@@ -83,6 +88,20 @@ const Single = (props: Props) => {
 
     const handleEmailChange = (e: any) => {
         setEmail(e.target.value);
+    };
+
+    const handleCopyLink = () => {
+        if (typeof window !== 'undefined') {
+            const currentURL = window.location.href; // Access window safely
+            navigator.clipboard
+                .writeText(currentURL)
+                .then(() => {
+                    toast.success('Link copied to clipboard');
+                })
+                .catch((err) => {
+                    toast.error('Failed to copy: ', err);
+                });
+        }
     };
 
     // Calculate the total amount
@@ -263,17 +282,7 @@ const Single = (props: Props) => {
                             color: 'white',
                             cursor: 'pointer',
                         }}
-                        onClick={() => {
-                            const currentURL = location.href; // Get current page URL
-                            navigator.clipboard
-                                .writeText(currentURL) // Copy URL to clipboard
-                                .then(() => {
-                                    toast.success('Link copied to clipboard');
-                                })
-                                .catch((err) => {
-                                    toast.error('Failed to copy: ', err);
-                                });
-                        }}
+                        onClick={handleCopyLink}
                     >
                         <i className="fa fa-copy mr-3"></i>Copy Link
                     </div>
