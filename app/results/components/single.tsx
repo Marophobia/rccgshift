@@ -18,13 +18,13 @@ import { EyeIcon, TrophyIcon } from 'lucide-react';
 type Props = {
     participants: IuserSession[];
     qualifiers: number;
-    roundId: number
+    roundId: number;
 };
 
 const Participants = (props: Props) => {
     const { participants, qualifiers, roundId } = props;
     const [searchQuery, setSearchQuery] = useState('');
-    console.log(roundId)
+    console.log(roundId);
     // Format tags to always be three digits
     const formatTag = (tag: number) => tag.toString().padStart(3, '0');
 
@@ -38,46 +38,84 @@ const Participants = (props: Props) => {
         );
     });
 
+    let downloadPDF;
+
     // Download the table data as a PDF
-    const downloadPDF = () => {
-        const doc = new jsPDF();
-        const tableColumn = [
-            'S/N',
-            'Tags',
-            'Name',
-            'Category',
-            'Vote Points',
-            'Judge Votes',
-            'Total Score',
-            'Verdict',
-        ];
-        const tableRows: any[] = [];
-
-        participants.forEach((participant, index) => {
-            const rowData = [
-                index + 1,
-                formatTag(participant.user.id),
-                participant.user.name,
-                participant.user.category,
-                participant.votes,
-                [
-                    participant.judge_votes1,
-                    participant.judge_votes2,
-                    participant.judge_votes3,
-                ],
-                participant.score,
-                participant.qualified,
+    if (roundId != 1) {
+        downloadPDF = () => {
+            const doc = new jsPDF();
+            const tableColumn = [
+                'S/N',
+                'Tags',
+                'Name',
+                'Category',
+                'Vote Points',
+                'Judge Votes',
+                'Total Score',
+                'Verdict',
             ];
-            tableRows.push(rowData);
-        });
+            const tableRows: any[] = [];
 
-        doc.autoTable({
-            head: [tableColumn],
-            body: tableRows,
-        });
+            participants.forEach((participant, index) => {
+                const rowData = [
+                    index + 1,
+                    formatTag(participant.user.id),
+                    participant.user.name,
+                    participant.user.category,
+                    participant.votes,
+                    [
+                        participant.judge_votes1,
+                        participant.judge_votes2,
+                        participant.judge_votes3,
+                    ],
+                    participant.score,
+                    participant.qualified ? 'Qualified' : 'Disqualified',
+                ];
+                tableRows.push(rowData);
+            });
 
-        doc.save('participants.pdf');
-    };
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+            });
+
+            doc.save('participants.pdf');
+        };
+    }
+
+    if (roundId == 1) {
+        downloadPDF = () => {
+            const doc = new jsPDF();
+            const tableColumn = [
+                'S/N',
+                'Tags',
+                'Name',
+                'Category',
+                'Vote Points',
+                'Verdict',
+            ];
+            const tableRows: any[] = [];
+
+            participants.forEach((participant, index) => {
+                const rowData = [
+                    index + 1,
+                    formatTag(participant.user.id),
+                    participant.user.name,
+                    participant.user.category,
+                    participant.votes,
+                    participant.qualified ? 'Qualified' : 'Disqualified',
+                ];
+                tableRows.push(rowData);
+            });
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+            });
+
+            doc.save('participants.pdf');
+        };
+    }
 
     return (
         <>
@@ -119,14 +157,16 @@ const Participants = (props: Props) => {
                                         <TableHead>Category</TableHead>
                                         <TableHead>Type</TableHead>
                                         <TableHead>Votes</TableHead>
-                                        {roundId != 1 &&
+                                        {roundId != 1 && (
                                             <>
                                                 <TableHead className="text-center">
                                                     Judge Votes
                                                 </TableHead>
-                                                <TableHead>Total Score</TableHead>
+                                                <TableHead>
+                                                    Total Score
+                                                </TableHead>
                                             </>
-                                        }
+                                        )}
                                         <TableHead>Verdict</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -138,7 +178,7 @@ const Participants = (props: Props) => {
                                                     key={participant.id}
                                                     className={
                                                         participant.qualified !==
-                                                            null
+                                                        null
                                                             ? participant.qualified
                                                                 ? 'text-green-100'
                                                                 : 'text-red-100'
@@ -168,7 +208,7 @@ const Participants = (props: Props) => {
                                                     <TableCell>
                                                         {participant.votes}
                                                     </TableCell>
-                                                    {roundId != 1 &&
+                                                    {roundId != 1 && (
                                                         <>
                                                             <TableCell>
                                                                 <div className="flex justify-around gap-3 items-center">
@@ -190,27 +230,29 @@ const Participants = (props: Props) => {
                                                                 </div>
                                                             </TableCell>
                                                             <TableCell className="text-center">
-                                                                {participant.score}
+                                                                {
+                                                                    participant.score
+                                                                }
                                                             </TableCell>
                                                         </>
-                                                    }
+                                                    )}
 
                                                     <TableCell>
                                                         {participant.position ? (
                                                             participant.position ===
-                                                                1 ? (
+                                                            1 ? (
                                                                 <span className="text-yellow-500">
                                                                     <TrophyIcon />{' '}
                                                                     Winner
                                                                 </span>
                                                             ) : participant.position ===
-                                                                2 ? (
+                                                              2 ? (
                                                                 <span className="text-gray-500">
                                                                     1st Runner
                                                                     Up
                                                                 </span>
                                                             ) : participant.position ===
-                                                                3 ? (
+                                                              3 ? (
                                                                 <span className="text-gray-500">
                                                                     2nd Runner
                                                                     Up
