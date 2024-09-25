@@ -314,7 +314,7 @@ const Single = (props: Props) => {
                                             <h6>{session.round.name}</h6>
                                             <p>
                                                 Number of Votes: {session.votes}{' '}
-                                                <br /> Score: {session.score}{' '}
+                                                {/* <br /> Score: {session.score}{' '} */}
                                             </p>
                                         </div>
                                     </li>
