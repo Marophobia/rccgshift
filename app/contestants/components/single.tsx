@@ -196,7 +196,7 @@ const Single = (props: Props) => {
                         style={{ height: '450px' }}
                     >
                         <img
-                            src={`/ images / contestants / ${ contestant.picture } `}
+                            src={`/images/contestants/${contestant.picture}`}
                             style={{
                                 width: '100%',
                                 height: '100%',
