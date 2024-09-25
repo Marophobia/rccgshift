@@ -341,18 +341,16 @@ const Main = (props: Props) => {
                                     </SheetContent>
                                 </Sheet>
                             </div>
-                            <div className='col-span-full 2xl:col-span-12 card p-0'>
+                            <div className="col-span-full 2xl:col-span-12 card p-0">
                                 {/* skip button */}
                                 <div className="flex justify-start mx-5">
-                                                <button
-                                                    className={`btn b-solid btn-info-solid my-6`}
-                                                    onClick={() =>
-                                                        skip(contestant.id)
-                                                    }
-                                                >
-                                                    Skip <MoveRight />
-                                                </button>
-                                            </div>
+                                    <button
+                                        className={`btn b-solid btn-info-solid my-6`}
+                                        onClick={() => skip(contestant.id)}
+                                    >
+                                        Skip <MoveRight />
+                                    </button>
+                                </div>
                             </div>
                             <div className="col-span-full 2xl:col-span-12 card p-0">
                                 <div className="px-5 sm:px-12 pb-11 relative overflow-hidden h-full">

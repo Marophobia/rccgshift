@@ -187,7 +187,7 @@ const ContestantTable = (props: Props) => {
                                 {/* <TableCell>{contestant.province}</TableCell> */}
                                 <TableCell>
                                     {contestant.status ==
-                                        UserStatus.approved ? (
+                                    UserStatus.approved ? (
                                         <span className="text-green-600 font-bold">
                                             {contestant.status}
                                         </span>
@@ -251,21 +251,79 @@ const ContestantTable = (props: Props) => {
                                 }
                             />
                         </PaginationItem>
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <PaginationItem key={index}>
-                                <PaginationLink
-                                    href="#"
-                                    onClick={() => setCurrentPage(index + 1)}
-                                    className={
-                                        currentPage === index + 1
-                                            ? 'active'
-                                            : ''
-                                    }
-                                >
-                                    {index + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))}
+
+                        {/* Show the first page and ellipsis if the current page is far from the start */}
+                        {currentPage > 2 && (
+                            <>
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={currentPage === 1}
+                                        onClick={() => setCurrentPage(1)}
+                                        className={
+                                            currentPage === 1 ? 'active' : ''
+                                        }
+                                    >
+                                        1
+                                    </PaginationLink>
+                                </PaginationItem>
+                                {currentPage > 3 && <PaginationEllipsis />}
+                            </>
+                        )}
+
+                        {/* Show current page, and adjacent pages */}
+                        {Array.from({ length: totalPages }, (_, index) => {
+                            const page = index + 1;
+                            if (
+                                page === currentPage ||
+                                page === currentPage - 1 ||
+                                page === currentPage + 1
+                            ) {
+                                return (
+                                    <PaginationItem key={index}>
+                                        <PaginationLink
+                                            href="#"
+                                            isActive={currentPage === page}
+                                            onClick={() => setCurrentPage(page)}
+                                            className={
+                                                currentPage === page
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                        >
+                                            {page}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                );
+                            }
+                            return null;
+                        })}
+
+                        {/* Show ellipsis and the last page if the current page is far from the end */}
+                        {currentPage < totalPages - 1 && (
+                            <>
+                                {currentPage < totalPages - 2 && (
+                                    <PaginationEllipsis />
+                                )}
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={currentPage === totalPages}
+                                        onClick={() =>
+                                            setCurrentPage(totalPages)
+                                        }
+                                        className={
+                                            currentPage === totalPages
+                                                ? 'active'
+                                                : ''
+                                        }
+                                    >
+                                        {totalPages}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            </>
+                        )}
+
                         <PaginationItem>
                             <PaginationNext
                                 href="#"

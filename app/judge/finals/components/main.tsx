@@ -287,7 +287,7 @@ const Main = (props: Props) => {
                                                 {data.users.map(
                                                     (contestant, index) =>
                                                         contestant[
-                                                        statusKey
+                                                            statusKey
                                                         ] === 'skipped' && (
                                                             <div
                                                                 key={
@@ -367,12 +367,24 @@ const Main = (props: Props) => {
                                 </Sheet>
                             </div>
                             <div className="col-span-full 2xl:col-span-12 card p-0">
+                                {/* skip button */}
+                                <div className="flex justify-start mx-5">
+                                    <button
+                                        className={`btn b-solid btn-info-solid my-6`}
+                                        onClick={() => skip(contestant.id)}
+                                    >
+                                        Skip <MoveRight />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="col-span-full 2xl:col-span-12 card p-0">
                                 <div className="px-5 sm:px-12 pb-11 relative overflow-hidden h-full">
                                     <div className="main">
                                         <>
                                             <div
                                                 className="grid lg:grid-cols-12"
-                                                key={contestant.user.id}>
+                                                key={contestant.user.id}
+                                            >
                                                 <div className="col-span-3">
                                                     <div className="p-5">
                                                         <div>
@@ -425,7 +437,7 @@ const Main = (props: Props) => {
                                                                     {contestant
                                                                         .user
                                                                         .type ===
-                                                                        'Group' ? (
+                                                                    'Group' ? (
                                                                         <span className="font-bold">
                                                                             {
                                                                                 contestant
@@ -524,10 +536,45 @@ const Main = (props: Props) => {
                                                                 Delivery
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-
-                                                                <button className={`btn b-solid btn-danger-solid`} disabled={delivery < 1} onClick={() => { setSelectedOption(true); setDelivery(delivery - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3>{delivery}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={delivery > 9} onClick={() => { setSelectedOption(true); setDelivery(delivery + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className={`btn b-solid btn-danger-solid`}
+                                                                    disabled={
+                                                                        delivery <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setDelivery(
+                                                                            delivery -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {delivery}
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        delivery >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setDelivery(
+                                                                            delivery +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -538,12 +585,48 @@ const Main = (props: Props) => {
                                                                 Expression
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-                                                                <button className='btn b-solid btn-danger-solid' disabled={expression < 1} onClick={() => { setSelectedOption(true); setExpression(expression - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3> {expression}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={expression > 9} onClick={() => { setSelectedOption(true); setExpression(expression + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className="btn b-solid btn-danger-solid"
+                                                                    disabled={
+                                                                        expression <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setExpression(
+                                                                            expression -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {' '}
+                                                                    {expression}
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        expression >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setExpression(
+                                                                            expression +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -552,12 +635,48 @@ const Main = (props: Props) => {
                                                                 Appearance
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-                                                                <button className='btn b-solid btn-danger-solid' disabled={appearance < 1} onClick={() => { setSelectedOption(true); setAppearance(appearance - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3> {appearance}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={appearance > 9} onClick={() => { setSelectedOption(true); setAppearance(appearance + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className="btn b-solid btn-danger-solid"
+                                                                    disabled={
+                                                                        appearance <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setAppearance(
+                                                                            appearance -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {' '}
+                                                                    {appearance}
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        appearance >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setAppearance(
+                                                                            appearance +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -566,12 +685,50 @@ const Main = (props: Props) => {
                                                                 Communication
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-                                                                <button className='btn b-solid btn-danger-solid' disabled={communication < 1} onClick={() => { setSelectedOption(true); setCommunication(communication - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3> {communication}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={communication > 9} onClick={() => { setSelectedOption(true); setCommunication(communication + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className="btn b-solid btn-danger-solid"
+                                                                    disabled={
+                                                                        communication <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setCommunication(
+                                                                            communication -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {' '}
+                                                                    {
+                                                                        communication
+                                                                    }
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        communication >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setCommunication(
+                                                                            communication +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -580,12 +737,48 @@ const Main = (props: Props) => {
                                                                 Technical Skills
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-                                                                <button className='btn b-solid btn-danger-solid' disabled={technical < 1} onClick={() => { setSelectedOption(true); setTechnical(technical - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3> {technical}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={technical > 9} onClick={() => { setSelectedOption(true); setTechnical(technical + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className="btn b-solid btn-danger-solid"
+                                                                    disabled={
+                                                                        technical <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setTechnical(
+                                                                            technical -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {' '}
+                                                                    {technical}
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        technical >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setTechnical(
+                                                                            technical +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <Separator />
                                                     <div className="w-full mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -597,12 +790,50 @@ const Main = (props: Props) => {
                                                                 value
                                                             </h2>
                                                             <div className="w-full max-w-sm text-center flex gap-10 items-center">
-                                                                <button className='btn b-solid btn-danger-solid' disabled={overallValue < 1} onClick={() => { setSelectedOption(true); setOverallValue(overallValue - 1) }}><i className='fa-solid fa-minus'></i></button>
-                                                                <h3> {overallValue}</h3>
-                                                                <button className='btn b-solid btn-success-solid' disabled={overallValue > 9} onClick={() => { setSelectedOption(true); setOverallValue(overallValue + 1) }}><i className='fa-solid fa-plus'></i></button>
+                                                                <button
+                                                                    className="btn b-solid btn-danger-solid"
+                                                                    disabled={
+                                                                        overallValue <
+                                                                        1
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setOverallValue(
+                                                                            overallValue -
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-minus"></i>
+                                                                </button>
+                                                                <h3>
+                                                                    {' '}
+                                                                    {
+                                                                        overallValue
+                                                                    }
+                                                                </h3>
+                                                                <button
+                                                                    className="btn b-solid btn-success-solid"
+                                                                    disabled={
+                                                                        overallValue >
+                                                                        9
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setSelectedOption(
+                                                                            true
+                                                                        );
+                                                                        setOverallValue(
+                                                                            overallValue +
+                                                                                1
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fa-solid fa-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -623,7 +854,7 @@ const Main = (props: Props) => {
                                                 </button>
                                             </div>
                                             {/* skip button */}
-                                            <div className="flex gap-10 justify-center">
+                                            {/* <div className="flex gap-10 justify-center">
                                                 <button
                                                     className={`btn b-solid btn-danger-solid btn-lg mt-6 w-full`}
                                                     onClick={() =>
@@ -632,7 +863,7 @@ const Main = (props: Props) => {
                                                 >
                                                     Skip <MoveRight />
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </>
                                     </div>
                                 </div>

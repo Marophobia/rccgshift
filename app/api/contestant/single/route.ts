@@ -14,6 +14,9 @@ export const POST = async (req: Request) => {
                     include: {
                         round: true,
                     },
+                    orderBy: {
+                        id: 'desc',
+                    },
                 },
             },
         });

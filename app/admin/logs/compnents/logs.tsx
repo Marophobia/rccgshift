@@ -13,6 +13,7 @@ import {
 import {
     Pagination,
     PaginationContent,
+    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
@@ -66,13 +67,15 @@ const LogsTable = ({ logs }: Props) => {
         ];
 
         const csvRows = filteredLogs.map((log, index) => {
-            const formattedDate = new Date(log.time).toLocaleDateString('en-GB');
+            const formattedDate = new Date(log.time).toLocaleDateString(
+                'en-GB'
+            );
             {
                 new Date(log.time).toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: true,
-                })
+                });
             }
 
             return [
@@ -91,7 +94,9 @@ const LogsTable = ({ logs }: Props) => {
         const csvContent = [headers.join(','), ...csvRows].join('\n');
 
         // Create a Blob from the CSV content
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([csvContent], {
+            type: 'text/csv;charset=utf-8;',
+        });
 
         // Create a link element to trigger the download
         const link = document.createElement('a');
@@ -117,7 +122,7 @@ const LogsTable = ({ logs }: Props) => {
                         />
                     </div>
                     <button
-                        className='btn b-solid btn-info-solid'
+                        className="btn b-solid btn-info-solid"
                         onClick={exportCSV}
                     >
                         Export as CSV
@@ -138,32 +143,46 @@ const LogsTable = ({ logs }: Props) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {logs && paginatedLogs.map((log, index) => (
-                            <TableRow key={log.id}>
-                                <TableCell className="font-medium">
-                                    {indexOfFirstLog + index + 1}
-                                </TableCell>
-                                <TableCell>{log.action.toUpperCase()}</TableCell>
-                                <TableCell>{log.candidate || 'N/A'}</TableCell>
-                                <TableCell>
-                                    {log.amount !== null
-                                        ? `${log.amount} NGN`
-                                        : 'N/A'}
-                                </TableCell>
-                                <TableCell>{log.session || 'No session'}</TableCell>
-                                <TableCell>{log.description || 'No description'}</TableCell>
-                                <TableCell>
-                                    {new Date(log.time).toLocaleDateString('en-GB')}
-                                </TableCell>
-                                <TableCell>
-                                    {new Date(log.time).toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true,
-                                    })}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {logs &&
+                            paginatedLogs.map((log, index) => (
+                                <TableRow key={log.id}>
+                                    <TableCell className="font-medium">
+                                        {indexOfFirstLog + index + 1}
+                                    </TableCell>
+                                    <TableCell>
+                                        {log.action.toUpperCase()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {log.candidate || 'N/A'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {log.amount !== null
+                                            ? `${log.amount} NGN`
+                                            : 'N/A'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {log.session || 'No session'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {log.description || 'No description'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {new Date(log.time).toLocaleDateString(
+                                            'en-GB'
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {new Date(log.time).toLocaleTimeString(
+                                            'en-US',
+                                            {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: true,
+                                            }
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
 
@@ -180,22 +199,74 @@ const LogsTable = ({ logs }: Props) => {
                                 }}
                             />
                         </PaginationItem>
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <PaginationItem key={index}>
-                                <PaginationLink
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setCurrentPage(index + 1);
-                                    }}
-                                    className={
-                                        currentPage === index + 1 ? 'active' : ''
-                                    }
-                                >
-                                    {index + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))}
+
+                        {currentPage > 2 && (
+                            <>
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setCurrentPage(1);
+                                        }}
+                                    >
+                                        1
+                                    </PaginationLink>
+                                </PaginationItem>
+                                {currentPage > 3 && <PaginationEllipsis />}
+                            </>
+                        )}
+
+                        {Array.from({ length: totalPages }, (_, index) => {
+                            const page = index + 1;
+                            // Display only current page, and pages around it
+                            if (
+                                page === currentPage ||
+                                page === currentPage - 1 ||
+                                page === currentPage + 1
+                            ) {
+                                return (
+                                    <PaginationItem key={index}>
+                                        <PaginationLink
+                                            href="#"
+                                            isActive={currentPage === index + 1}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setCurrentPage(page);
+                                            }}
+                                            className={
+                                                currentPage === page
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                        >
+                                            {page}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                );
+                            }
+                            return null;
+                        })}
+
+                        {currentPage < totalPages - 1 && (
+                            <>
+                                {currentPage < totalPages - 2 && (
+                                    <PaginationEllipsis />
+                                )}
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setCurrentPage(totalPages);
+                                        }}
+                                    >
+                                        {totalPages}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            </>
+                        )}
+
                         <PaginationItem>
                             <PaginationNext
                                 href="#"
