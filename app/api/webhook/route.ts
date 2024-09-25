@@ -43,8 +43,6 @@ export async function POST(req: NextRequest) {
         // Parse the event data
         const event = JSON.parse(buf.toString());
 
-        console.log('Webhook event received:', event);
-
         // Process the event (example: update vote count, etc.)
         // Example processing:
         if (event.event === 'charge.success') {

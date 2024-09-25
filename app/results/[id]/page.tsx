@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: { id: number } }) {
     // read route params
     const id = params.id
 
-    const data = await fetch(`${apiUrl}/api/admin/rounds//single`, { method: 'POST', body: JSON.stringify({ id }) }).then((res) => res.json())
+    const data = await fetch(`${apiUrl}/api/admin/rounds/single`, { method: 'POST', body: JSON.stringify({ id }) }).then((res) => res.json())
     const round = data.data
 
     return {
@@ -82,7 +82,7 @@ const RoundSingle = async ({ params }: { params: { id: number } }) => {
                         <h1><span>{round.name}</span></h1>
                     </div>
                     <div id="page-container">
-                        <Participants qualifiers={round.qualifiers} participants={round.users} />
+                        <Participants qualifiers={round.qualifiers} participants={round.users} roundId={id} />
                     </div>
                 </main>
                 <Footer />

@@ -5,7 +5,7 @@ export const POST = async (req: Request) => {
     try {
         const contestants = await prisma.logs.findMany({
             orderBy: {
-                id: 'asc',
+                id: 'desc',
             },
         });
 

@@ -18,12 +18,13 @@ import { EyeIcon, TrophyIcon } from 'lucide-react';
 type Props = {
     participants: IuserSession[];
     qualifiers: number;
+    roundId: number
 };
 
 const Participants = (props: Props) => {
-    const { participants, qualifiers } = props;
+    const { participants, qualifiers, roundId } = props;
     const [searchQuery, setSearchQuery] = useState('');
-
+    console.log(roundId)
     // Format tags to always be three digits
     const formatTag = (tag: number) => tag.toString().padStart(3, '0');
 
@@ -117,11 +118,15 @@ const Participants = (props: Props) => {
                                         <TableHead>Tag No.</TableHead>
                                         <TableHead>Category</TableHead>
                                         <TableHead>Type</TableHead>
-                                        <TableHead>Votes</TableHead>
-                                        <TableHead className="text-center">
-                                            Judge Votes
-                                        </TableHead>
-                                        <TableHead>Total Score</TableHead>
+                                        {roundId != 1 &&
+                                            <>
+                                                <TableHead>Votes</TableHead>
+                                                <TableHead className="text-center">
+                                                    Judge Votes
+                                                </TableHead>
+                                                <TableHead>Total Score</TableHead>
+                                            </>
+                                        }
                                         <TableHead>Verdict</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -133,7 +138,7 @@ const Participants = (props: Props) => {
                                                     key={participant.id}
                                                     className={
                                                         participant.qualified !==
-                                                        null
+                                                            null
                                                             ? participant.qualified
                                                                 ? 'text-green-100'
                                                                 : 'text-red-100'
@@ -160,47 +165,53 @@ const Participants = (props: Props) => {
                                                     <TableCell>
                                                         {participant.user.type}
                                                     </TableCell>
-                                                    <TableCell>
-                                                        {participant.votes}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex justify-around gap-3 items-center">
-                                                            <div>
-                                                                {
-                                                                    participant.judge_votes1
-                                                                }
-                                                            </div>
-                                                            <div>
-                                                                {
-                                                                    participant.judge_votes2
-                                                                }
-                                                            </div>
-                                                            <div>
-                                                                {
-                                                                    participant.judge_votes3
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        {participant.score}
-                                                    </TableCell>
+
+                                                    {roundId != 1 &&
+                                                        <>
+                                                            <TableCell>
+                                                                {participant.votes}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <div className="flex justify-around gap-3 items-center">
+                                                                    <div>
+                                                                        {
+                                                                            participant.judge_votes1
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        {
+                                                                            participant.judge_votes2
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        {
+                                                                            participant.judge_votes3
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell className="text-center">
+                                                                {participant.score}
+                                                            </TableCell>
+                                                        </>
+                                                    }
+
                                                     <TableCell>
                                                         {participant.position ? (
                                                             participant.position ===
-                                                            1 ? (
+                                                                1 ? (
                                                                 <span className="text-yellow-500">
                                                                     <TrophyIcon />{' '}
                                                                     Winner
                                                                 </span>
                                                             ) : participant.position ===
-                                                              2 ? (
+                                                                2 ? (
                                                                 <span className="text-gray-500">
                                                                     1st Runner
                                                                     Up
                                                                 </span>
                                                             ) : participant.position ===
-                                                              3 ? (
+                                                                3 ? (
                                                                 <span className="text-gray-500">
                                                                     2nd Runner
                                                                     Up

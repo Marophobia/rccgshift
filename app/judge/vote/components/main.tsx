@@ -341,6 +341,19 @@ const Main = (props: Props) => {
                                     </SheetContent>
                                 </Sheet>
                             </div>
+                            <div className='col-span-full 2xl:col-span-12 card p-0'>
+                                {/* skip button */}
+                                <div className="flex justify-start mx-5">
+                                                <button
+                                                    className={`btn b-solid btn-info-solid my-6`}
+                                                    onClick={() =>
+                                                        skip(contestant.id)
+                                                    }
+                                                >
+                                                    Skip <MoveRight />
+                                                </button>
+                                            </div>
+                            </div>
                             <div className="col-span-full 2xl:col-span-12 card p-0">
                                 <div className="px-5 sm:px-12 pb-11 relative overflow-hidden h-full">
                                     <div className="main">
@@ -578,7 +591,7 @@ const Main = (props: Props) => {
                                                 </button>
                                             </div>
                                             {/* skip button */}
-                                            <div className="flex gap-10 justify-center">
+                                            {/* <div className="flex gap-10 justify-center">
                                                 <button
                                                     className={`btn b-solid btn-danger-solid btn-lg mt-6 w-full`}
                                                     onClick={() =>
@@ -587,7 +600,7 @@ const Main = (props: Props) => {
                                                 >
                                                     Skip <MoveRight />
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </>
                                     </div>
                                 </div>
