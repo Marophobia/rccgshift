@@ -118,9 +118,9 @@ const Participants = (props: Props) => {
                                         <TableHead>Tag No.</TableHead>
                                         <TableHead>Category</TableHead>
                                         <TableHead>Type</TableHead>
+                                        <TableHead>Votes</TableHead>
                                         {roundId != 1 &&
                                             <>
-                                                <TableHead>Votes</TableHead>
                                                 <TableHead className="text-center">
                                                     Judge Votes
                                                 </TableHead>
@@ -165,12 +165,11 @@ const Participants = (props: Props) => {
                                                     <TableCell>
                                                         {participant.user.type}
                                                     </TableCell>
-
+                                                    <TableCell>
+                                                        {participant.votes}
+                                                    </TableCell>
                                                     {roundId != 1 &&
                                                         <>
-                                                            <TableCell>
-                                                                {participant.votes}
-                                                            </TableCell>
                                                             <TableCell>
                                                                 <div className="flex justify-around gap-3 items-center">
                                                                     <div>

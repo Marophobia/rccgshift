@@ -19,9 +19,14 @@ export const POST = async (req: NextRequest) => {
                     include: {
                         user: true
                     },
-                    orderBy: {
-                        score: 'desc'
-                    }
+                    orderBy: [
+                        {
+                            qualified: 'desc'
+                        },
+                        {
+                            score: 'desc'
+                        }
+                    ],
                 }
             }
         });
