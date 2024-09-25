@@ -128,43 +128,44 @@ const Single = (props: Props) => {
         lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
         text: 'Pay Now',
-        onSuccess: (response: any) => {
-            const { reference } = response;
-            fetch(`${apiUrl}/api/vote`, {
-                method: 'POST',
-                body: JSON.stringify({ data, reference }), // Send transaction ID to backend
-                headers: {
-                    'Content-Type': 'application/json',
+        metadata: {
+            session: session,
+            vote: votes,
+            email: contestant.email,
+            name: fname,
+            amount: totalAmount,
+            custom_fields: [
+                {
+                    display_name: "Session",
+                    variable_name: "session",
+                    value: session ? session.id : "N/A" // Use the session ID if available
                 },
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((responseData) => {
-                    if (responseData.message === 'Vote Successful') {
-                        Swal.fire({
-                            didOpen: () => setSwalShown(true),
-                            didClose: () => setSwalShown(false),
-                            icon: 'success',
-                            title: 'Vote Completed',
-                            text: `Vote placed for ${contestant.name}`,
-                            confirmButtonColor: '#F5245F',
-                        });
-                        router.refresh();
-                    } else if (responseData.message === 'empty') {
-                        toast.error(responseData.message);
-                    } else {
-                        console.error('Error:', responseData.message);
-                        toast.error(responseData.message);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    toast.error('Something went wrong: ', error);
-                });
+                {
+                    display_name: "Vote",
+                    variable_name: "vote",
+                    value: votes.toString() // Convert the vote number to a string
+                },
+                {
+                    display_name: "Email",
+                    variable_name: "email",
+                    value: contestant.email
+                },
+                {
+                    display_name: "Name",
+                    variable_name: "name",
+                    value: fname
+                }
+            ]
+        },
+        onSuccess: () => {
+            Swal.fire({
+                didOpen: () => setSwalShown(true),
+                didClose: () => setSwalShown(false),
+                icon: 'success',
+                title: 'Payment Successful',
+                text: 'We are processing your vote. You will receive a confirmation shortly.',
+                confirmButtonColor: '#F5245F',
+            });
         },
         onClose: () => {
             toast.error('What went wrong?');
@@ -195,7 +196,7 @@ const Single = (props: Props) => {
                         style={{ height: '450px' }}
                     >
                         <img
-                            src={`/images/contestants/${contestant.picture}`}
+                            src={`/ images / contestants / ${ contestant.picture } `}
                             style={{
                                 width: '100%',
                                 height: '100%',
