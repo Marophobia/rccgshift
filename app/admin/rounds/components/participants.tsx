@@ -267,7 +267,7 @@ const Participants = (props: Props) => {
                                             <span className="text-green-500">
                                                 Qualified
                                             </span>
-                                        ) : id === 3 ? (
+                                        ) : id <= 3 ? (
                                             <Button
                                                 onClick={() => {
                                                     vetoQualify(

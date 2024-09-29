@@ -47,19 +47,19 @@ export const POST = async (req: Request) => {
         // }
 
         // update the settings to qualified
-        await prisma.user_session
-            .update({
-                where: {
-                    id,
-                },
-                data: {
-                    qualified: true,
-                },
-            })
-            .catch((err) => {
-                console.error(err);
-                return errorHandler(`Something went wrong`, 500);
-            });
+        // await prisma.user_session
+        //     .update({
+        //         where: {
+        //             id,
+        //         },
+        //         data: {
+        //             qualified: true,
+        //         },
+        //     })
+        //     .catch((err) => {
+        //         console.error(err);
+        //         return errorHandler(`Something went wrong`, 500);
+        //     });
 
         // Create a new session for user
         await prisma.user_session
