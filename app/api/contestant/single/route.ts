@@ -15,7 +15,7 @@ export const POST = async (req: Request) => {
                         round: true,
                     },
                     orderBy: {
-                        id: 'desc',
+                        round_id: 'desc',
                     },
                 },
             },
