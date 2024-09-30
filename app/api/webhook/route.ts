@@ -92,12 +92,12 @@ export async function POST(req: NextRequest) {
                         );
                     }
 
-                    if (session.id !== current_round.current_round) {
-                        return errorHandler(
-                            'User not active for this current round',
-                            403
-                        );
-                    }
+                    // if (session.id !== current_round.current_round) {
+                    //     return errorHandler(
+                    //         'User not active for this current round',
+                    //         403
+                    //     );
+                    // }
 
                     // send success mail
                     const transporter = nodemailer.createTransport({
@@ -229,15 +229,15 @@ export async function POST(req: NextRequest) {
         `,
                     };
 
-                    transporter.sendMail(
-                        mailData,
-                        function (err: Error | null, info: any) {
-                            if (err) {
-                                console.error(err);
-                                return errorHandler(`Unable to send mail`, 500);
-                            }
-                        }
-                    );
+                    // transporter.sendMail(
+                    //     mailData,
+                    //     function (err: Error | null, info: any) {
+                    //         if (err) {
+                    //             console.error(err);
+                    //             return errorHandler(`Unable to send mail`, 500);
+                    //         }
+                    //     }
+                    // );
 
                     // log action
                     let description = `Payment: #${amount}, Reference: ${reference} from: ${name}, For user with id: ${session.user_id} 
