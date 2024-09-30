@@ -38,6 +38,8 @@ const Participants = (props: Props) => {
         );
     });
 
+    const vetoQualified = [91, 159, 201, 12, 50];
+
     let downloadPDF;
 
     // Download the table data as a PDF
@@ -265,9 +267,20 @@ const Participants = (props: Props) => {
                                                                 </span>
                                                             )
                                                         ) : participant.qualified ? (
-                                                            <span className="text-green-500">
-                                                                Qualified
-                                                            </span>
+                                                            // if its round 3 and the participant was veto qualfied then indicate
+                                                            participant.round_id ===
+                                                                3 &&
+                                                            vetoQualified.includes(
+                                                                participant.user_id
+                                                            ) ? (
+                                                                <span className="text-green-500">
+                                                                    Veto-Qualified
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-green-500">
+                                                                    Qualified
+                                                                </span>
+                                                            )
                                                         ) : (
                                                             <span className="text-red-500">
                                                                 Disqualified
