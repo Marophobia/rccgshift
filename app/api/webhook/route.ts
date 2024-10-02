@@ -229,15 +229,7 @@ export async function POST(req: NextRequest) {
         `,
                     };
 
-                    transporter.sendMail(
-                        mailData,
-                        function (err: Error | null, info: any) {
-                            if (err) {
-                                console.error(err);
-                                return errorHandler(`Unable to send mail`, 500);
-                            }
-                        }
-                    );
+              
 
                     // log action
                     let description = `Payment: #${amount}, Reference: ${reference} from: ${name}, For user with id: ${session.user_id} 
@@ -262,7 +254,34 @@ export async function POST(req: NextRequest) {
                                 increment: vote,
                             },
                         },
+                        select: {
+                            votes: true,
+                        },
                     });
+
+                    if (update.votes <= 4000) {
+                        transporter.sendMail(
+                            mailData,
+                            function (err: Error | null, info: any) {
+                                if (err) {
+                                    console.error(err);
+                                    return errorHandler(`Unable to send mail`, 500);
+                                }
+                            }
+                        );
+                    }
+
+                    // Check if the votes exceed 4000 and update accordingly
+                    if (update.votes > 4000) {
+                        await tx.user_session.update({
+                            where: {
+                                id: session.id,
+                            },
+                            data: {
+                                votes: 4000,
+                            },
+                        });
+                    }
 
                     // Ensure the update was successful
                     if (!update) {
