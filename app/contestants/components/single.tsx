@@ -30,8 +30,6 @@ const PaystackButton = dynamic(
     { ssr: false }
 );
 
-const paystackTest = 'pk_test_af7feb1b416ddf7843b1416bee73435f16eec86e';
-
 type Props = {
     contestant: {
         id: number;
@@ -136,26 +134,26 @@ const Single = (props: Props) => {
             amount: totalAmount,
             custom_fields: [
                 {
-                    display_name: "Session",
-                    variable_name: "session",
-                    value: session ? session.id : "N/A" // Use the session ID if available
+                    display_name: 'Session',
+                    variable_name: 'session',
+                    value: session ? session.id : 'N/A', // Use the session ID if available
                 },
                 {
-                    display_name: "Vote",
-                    variable_name: "vote",
-                    value: votes.toString() // Convert the vote number to a string
+                    display_name: 'Vote',
+                    variable_name: 'vote',
+                    value: votes.toString(), // Convert the vote number to a string
                 },
                 {
-                    display_name: "Email",
-                    variable_name: "email",
-                    value: contestant.email
+                    display_name: 'Email',
+                    variable_name: 'email',
+                    value: contestant.email,
                 },
                 {
-                    display_name: "Name",
-                    variable_name: "name",
-                    value: fname
-                }
-            ]
+                    display_name: 'Name',
+                    variable_name: 'name',
+                    value: fname,
+                },
+            ],
         },
         onSuccess: () => {
             Swal.fire({

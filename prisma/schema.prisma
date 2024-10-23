@@ -106,6 +106,19 @@ model logs {
   session     String?
 }
 
+model RegionalPastor {
+  id                                         Int      @id @default(autoincrement())
+  region                                     String
+  name                                       String
+  state                                      String
+  phone                                      String
+  regional_shift_coordinator_name            String
+  regional_shift_coordinator_phone           String
+  assistant_regional_shift_coordinator_name  String?
+  assistant_regional_shift_coordinator_phone String?
+  createdAt                                  DateTime @default(now())
+}
+
 enum Role {
   judge1
   judge2

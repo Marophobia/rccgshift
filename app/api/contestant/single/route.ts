@@ -1,5 +1,5 @@
-import { errorHandler, sucessHandler } from '../../../../lib/functions';
-import prisma from '../../../../lib/db';
+import { errorHandler, sucessHandler } from '@/lib/functions';
+import prisma from '@/lib/db';
 
 export const POST = async (req: Request) => {
     const data = await req.json();
