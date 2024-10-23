@@ -76,8 +76,6 @@ const EditEntry = ({ pastor }: Props) => {
                 }
             );
 
-            console.log(update);
-
             if (update.ok) {
                 toast.success('Action Completed successfully');
                 router.refresh();

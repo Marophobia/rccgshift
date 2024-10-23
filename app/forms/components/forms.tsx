@@ -1,15 +1,3 @@
-// Regional pastors form
-
-// 1. Select Region (Region 1-Region 59)
-// 2. State of Region
-// 2. Name of Regional Youth Pastor
-// 3. Phone of Regional Youth Pastor
-
-// 4. Name of Regional Shift Coordinator
-// 5. Phone of Regional Shift Coordinator
-
-// 6. Name of Assistant Regional Shift Coordinator (optional)
-// 7. Phone of Assistant Regional Shift Coordinator (optional)
 'use client';
 import React, { useState } from 'react';
 import {

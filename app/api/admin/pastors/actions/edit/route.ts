@@ -43,8 +43,6 @@ export const POST = async (req: Request) => {
             },
         });
 
-        console.log(editEntry);
-
         if (editEntry) {
             return sucessHandler('Updated', 200);
         }
