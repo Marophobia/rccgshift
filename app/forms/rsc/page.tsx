@@ -14,7 +14,7 @@ const RegionalPastorsForms = (props: Props) => {
                 <main id="main">
                     <div id="page-title">
                         <h1>
-                            <span>Regional Pastors Form</span>
+                            <span>Regional Shift Coordinators</span>
                         </h1>
                     </div>
                     <div id="page-container">
