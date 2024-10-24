@@ -12,11 +12,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { regions, nigerianStates } from '../components/index';
 
+const provinces = Array.from({ length: 19 }, (_, i) => `Youth Province ${i + 1}`);
+
 type Props = {};
 
 const PastorsForm = (props: Props) => {
     const [region, setRegion] = useState('');
     const [state, setState] = useState('');
+    const [province, setProvince] = useState(''); // New state for province
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [shiftCoordinator, setShiftCoordinator] = useState('');
@@ -29,10 +32,12 @@ const PastorsForm = (props: Props) => {
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
+        toast.loading("Please Wait")
         e.preventDefault();
         const formData = {
             region,
             state,
+            province, // Include province in form data
             name,
             phone,
             shiftCoordinator,
@@ -50,14 +55,17 @@ const PastorsForm = (props: Props) => {
             });
 
             if (update.ok) {
+                toast.dismiss()
                 toast.success('Regional pastor Added successfully');
                 router.refresh();
             } else if (update.status === 409) {
+                toast.dismiss()
                 toast.error(
-                    `${update.statusText}: Pastor already exists for this region`
+                    `${update.statusText}: Pastor already exists for this region and/or province`
                 );
             }
         } catch (error: any) {
+            toast.dismiss()
             console.error('Error:', error);
             toast.error('An error occurred');
         }
@@ -87,6 +95,28 @@ const PastorsForm = (props: Props) => {
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {/* Conditionally render Province select if Region 35 is selected */}
+                    {region === 'Region 35' && (
+                        <div className="my-5">
+                            <label>Province</label>
+                            <Select onValueChange={(value) => setProvince(value)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Province" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {provinces.map((province) => (
+                                        <SelectItem
+                                            key={province}
+                                            value={province}
+                                        >
+                                            {province}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
 
                     {/* Select State */}
                     <div className="my-5">

@@ -109,6 +109,7 @@ model logs {
 model RegionalPastor {
   id                                         Int      @id @default(autoincrement())
   region                                     String
+  province                                   String
   name                                       String
   state                                      String
   phone                                      String

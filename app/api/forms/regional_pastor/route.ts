@@ -5,6 +5,7 @@ export const POST = async (req: Request) => {
     const data = await req.json();
     const {
         region,
+        province,
         state,
         name,
         phone,
@@ -14,15 +15,17 @@ export const POST = async (req: Request) => {
         assistantShiftCoordinatorPhone,
     } = data;
 
+    // Validate required fields
     if (!region || !state || !name || !phone) {
         return errorHandler('Please fill in all required fields', 400);
     }
 
     try {
+        // Check if a regional pastor already exists for the given region and province (if applicable)
         const regionalPastorExists = await prisma.regionalPastor.findFirst({
             where: {
                 region,
-                // state,
+                ...(province && { province }),  // Include province conditionally
             },
         });
 
@@ -33,9 +36,11 @@ export const POST = async (req: Request) => {
             );
         }
 
-        const regionalPastor = await prisma.regionalPastor.create({
+        // Create the new regional pastor record
+        await prisma.regionalPastor.create({
             data: {
                 region,
+                province,
                 state,
                 name,
                 phone,
@@ -51,9 +56,9 @@ export const POST = async (req: Request) => {
         return sucessHandler(
             'Regional Pastor added successfully',
             201,
-            regionalPastor
         );
     } catch (error) {
-        return errorHandler(`Something went wrong: ${error}`);
+        console.error('Error adding regional pastor:', error);  // Log the error for better debugging
+        return errorHandler(`Something went wrong: ${error}`, 500);
     }
 };

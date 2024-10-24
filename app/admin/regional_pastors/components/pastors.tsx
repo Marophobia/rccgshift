@@ -81,6 +81,7 @@ const PastorsTable = ({ pastors }: Props) => {
                             <TableHead className="w-[100px]">S/N</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Region</TableHead>
+                            <TableHead>Province</TableHead>
                             <TableHead>State</TableHead>
                             <TableHead>Phone</TableHead>
                             <TableHead>RS coordinator</TableHead>
@@ -99,6 +100,7 @@ const PastorsTable = ({ pastors }: Props) => {
                                 </TableCell>
                                 <TableCell>{pastor.name}</TableCell>
                                 <TableCell>{pastor.region}</TableCell>
+                                <TableCell>{pastor.province ? pastor.province : 'No Province'}</TableCell>
                                 <TableCell>{pastor.state}</TableCell>
                                 <TableCell>{pastor.phone}</TableCell>
                                 <TableCell>

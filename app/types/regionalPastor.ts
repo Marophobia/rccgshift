@@ -3,6 +3,7 @@ export interface IregionalPastors {
     name: string;
     phone: string;
     region: string;
+    province: string;
     state: string;
     regional_shift_coordinator_name: string;
     regional_shift_coordinator_phone: string;
