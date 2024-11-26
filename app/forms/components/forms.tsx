@@ -19,7 +19,7 @@ type Props = {};
 const PastorsForm = (props: Props) => {
     const [region, setRegion] = useState('');
     const [state, setState] = useState('');
-    const [province, setProvince] = useState(''); // New state for province
+    const [province, setProvince] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [shiftCoordinator, setShiftCoordinator] = useState('');
@@ -56,12 +56,12 @@ const PastorsForm = (props: Props) => {
 
             if (update.ok) {
                 toast.dismiss()
-                toast.success('Regional pastor Added successfully');
+                toast.success('Form Submitted, Thanks!');
                 router.refresh();
             } else if (update.status === 409) {
                 toast.dismiss()
                 toast.error(
-                    `${update.statusText}: Pastor already exists for this region and/or province`
+                    `${update.statusText}: Pastor / Shift Coordninator already exists for this Region`
                 );
             }
         } catch (error: any) {
@@ -100,7 +100,7 @@ const PastorsForm = (props: Props) => {
                     </div>
 
                     {/* Conditionally render Province select if Region 35 is selected */}
-                    {region === 'Region 35' && (
+                    {/* {region === 'Region 35' && (
                         <div className="my-5">
                             <label>Province</label>
                             <Select onValueChange={(value) => setProvince(value)}>
@@ -119,7 +119,7 @@ const PastorsForm = (props: Props) => {
                                 </SelectContent>
                             </Select>
                         </div>
-                    )}
+                    )} */}
 
                     {/* Select State */}
                     <div className="my-5">

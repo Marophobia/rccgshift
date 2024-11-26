@@ -109,7 +109,6 @@ model logs {
 model RegionalPastor {
   id                                         Int      @id @default(autoincrement())
   region                                     String
-  province                                   String
   name                                       String
   state                                      String
   phone                                      String
@@ -118,6 +117,17 @@ model RegionalPastor {
   assistant_regional_shift_coordinator_name  String?
   assistant_regional_shift_coordinator_phone String?
   createdAt                                  DateTime @default(now())
+}
+
+model ProvincialPastor {
+  id                                 Int      @id @default(autoincrement())
+  region                             String
+  province                           String
+  name                               String
+  phone                              String
+  provincial_shift_coordinator_name  String
+  provincial_shift_coordinator_phone String
+  createdAt                          DateTime @default(now())
 }
 
 enum Role {

@@ -5,54 +5,48 @@ export const POST = async (req: Request) => {
     const data = await req.json();
     const {
         region,
-        state,
+        province,
         name,
         phone,
         shiftCoordinator,
         shiftCoordinatorPhone,
-        assistantShiftCoordinator,
-        assistantShiftCoordinatorPhone,
     } = data;
 
     // Validate required fields
-    if (!region || !state || !name || !phone) {
+    if (!region || !name || !phone || !shiftCoordinator || !shiftCoordinatorPhone) {
         return errorHandler('Please fill in all required fields', 400);
     }
 
     try {
         // Check if a regional pastor already exists for the given region and province (if applicable)
-        const regionalPastorExists = await prisma.regionalPastor.findFirst({
+        const provincialPastorExists = await prisma.provincialPastor.findFirst({
             where: {
-                region
-                // ...(province && { province }), 
+                region,
+                ...(province && { province }), 
             },
         });
 
-        if (regionalPastorExists) {
+        if (provincialPastorExists) {
             return errorHandler(
-                'Regional Pastor already exists for this region',
+                'Provincial Pastor / Coordinator already exists for this region',
                 409
             );
         }
 
         // Create the new regional pastor record
-        await prisma.regionalPastor.create({
+        await prisma.provincialPastor.create({
             data: {
                 region,
-                state,
+                province,
                 name,
                 phone,
-                regional_shift_coordinator_name: shiftCoordinator,
-                regional_shift_coordinator_phone: shiftCoordinatorPhone,
-                assistant_regional_shift_coordinator_name:
-                    assistantShiftCoordinator,
-                assistant_regional_shift_coordinator_phone:
-                    assistantShiftCoordinatorPhone,
+                provincial_shift_coordinator_name: shiftCoordinator,
+                provincial_shift_coordinator_phone: shiftCoordinatorPhone,
             },
         });
 
         return sucessHandler(
-            'Regional Pastor added successfully',
+            'Details added successfully',
             201,
         );
     } catch (error) {
