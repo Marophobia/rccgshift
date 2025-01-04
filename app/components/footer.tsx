@@ -30,7 +30,7 @@ const Footer = (props: Props) => {
                             The competition is televised and streamed live online, so you have the chance to be seen by millions of people around the world.</p>
                         <p><span className="fa fa-map-marker"></span>Redemption City of God
                         </p>
-                        <p><span className="fa fa-phone"></span>+447424483987, +2347060626135, +2348104238564
+                        <p><span className="fa fa-phone"></span>+447424483987, +2347075594841, +2348104238564
                         </p>
                         <p><span className="fa fa-paper-plane"></span>info@rccgshift.org
                         </p>

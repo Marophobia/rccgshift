@@ -116,7 +116,7 @@ const Details = (props: Props) => {
                         <ul className="ombre-table">
                             <li>
                                 <div className="ombre-table-left"><i className="ombre-icon fa fa-phone-square"></i>Phone</div>
-                                <div className="ombre-table-right">+447424483987, +2347060626135 <br /> +2348104238564</div>
+                                <div className="ombre-table-right">+447424483987, +2347075594841 <br /> +2348104238564</div>
                             </li>
                             <li>
                                 <div className="ombre-table-left"><i className="ombre-icon fa fa-envelope"></i>E-mail</div>
