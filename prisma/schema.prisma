@@ -35,7 +35,19 @@ model User {
   picture           String?
   date              DateTime?      @default(now())
   status            UserStatus     @default(registered)
+  seasonId          Int            @default(1)
+  Season            Season?        @relation(fields: [seasonId], references: [id])
   user_sessions     User_session[]
+}
+
+model Season {
+  id             Int            @id @default(autoincrement())
+  name           String
+  status         Boolean        @default(true)
+  current_season Settings[]
+  user_sessions  User_session[]
+  round          Round[]
+  User           User[]
 }
 
 model Round {
@@ -45,21 +57,27 @@ model Round {
   status        Boolean        @default(true)
   current_round Settings[]
   users         User_session[]
+  Season        Season?        @relation(fields: [seasonId], references: [id])
+  seasonId      Int?           @default(1)
 }
 
 model Settings {
-  id            Int     @id @default(autoincrement())
-  current_round Int
-  status        Boolean @default(true)
-  compiled      Boolean @default(false)
-  competition   Int     @default(0)
-  round         Round   @relation(fields: [current_round], references: [id])
+  id             Int     @id @default(autoincrement())
+  current_round  Int
+  current_season Int     @default(2)
+  status         Boolean @default(true)
+  compiled       Boolean @default(false)
+  competition    Int     @default(0)
+  round          Round   @relation(fields: [current_round], references: [id])
+  season         Season  @relation(fields: [current_season], references: [id])
 
   @@index([current_round], map: "current_id")
+  @@index([current_season], map: "current_season")
 }
 
 model User_session {
   id           Int               @id @default(autoincrement())
+  season_id    Int               @default(1)
   round_id     Int
   votes        Int               @default(0)
   score        Int               @default(0)
@@ -75,10 +93,12 @@ model User_session {
   parameters   Parameters[]
   round        Round             @relation(fields: [round_id], references: [id])
   user         User              @relation(fields: [user_id], references: [id])
+  season       Season            @relation(fields: [season_id], references: [id])
 
   @@unique([user_id, round_id])
   @@index([user_id], map: "user_id")
   @@index([round_id], map: "round_id")
+  @@index([season_id], map: "season_id")
 }
 
 model Parameters {

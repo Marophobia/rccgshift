@@ -23,6 +23,8 @@ import { ToastContainer, toast } from 'react-toastify';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/navigation';
 import Editentry from './editentry';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 type Props = {
     pastors: IregionalPastors[];
@@ -32,6 +34,7 @@ const PastorsTable = ({ pastors }: Props) => {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const pastorsPerPage = 20;
+    const [loading, setLoading] = useState(false)
 
     // Calculate the indexes for slicing the pastors array
     const indexOfLastPastor = currentPage * pastorsPerPage;
@@ -64,17 +67,68 @@ const PastorsTable = ({ pastors }: Props) => {
         }
     };
 
+    const downloadPDF = () => {
+        setLoading(true)
+        const doc = new jsPDF();
+        const tableColumn = [
+            'S/N',
+            'Name',
+            'Region',
+            'Province',
+            'State',
+            'Phone',
+            'Regional Shifh Coord Name',
+            'Regional Shift Coord Phone',
+            'Assistant Regional Shifh Coord Name',
+            'Assistant Regional Shifh Coord Phone',
+            'Date',
+        ];
+        const tableRows: any[] = [];
+
+        pastors.forEach((pastor, index) => {
+            const rowData = [
+                index + 1,
+                pastor.name,
+                pastor.region,
+                pastor.province,
+                pastor.phone,
+                pastor.regional_shift_coordinator_name,
+                pastor.regional_shift_coordinator_phone,
+                pastor.assistant_regional_shift_coordinator_name,
+                pastor.assistant_regional_shift_coordinator_phone,
+                new Date(pastor.createdAt).toLocaleDateString(),
+            ];
+            tableRows.push(rowData);
+        });
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+        });
+
+        doc.save('regionalshiftcoord.pdf');
+        setLoading(false)
+    };
+
     return (
         <>
             <div className="card p-5">
-                {/* <div className="w-full flex justify-end">
+                <div className="w-full flex justify-end">
                     <button
                         className="btn b-solid btn-primary-solid text-white mb-5"
-                        onClick={download}
+                        onClick={downloadPDF}
+                        disabled={loading}
                     >
-                        Download PDF <Download size={15} />{' '}
+                        {loading ? (
+                            <span>Downloading...</span>
+                        ) : (
+                            <>
+                                <span>Download PDF</span>
+                                <Download size={15} />
+                            </>
+                        )}
                     </button>
-                </div> */}
+                </div>
                 <Table>
                     <TableHeader>
                         <TableRow>

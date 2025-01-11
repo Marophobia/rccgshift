@@ -30,7 +30,7 @@ const About = (props: Props) => {
                             <span>4 Judges</span>
                         </li>
                         <li>
-                            <span>223 Contestants</span>
+                            <span>Over 1,000 Contestants</span>
                         </li>
                     </ol>
                     <p>.</p>

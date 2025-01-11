@@ -17,7 +17,7 @@ export const metadata = {
     },
 
     twitter: {
-        card: 'CoONTACT US | RCCG SHIFT',
+        card: 'CONTACT US | RCCG SHIFT',
         title: 'CONTACT US | RCCG SHIFT',
 
     },

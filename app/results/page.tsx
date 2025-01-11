@@ -54,9 +54,26 @@ const getData = async () => {
     return { rounds: await res.json(), settings: await res2.json() }
 }
 
+const getSeasons = async () => {
+    const authorization = headers().get('authorization')
+    const headersInit: HeadersInit = authorization ? { authorization } : {};
+    const res = await fetch(`${apiUrl}/api/seasons`,
+        {
+            method: 'POST',
+            cache: 'no-store',
+            headers: headersInit
+        })
+    if (!res.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return res.json();
+}
+
 const Results = async () => {
     const data = await getData()
     const { rounds, settings } = await getData()
+    const seasons = await getSeasons()
+
 
     return (
         <>
@@ -67,7 +84,7 @@ const Results = async () => {
                         <h1><span>Competition Results</span></h1>
                     </div>
                     <div id="page-container">
-                        <Rounds rounds={rounds.data} settings={settings.data} />
+                        <Rounds rounds={rounds.data} settings={settings.data} season={seasons.data} />
                     </div>
                 </main>
                 <Footer />

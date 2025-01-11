@@ -1,15 +1,17 @@
 "use client"
-import React from 'react'
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "../../../components/ui/card"
 import { IuserSession } from '../../types/user_session'
 import Link from 'next/link'
+import { Iseason } from '@/app/types/round'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useState } from "react"
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Props = {
     rounds: {
@@ -23,19 +25,95 @@ type Props = {
         current_round: number,
         status: boolean
         competition: number
-    }
+    },
+    season: Iseason[]
 }
 
 const Rounds = (props: Props) => {
-    const { rounds, settings } = props
-    console.log(settings)
+    const { rounds, settings, season } = props
+    const [roundData, setRoundData] = useState(rounds)
+    const currentSeason = season.reduce((prev, curr) => (curr.id > prev.id ? curr : prev));
+    const [activeSeason, setActiveSeason] = useState(currentSeason);
+    const [loading, setLoading] = useState(false);
+
+    // Fetch contestants for a specific season
+    const fetchRoundsForSeason = async (seasonId: number) => {
+        console.log("We are here")
+        setLoading(true);
+        try {
+            const response = await fetch(`${apiUrl}/api/admin/rounds/season`, {
+                method: 'POST',
+                cache: 'no-store',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seasonId }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Failed to update: ', error)
+            }
+
+            const data = await response.json();
+            setRoundData(data.data)
+
+        } catch (error) {
+            console.error(
+                'An error occurred while fetching contestants:',
+                error
+            )
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
+    // Handle season selection
+    const handleSeasonChange = (seasonId: number) => {
+        const selectedSeason = season.find((s) => s.id === seasonId);
+        if (!selectedSeason) return;
+
+        setActiveSeason(selectedSeason);
+
+        if (seasonId === currentSeason.id) {
+            // If the selected season is the current season, use the initial data
+            setRoundData(rounds);
+        } else {
+            // Fetch data for the selected season
+            fetchRoundsForSeason(seasonId);
+        }
+    };
 
     return (
         <>
             <div className='grid'>
+
+                {/* Season Selector */}
+                <div className="mb-6">
+                    <label htmlFor="season-select" className="block text-sm font-medium mb-2">
+                        Select Season:
+                    </label>
+                    <Select
+                        value={String(activeSeason.id)} // Ensure it's a string for the Select component
+                        onValueChange={(value) => handleSeasonChange(Number(value))} // Convert back to a number
+                    >
+                        <SelectTrigger className="w-full border rounded-lg px-4 py-2 text-gray-900">
+                            <SelectValue placeholder="Choose a season" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {season.map((s) => (
+                                <SelectItem key={s.id} value={String(s.id)}>
+                                    {s.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
                 {
                     settings.competition ? (
-                        rounds.map((round, index) => (
+                        roundData.map((round, index) => (
                             round.id <= settings.current_round && (
                                 <div className='unit one-third' key={round.id}>
                                     <Card style={{ background: "#111118", border: "none" }} className='text-center'>
@@ -84,3 +162,7 @@ const Rounds = (props: Props) => {
 }
 
 export default Rounds
+
+// function useState(arg0: boolean): [any, any] {
+//     throw new Error('Function not implemented.')
+// }

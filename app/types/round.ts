@@ -4,3 +4,9 @@ export interface Iround {
     qualifiers: number,
     status: boolean,
 }
+
+export interface Iseason {
+    id: number
+    name: string
+    status: boolean
+}

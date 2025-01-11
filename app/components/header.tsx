@@ -11,6 +11,10 @@ const Header = (props: Props) => {
         setNav(!nav); // Toggle the nav state
     };
 
+    const mobileMenu = () => {
+
+    }
+
     return (
         <>
             <header id="header">
@@ -88,7 +92,34 @@ const Header = (props: Props) => {
                                     <Link href="/results">Results</Link>
                                 </li>
                                 <li>
-                                    <Link href="/contact">Contact and FAQs</Link>
+                                    <Link href="/gallery">Gallery</Link>
+                                </li>
+                                {/* <li className="relative group">
+                                    <a href="#">Galleries</a>
+                                    <ul
+                                        className="absolute left-0 top-full mt-2 hidden w-48 bg-white shadow-lg group-hover:block"
+                                    >
+                                        <li>
+                                            <a
+                                                href="gallery-2-columns.html"
+                                                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                                            >
+                                                Galleries - 2 Columns
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href="gallery-3-columns.html"
+                                                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                                            >
+                                                Galleries - 3 Columns
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li> */}
+
+                                <li>
+                                    <Link href="/contact">Contact</Link>
                                 </li>
                             </ul>
                         </nav>

@@ -2,13 +2,76 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Icontestants } from '../../types/contestants'
+import { Iseason } from '@/app/types/round'
+import { toast } from 'react-toastify'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Props = {
     data: Icontestants[]
+    season: Iseason[]
 }
 
 const Card = (props: Props) => {
-    const { data } = props
+    const { data, season } = props
+
+    const currentSeason = season.reduce((prev, curr) => (curr.id > prev.id ? curr : prev));
+    const [activeSeason, setActiveSeason] = useState(currentSeason);
+    const [loading, setLoading] = useState(false);
+    const [seasonContestants, setSeasonContestants] = useState(data);
+
+
+    // Fetch contestants for a specific season
+    const fetchContestantsForSeason = async (seasonId: number) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${apiUrl}/api/seasons/contestants`, {
+                method: 'POST',
+                cache: 'no-store',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seasonId }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Failed to update: ', error);
+                toast.error('An error occurred');
+            }
+
+            const data = await response.json();
+            setSeasonContestants(data.data);
+            setFilteredContestants(data.data);
+
+        } catch (error) {
+            console.error(
+                'An error occurred while fetching contestants:',
+                error
+            );
+            toast.error('An error occurred');
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
+    // Handle season selection
+    const handleSeasonChange = (seasonId: number) => {
+        const selectedSeason = season.find((s) => s.id === seasonId);
+        if (!selectedSeason) return;
+
+        setActiveSeason(selectedSeason);
+
+        if (seasonId === currentSeason.id) {
+            // If the selected season is the current season, use the initial data
+            setSeasonContestants(data);
+            setFilteredContestants(data);
+        } else {
+            // Fetch data for the selected season
+            fetchContestantsForSeason(seasonId);
+        }
+    };
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1)
@@ -18,15 +81,14 @@ const Card = (props: Props) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredContestants, setFilteredContestants] = useState(data)
 
-    // Filter contestants based on search term (searches through entire data)
     useEffect(() => {
-        const filtered = data.filter(contestant =>
+        const filtered = seasonContestants.filter(contestant =>
             contestant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             String(contestant.id).includes(searchTerm)
         );
-        setFilteredContestants(filtered)
-        setCurrentPage(1) // Reset to page 1 on search
-    }, [searchTerm, data])
+        setFilteredContestants(filtered);
+        setCurrentPage(1); // Reset to page 1 on search
+    }, [searchTerm, seasonContestants]);
 
     // Calculate the contestants for the current page
     const indexOfLastContestant = currentPage * contestantsPerPage
@@ -79,6 +141,30 @@ const Card = (props: Props) => {
         <>
             <style jsx>{`.grid:before, .grid:after {display: none !important;}`}</style>
             <div>
+
+                {/* Season Selector */}
+                <div className="mb-6">
+                    <label htmlFor="season-select" className="block text-sm font-medium mb-2">
+                        Select Season:
+                    </label>
+                    <Select
+                        value={String(activeSeason.id)} // Ensure it's a string for the Select component
+                        onValueChange={(value) => handleSeasonChange(Number(value))} // Convert back to a number
+                    >
+                        <SelectTrigger className="w-full border rounded-lg px-4 py-2 text-gray-900">
+                            <SelectValue placeholder="Choose a season" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {season.map((s) => (
+                                <SelectItem key={s.id} value={String(s.id)}>
+                                    {s.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+
                 {/* Search Box */}
                 <div className="unit whole" style={{ padding: "0px" }}>
                     <div className='searchbox'>
@@ -95,64 +181,68 @@ const Card = (props: Props) => {
                     </div>
                 </div>
 
-
-                <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' style={{ display: 'grid' }}>
-                    {/* Contestant Cards */}
-                    {
-                        currentContestants.map(contestant => (
-                            <div className='col-span-1' key={contestant.id}>
-                                <div className="grid-container">
-                                    <div className="grid-img">
-                                        <Link href={`/contestants/${contestant.id}`} className="gallery link">
-                                            <div className="h-96">
-                                                <img
-                                                    src={`/images/contestants/${contestant.picture}`}
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
-                                                    alt="Contestant"
-                                                />
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <>
+                        <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' style={{ display: 'grid' }}>
+                            {/* Contestant Cards */}
+                            {
+                                currentContestants.map(contestant => (
+                                    <div className='col-span-1' key={contestant.id}>
+                                        <div className="grid-container">
+                                            <div className="grid-img">
+                                                <Link href={`/contestants/${contestant.id}`} className="gallery link">
+                                                    <div className="h-96">
+                                                        <img
+                                                            src={`/images/contestants/${contestant.picture}`}
+                                                            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                                                            alt="Contestant"
+                                                        />
+                                                    </div>
+                                                </Link>
                                             </div>
-                                        </Link>
+
+                                            <div className="grid-content" style={{ padding: "20px" }}>
+                                                <p style={{ fontSize: '19px' }}>
+                                                    <Link href={`/contestants/${contestant.id}`}>
+                                                        {contestant.name} ({String(contestant.id).padStart(3, '0')})
+                                                    </Link>
+                                                </p>
+                                            </div>
+                                            <Link className="arrow-button" href={`/contestants/${contestant.id}`}>View Profile</Link>
+                                        </div>
                                     </div>
+                                ))
+                            }
 
-                                    <div className="grid-content" style={{ padding: "20px" }}>
-                                        <p style={{ fontSize: '19px' }}>
-                                            <Link href={`/contestants/${contestant.id}`}>
-                                                {contestant.name} ({String(contestant.id).padStart(3, '0')})
-                                            </Link>
-                                        </p>
-                                    </div>
-                                    <Link className="arrow-button" href={`/contestants/${contestant.id}`}>View Profile</Link>
-                                </div>
-                            </div>
-                        ))
-                    }
+                        </div>
 
-                </div>
+                        <div className="blogpager unit whole" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                            {/* Previous button */}
+                            <button
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="button"
+                            >
+                                <i className="fa fa-chevron-left"></i> Prev
+                            </button>
 
-                {/* Pagination Controls */}
-                <div className="blogpager unit whole" style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                    {/* Previous button */}
-                    <button
-                        onClick={() => paginate(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="button"
-                    >
-                        <i className="fa fa-chevron-left"></i> Prev
-                    </button>
+                            {/* Render only previous, current, and next page numbers */}
+                            {renderPagination()}
 
-                    {/* Render only previous, current, and next page numbers */}
-                    {renderPagination()}
+                            {/* Next button */}
+                            <button
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="button"
+                            >
+                                Next <i className="fa fa-chevron-right"></i>
+                            </button>
 
-                    {/* Next button */}
-                    <button
-                        onClick={() => paginate(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="button"
-                    >
-                        Next <i className="fa fa-chevron-right"></i>
-                    </button>
-
-                </div>
+                        </div>
+                    </>
+                )}
             </div>
         </>
     )
