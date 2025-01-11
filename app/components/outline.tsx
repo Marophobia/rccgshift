@@ -25,7 +25,7 @@ const Outline = (props: Props) => {
                                             January 2025
                                         </h3>
                                         <p>
-                                            Shift Coordinators' Training/Workshop by industry experts
+                                            Shift Coordinators&apos; Training/Workshop by industry experts
                                         </p>
                                     </div>
 
@@ -36,7 +36,7 @@ const Outline = (props: Props) => {
                                             1st February 2025
                                         </h3>
                                         <p>
-                                            Shift Contestants' Registration begins
+                                            Shift Contestants&apos; Registration begins
                                         </p>
                                     </div>
 
@@ -69,7 +69,7 @@ const Outline = (props: Props) => {
                                             Sept/Oct 2025
                                         </h3>
                                         <p>
-                                            Int'l Shift Talent Competition LIVE at IYC
+                                            Int&apos;l Shift Talent Competition LIVE at IYC
                                         </p>
                                     </div>
                                 </div>
