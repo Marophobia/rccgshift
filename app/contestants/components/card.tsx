@@ -206,7 +206,7 @@ const Card = (props: Props) => {
                                             <div className="grid-content" style={{ padding: "20px" }}>
                                                 <p style={{ fontSize: '19px' }}>
                                                     <Link href={`/contestants/${contestant.id}`}>
-                                                        {contestant.name} ({String(contestant.id).padStart(3, '0')})
+                                                        {contestant.name} ({String(contestant.tag).padStart(3, '0')})
                                                     </Link>
                                                 </p>
                                             </div>

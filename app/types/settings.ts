@@ -4,4 +4,5 @@ export interface Isettings {
     compiled: boolean
     competition: number
     status: boolean
+    current_season: number
 }

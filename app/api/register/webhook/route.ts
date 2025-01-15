@@ -1,47 +1,89 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import prisma from '@/lib/db';
+import { errorHandler, sucessHandler } from '@/lib/functions';
 import nodemailer from 'nodemailer';
 
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET || ''; // Ensure this is set in your environment variables
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+export async function POST(req: NextRequest) {
+    try {
+        // Read the request body as an ArrayBuffer
+        const arrayBuffer = await req.arrayBuffer();
 
-export const sendEmail = async (email: string, subject: string, body: string, transporter: any): Promise<boolean> => {
-  try {
+        // Convert ArrayBuffer to Buffer
+        const buf = Buffer.from(arrayBuffer);
 
-    // console.log(email, subject)
-    
-    const fromName = 'RCCG SHIFT TALENT';
-    const fromEmail = 'info@rccgshift.org';
+        // Retrieve Paystack signature from headers
+        const paystackSignature = req.headers.get('x-paystack-signature');
 
-    const mailData = {
-      from: `"${fromName}" <${fromEmail}>`,
-      to: email,
-      subject: subject,
-      html: body,
-    };
+        if (!paystackSignature) {
+            console.error('Paystack signature missing');
+            return NextResponse.json(
+                { error: 'Paystack signature missing' },
+                { status: 400 }
+            );
+        }
 
-    transporter.sendMail(mailData, function (err: Error | null, info: any) {
-      if (err) {
-        console.error(err);
-      }
-    });
+        // Create the hash using the secret key
+        const hash = crypto
+            .createHmac('sha512', PAYSTACK_SECRET_KEY)
+            .update(buf)
+            .digest('hex');
 
-    console.log(`Email sent successfully to ${email}`);
+        // Check if the hash matches the signature
+        if (hash !== paystackSignature) {
+            console.error('Invalid signature');
+            return NextResponse.json(
+                { error: 'Invalid signature' },
+                { status: 400 }
+            );
+        }
 
-    return true;
-  } catch (error) {
-    console.error(`Failed to send email to ${email}:`, error);
-    return false;
-  }
-};
+        // Parse the event data
+        const event = JSON.parse(buf.toString());
 
+        // Process the event (example: update vote count, etc.)
+        // Example processing:
+        if (event.event === 'charge.success') {
+            const reference = event.data.reference;
+            // const amount = event.data.amount / 100;
+            const email = event.data.customer.email;
 
-export const generateEmailBody = async (name: string, message: string) => {
-  return (
-    `
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            const { name, season, tag, amount } = event.data.metadata;
+            console.log(event.data.metadata)
+
+            const contestant = await prisma.user.findFirst({
+                where: {
+                    tag,
+                    seasonId: season
+                }
+            })
+
+            try {
+
+                const updateUserStatus = await prisma.$transaction(async (tx) => {
+
+                    // send success mail
+                    const transporter = nodemailer.createTransport({
+                        port: 465,
+                        host: 'mail.privateemail.com',
+                        auth: {
+                            user: 'info@rccgshift.org',
+                            pass: process.env.PASSWORD,
+                        },
+                        secure: true,
+                    });
+
+                    const fromName = 'RCCG SHIFT TALENT';
+                    const fromEmail = 'info@rccgshift.org';
+
+                    const mailData = {
+                        from: `"${fromName}" <${fromEmail}>`,
+                        to: email,
+                        subject: 'Shift Registration - Next Steps',
+                        html: `
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding: 0px 10px 0px 10px;">
                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
@@ -68,18 +110,26 @@ export const generateEmailBody = async (name: string, message: string) => {
                                             <tr>
                                                 <td bgcolor="#ffffff" align="left"
                                                     style="padding: 20px 30px 0px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
-                                                    <p style="margin: 0;"><b>Hello ${name},</b></p>
+                                                    <p style="margin: 0;"><b>Hello,</b></p>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td bgcolor="#ffffff" align="left"
                                                     style="padding: 20px 30px 20px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
-
-                                                  ${message}
-
+                                                    <p style="margin: 0;">Thank you for registering for the RCCG International SHIFT Talent Hunt Season 3.</p>
+                                                    <p>Please click the button below to continue your registration and complete the process.</p>
                                                 </td>
                                             </tr>
-                                            
+                                            <tr>
+                                                <td bgcolor="#ffffff" align="center" style="padding: 20px;">
+                                                    <a href="https://rccgshift.org/register/${contestant?.tag}" 
+                                                    style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                                                    color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                                                    border-radius: 5px;">
+                                                        Complete your Registration
+                                                    </a>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td bgcolor="#ffffff" align="left"
                                                     style="padding: 5px 30px 20px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
@@ -145,7 +195,75 @@ export const generateEmailBody = async (name: string, message: string) => {
                                     </td>
                                 </tr>
                             </table>
-    
-    `
-  )
+                        `,
+                    };
+
+
+
+                    // log action
+                    let description = `Payment for Registration: #${amount}, Reference: ${reference} for: ${name}`;
+                    await prisma.logs.create({
+                        data: {
+                            action: 'Payment',
+                            description: description,
+                            amount: amount,
+                            candidate: String(contestant?.id),
+                            session: "Audition One",
+                        },
+                    });
+
+                    // Update the user's paid status
+                    const update = await tx.user.update({
+                        where: {
+                            id: contestant?.id,
+                        },
+                        data: {
+                            paid: 1
+                        }
+                    });
+
+                    // Ensure the update was successful
+                    if (!update) {
+                        return errorHandler(
+                            'Failed to update the user status.',
+                            402
+                        );
+                    }
+
+                    transporter.sendMail(mailData, function (err: Error | null, info: any) {
+                        if (err) {
+                            console.error(err);
+                            return errorHandler(`Unable to send mail`, 500);
+                        }
+                    });
+
+                    return update;
+
+                });
+
+                return sucessHandler('Update Successful', 201);
+
+            } catch (transactionError: any) {
+                // Log the specific error that caused the transaction to fail
+                console.error(
+                    `Transaction failed: ${transactionError.message}`,
+                    transactionError
+                );
+                return errorHandler(
+                    `Unable to update vote: ${transactionError.message}`,
+                    500
+                );
+            }
+        }
+
+        // Return a success response
+        return NextResponse.json({ message: 'Event processed successfully' });
+
+    } catch (error) {
+        console.error('Error processing Paystack webhook:', error);
+        return NextResponse.json(
+            { error: 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
 }

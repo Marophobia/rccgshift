@@ -8,6 +8,7 @@ export enum UserStatus {
 
 export interface Icontestants {
     id: number;
+    tag: number;
     name: string;
     email: string;
     telephone: string;
@@ -24,6 +25,35 @@ export interface Icontestants {
     province: string;
     picture: string;
     status: UserStatus;
+    account_number: number
+    paid: number;
     date: Date;
+    seasonId: number
+    groupId: number
     user_sessions: IuserSession[] | null;
+}
+
+export interface IGroup {
+    id: number
+    name: string
+    size: number
+    User: Icontestants
+    GroupMembers: IGroupMembers[] | null
+}
+
+
+export interface IGroupMembers {
+    id: number;
+    tag: number;
+    name: string;
+    email: string;
+    telephone: string;
+    gender: string;
+    age_grade: string;
+    account_number: number
+    status: UserStatus;
+    paid: number;
+    date: Date;
+    seasonId: number
+    groupId: number
 }

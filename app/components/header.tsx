@@ -21,7 +21,7 @@ const Header = (props: Props) => {
                 <div id="header-top">
                     <div id="header-logo">
                         <Link href="/">
-                            <img src="../images/logo-white.png" alt="Logo" width="250px" />
+                            <img src="../../images/logo-white.png" alt="Logo" width="250px" />
                         </Link>
                     </div>
                     <div id="header-icons">

@@ -105,7 +105,7 @@ const Outline = (props: Props) => {
                             height={1000}
                             alt="event pic"
                             className="position-absolute w-100 h-100"
-                            src="/img/opening.jpg"
+                            src="/img/openings.jpg"
                         />
                     </div>
                 </div>
