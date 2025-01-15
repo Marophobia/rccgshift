@@ -813,7 +813,8 @@ const RegistrationForm = () => {
 
     const componentProps = {
         email: formData.email,
-        amount: amount * 100,
+        // amount: amount * 100,
+        amount: 10 * 100,
         fname: formData.name + `(${tag})`,
         // lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
