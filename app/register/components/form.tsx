@@ -778,7 +778,7 @@ const RegistrationForm = () => {
                 const update = await fetch(`${apiUrl}/api/register`, {
                     method: 'POST',
                     cache: 'no-store',
-                    headers: { 'Content-Type': 'application/json' },
+                    // headers: { 'Content-Type': 'application/json' },
                     body: data,
                 });
 

@@ -11,6 +11,7 @@ export const POST = async (req: Request) => {
         // get formData input
         const formData = await req.formData();
         const jData = formData.get("input");
+        console.log("FOrm data is:", jData)
 
         if (!jData || typeof jData !== "string") {
             return new Response(

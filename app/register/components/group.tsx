@@ -83,7 +83,7 @@ const RegistrationSingleGroupForm = (data: Props) => {
         try {
             const response = await fetch('/api/register/group/single', {
                 method: 'POST',
-                // headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
