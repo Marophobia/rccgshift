@@ -51,7 +51,6 @@ const ProvinceForm = (props: Props) => {
             'Lagos Province 84',
             'Lagos Province 95',
             'Lagos Province 111',
-            'Lagos Province 112',
             'Lagos Province 125',
         ],
         'Region 3': [
@@ -393,7 +392,7 @@ const ProvinceForm = (props: Props) => {
             'Rivers Province 16',
             'Rivers Province 17',
             'Rivers Province 21',
-            'Rivers Province 23',
+            'Rivers Province 22'
         ],
         'Region 34': [
             'Regional Headquaters',
@@ -600,6 +599,7 @@ const ProvinceForm = (props: Props) => {
             'Lagos Province 85',
             'Lagos Province 105',
             'Lagos Province 106',
+            'Lagos Province 112',
         ],
         'Region 54': [
             'Lagos Province 3',
@@ -618,7 +618,7 @@ const ProvinceForm = (props: Props) => {
             'Rivers Province 10',
             'Rivers Province 13',
             'Rivers Province 20',
-            'Rivers Province 22',
+            'Rivers Province 23',
         ],
         'Region 56': [
             'Regional Headquaters',

@@ -28,6 +28,7 @@ const phoneNumbers: string[] = [
     "08169260066", // Pst Abiodun D
     "08056302618", // Pst Sesan
     "07034666656", // Pst Daniel
+    "08112949474", // Pst Maro
 ];
 
 
