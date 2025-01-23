@@ -29,6 +29,20 @@ const phoneNumbers: string[] = [
     "08056302618", // Pst Sesan
     "07034666656", // Pst Daniel
     "08112949474", // Pst Maro
+    "09060008891",
+    "08033432033",
+    "07035901959",
+    "07034979194",
+    "08166768999", //Korede
+    "08134954090", //Tom
+    "09011550670", //Kinrin
+    "+2349136547692", //Jotham
+    "+254702675652",
+    "+254729870864",
+    "+254717546393",
+    "+447792059903",
+    "+233548314145",
+    "+447448735749",
 ];
 
 
@@ -43,9 +57,12 @@ export const POST = async (req: Request) => {
 
         const countryCodeMapping = {
             NG: '234', // Nigeria
+            GH: '233', //Ghana
+            KEN: '254', //Kenya
             UK: '44',  // United Kingdom
             FR: '33',  // France
             CA: '1',   // Canada
+
         };
 
         const normalizePhoneNumber = (number: string | null): string => {
@@ -126,7 +143,7 @@ export const POST = async (req: Request) => {
             );
         }
 
-        const zoomLink = 'https://us06web.zoom.us/j/85857710606';
+        const zoomLink = 'https://us06web.zoom.us/j/86750499214?pwd=4yI2BQUiJVMcw1ai1fe3gbsFzdky6H.1';
 
         return sucessHandler('Account verified successfully.', 200, zoomLink);
     } catch (error) {
