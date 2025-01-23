@@ -85,7 +85,7 @@ const Training = () => {
 
                 <div className='grid'>
                     <div className='unit half'>
-                        <img src="/images/training2.jpg" />
+                        <img src="/images/training2.jpeg" />
                     </div>
                     <div className='unit half'>
                         <div>
