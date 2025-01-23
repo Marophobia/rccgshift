@@ -69,43 +69,46 @@ export const POST = async (req: Request) => {
             return sanitized;
         };
 
+
         const normalizedPhoneNumber = normalizePhoneNumber(phoneNumber);
 
-        const regionalPastor = await prisma.regionalPastor.findFirst({
-            where: {
-                OR: [
-                    { regional_shift_coordinator_phone: { not: null } as any },
-                    { phone: { not: null } as any },
-                    { assistant_regional_shift_coordinator_phone: { not: null } as any },
-                ],
+        // Check if the phone number exists in the predefined list
+        if (phoneNumbers.includes(normalizedPhoneNumber)) {
+            const zoomLink = 'https://us06web.zoom.us/u/kdfZwFoCAa';
+            return sucessHandler('Account verified successfully.', 200, zoomLink);
+        }
+
+        // Fetch all regionalPastor records
+        const regionalPastors = await prisma.regionalPastor.findMany({
+            select: {
+                regional_shift_coordinator_phone: true,
+                phone: true,
+                assistant_regional_shift_coordinator_phone: true,
             },
         });
 
-        const provincialPastor = await prisma.provincialPastor.findFirst({
-            where: {
-                OR: [
-                    { provincial_shift_coordinator_phone: { not: null } as any },
-                    { phone: { not: null } as any },
-                ],
+        // Fetch all provincialPastor records
+        const provincialPastors = await prisma.provincialPastor.findMany({
+            select: {
+                provincial_shift_coordinator_phone: true,
+                phone: true,
             },
         });
 
-        const regionalNumbers = regionalPastor
-            ? [
-                regionalPastor.regional_shift_coordinator_phone,
-                regionalPastor.phone,
-                regionalPastor.assistant_regional_shift_coordinator_phone,
-            ].filter((num): num is string => num !== null) // Filter out null values
-            : [];
+        // Extract and normalize phone numbers from regionalPastor
+        const regionalNumbers = regionalPastors.flatMap((pastor) => [
+            pastor.regional_shift_coordinator_phone,
+            pastor.phone,
+            pastor.assistant_regional_shift_coordinator_phone,
+        ]).filter((num): num is string => num !== null); // Remove null values
 
         const normalizedRegionalNumbers = regionalNumbers.map((num) => normalizePhoneNumber(num));
 
-        const provincialNumbers = provincialPastor
-            ? [
-                provincialPastor.provincial_shift_coordinator_phone,
-                provincialPastor.phone,
-            ].filter((num): num is string => num !== null) // Filter out null values
-            : [];
+        // Extract and normalize phone numbers from provincialPastor
+        const provincialNumbers = provincialPastors.flatMap((pastor) => [
+            pastor.provincial_shift_coordinator_phone,
+            pastor.phone,
+        ]).filter((num): num is string => num !== null); // Remove null values
 
         const normalizedProvincialNumbers = provincialNumbers.map((num) => normalizePhoneNumber(num));
 
