@@ -48,7 +48,9 @@ export const POST = async (req: Request) => {
             CA: '1',   // Canada
         };
 
-        const normalizePhoneNumber = (number: string) => {
+        const normalizePhoneNumber = (number: string | null): string => {
+            if (!number) return ''; // Return an empty string for null or undefined values
+
             // Remove non-digits and "+" prefix
             let sanitized = number.replace(/\D/g, '');
 
@@ -69,34 +71,52 @@ export const POST = async (req: Request) => {
 
         const normalizedPhoneNumber = normalizePhoneNumber(phoneNumber);
 
-        // Check if the phone number exists in the predefined list
-        if (phoneNumbers.includes(normalizedPhoneNumber)) {
-            const zoomLink = 'https://us06web.zoom.us/j/85857710606';
-            return sucessHandler('Account verified successfully.', 200, zoomLink);
-        }
-
-        // Check if the phone number exists in regionalPastor table
-        const numberExists = await prisma.regionalPastor.findFirst({
+        const regionalPastor = await prisma.regionalPastor.findFirst({
             where: {
                 OR: [
-                    { regional_shift_coordinator_phone: normalizedPhoneNumber },
-                    { phone: normalizedPhoneNumber },
-                    { assistant_regional_shift_coordinator_phone: normalizedPhoneNumber },
+                    { regional_shift_coordinator_phone: { not: null } as any },
+                    { phone: { not: null } as any },
+                    { assistant_regional_shift_coordinator_phone: { not: null } as any },
                 ],
             },
         });
 
-        // Check if the phone number exists in provincialPastor table
-        const numberExists2 = await prisma.provincialPastor.findFirst({
+        const provincialPastor = await prisma.provincialPastor.findFirst({
             where: {
                 OR: [
-                    { provincial_shift_coordinator_phone: normalizedPhoneNumber },
-                    { phone: normalizedPhoneNumber },
+                    { provincial_shift_coordinator_phone: { not: null } as any },
+                    { phone: { not: null } as any },
                 ],
             },
         });
 
-        if (!numberExists && !numberExists2) {
+        const regionalNumbers = regionalPastor
+            ? [
+                regionalPastor.regional_shift_coordinator_phone,
+                regionalPastor.phone,
+                regionalPastor.assistant_regional_shift_coordinator_phone,
+            ].filter((num): num is string => num !== null) // Filter out null values
+            : [];
+
+        const normalizedRegionalNumbers = regionalNumbers.map((num) => normalizePhoneNumber(num));
+
+        const provincialNumbers = provincialPastor
+            ? [
+                provincialPastor.provincial_shift_coordinator_phone,
+                provincialPastor.phone,
+            ].filter((num): num is string => num !== null) // Filter out null values
+            : [];
+
+        const normalizedProvincialNumbers = provincialNumbers.map((num) => normalizePhoneNumber(num));
+
+        // Combine all normalized numbers
+        const allNormalizedNumbers = [
+            ...normalizedRegionalNumbers,
+            ...normalizedProvincialNumbers,
+        ];
+
+        // Check if the provided normalizedPhoneNumber exists in the normalized numbers
+        if (!allNormalizedNumbers.includes(normalizedPhoneNumber)) {
             return errorHandler(
                 'You are not authorized to access this training.',
                 409
