@@ -36,13 +36,13 @@ const phoneNumbers: string[] = [
     "08166768999", //Korede
     "08134954090", //Tom
     "09011550670", //Kinrin
-    "+2349136547692", //Jotham
-    "+254702675652",
-    "+254729870864",
-    "+254717546393",
-    "+447792059903",
-    "+233548314145",
-    "+447448735749",
+    "09136547692", //Jotham
+    "254702675652",
+    "254729870864",
+    "254717546393",
+    "447792059903",
+    "233548314145",
+    "447448735749",
 ];
 
 
@@ -91,7 +91,7 @@ export const POST = async (req: Request) => {
 
         // Check if the phone number exists in the predefined list
         if (phoneNumbers.includes(normalizedPhoneNumber)) {
-            const zoomLink = 'https://us06web.zoom.us/u/kdfZwFoCAa';
+            const zoomLink = 'https://us06web.zoom.us/j/86750499214?pwd=4yI2BQUiJVMcw1ai1fe3gbsFzdky6H.1';
             return sucessHandler('Account verified successfully.', 200, zoomLink);
         }
 
