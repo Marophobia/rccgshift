@@ -36,34 +36,37 @@ const Training = () => {
             const data = await response.json();
 
             if (response.ok) {
-                let timerInterval: any;
-                Swal.fire({
-                    title: "Please hold on",
-                    html: "We are redirecting you to the meeting",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup()?.querySelector("b");
-                        timerInterval = setInterval(() => {
-                            if (timer) {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                            }
-                        }, 100);
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
-                    },
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        window.location.href = link;
-                        console.log("I was closed by the timer");
-                    }
-                });
+                // let timerInterval: any;
+                // Swal.fire({
+                //     title: "Please hold on",
+                //     html: "We are redirecting you to the meeting",
+                //     timer: 2000,
+                //     timerProgressBar: true,
+                //     didOpen: () => {
+                //         Swal.showLoading();
+                //         const timer = Swal.getPopup()?.querySelector("b");
+                //         timerInterval = setInterval(() => {
+                //             if (timer) {
+                //                 timer.textContent = `${Swal.getTimerLeft()}`;
+                //             }
+                //         }, 100);
+                //     },
+                //     willClose: () => {
+                //         clearInterval(timerInterval);
+                //     },
+                // }).then((result) => {
+                //     if (result.dismiss === Swal.DismissReason.timer) {
+                //         window.location.href = link;
+                //         console.log("I was closed by the timer");
+                //     }
+                // });
 
                 // Redirect to Zoom link
-                const link = data.data;
+                // const link = data.data;
                 // console.log(link);
+
+                setError("The Meeting is yet to start. Please try again by 7:30PM WAT");
+
             } else {
                 // console.log(data)
                 setError(data.error);
@@ -82,7 +85,7 @@ const Training = () => {
 
                 <div className='grid'>
                     <div className='unit half'>
-                        <img src="/images/training.jpg" />
+                        <img src="/images/training2.jpg" />
                     </div>
                     <div className='unit half'>
                         <div>
