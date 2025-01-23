@@ -88,7 +88,12 @@ export const POST = async (req: Request) => {
 
         // Check if the phone number exists in provincialPastor table
         const numberExists2 = await prisma.provincialPastor.findFirst({
-            where: { provincial_shift_coordinator_phone: normalizedPhoneNumber, phone: normalizedPhoneNumber },
+            where: {
+                OR: [
+                    { provincial_shift_coordinator_phone: normalizedPhoneNumber },
+                    { phone: normalizedPhoneNumber },
+                ],
+            },
         });
 
         if (!numberExists && !numberExists2) {
