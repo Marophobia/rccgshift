@@ -172,6 +172,8 @@ const RegistrationForm = () => {
                 });
 
                 const response = await update.json()
+                console.log("Update Query", update)
+                console.log("Finished Response", response)
 
                 if (update.ok) {
                     toast.dismiss()
@@ -182,12 +184,13 @@ const RegistrationForm = () => {
                 } else {
                     toast.dismiss()
                     toast.error(`${response.error}`);
+                    console.log(`${response.error}`)
                     return
                 }
             } catch (error: any) {
                 toast.dismiss()
-                console.error('Error:', error);
-                toast.error('An error occurred');
+                console.log('Error:', error);
+                toast.error('Error:', error.message);
                 return
             } finally {
                 setLoading(false)

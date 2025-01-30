@@ -22,8 +22,7 @@ export const POST = async (req: Request) => {
             participation, groupName, groupsize, type
         } = data;
 
-        console.log(participation)
-        console.log(type)
+        console.log(data)
 
         // Validate required fields
         if (!name || !email || !phoneNumber || !gender || !ageGrade ||
