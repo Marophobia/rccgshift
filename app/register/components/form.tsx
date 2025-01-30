@@ -16,7 +16,6 @@ import { ArrowBigLeft } from 'lucide-react';
 import Swal from 'sweetalert2';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import ChoirForm from './choir';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
 const PaystackButton = dynamic(
@@ -54,7 +53,7 @@ const RegistrationForm = () => {
         groupName: '',
         groupsize: '',
         creativity: '',
-        type: 1
+        type: activeType
     });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,15 +123,25 @@ const RegistrationForm = () => {
                 return toast.error("Please agree to the Terms and Conditions")
             }
 
-            if (
-                !formData.category ||
-                !formData.participation
-            ) {
-                toast.error('Please fill all required fields.');
-                return;
-            }
-
-            if (formData.participation === 'Group') {
+            if (activeType === 1) {
+                if (
+                    !formData.category ||
+                    !formData.participation
+                ) {
+                    toast.error('Please fill all required fields.');
+                    return;
+                }
+                if (formData.participation === 'Group') {
+                    if (
+                        !formData.groupName ||
+                        !formData.groupsize
+                    ) {
+                        toast.error('Please fill all required fields.');
+                        return;
+                    }
+                    setAmount(10000)
+                }
+            } else if (activeType === 2) {
                 if (
                     !formData.groupName ||
                     !formData.groupsize
@@ -140,7 +149,7 @@ const RegistrationForm = () => {
                     toast.error('Please fill all required fields.');
                     return;
                 }
-                setAmount(10000)
+                setAmount(20000)
             }
 
             if (!file) {
@@ -232,7 +241,6 @@ const RegistrationForm = () => {
 
     return (
         <>
-
 
             <ToastContainer />
             {!activeType &&
@@ -658,7 +666,334 @@ const RegistrationForm = () => {
 
             {activeType === 2 && (
                 <>
-                    <ChoirForm />
+                    <p>Please fill in your details to register for the RCCG Shift Choir Competition</p>
+                    {currentStep === 1 && (
+                        <div>
+                            <h5 className="borderr">Step One: Bio Data</h5>
+                            {/* Profile Picture */}
+                            <div>
+                                {formData.profilePicture && (
+                                    <div className="mt-4">
+                                        <img
+                                            src={formData.profilePicture}
+                                            alt="Preview"
+                                            className="w-32 h-32 rounded-full object-cover mx-auto"
+                                        />
+                                    </div>
+                                )}
+                                <label htmlFor="profilePicture" className="block font-medium my-10">
+                                    Profile Picture:
+                                </label>
+                                <input
+                                    type="file"
+                                    id="profilePicture"
+                                    name="profilePicture"
+                                    accept="image/*"
+                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 my-10"
+                                    onChange={handleImageChange}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="name">Full Name (as it appears on your bank account):</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    maxLength={50}
+                                    className="w-full border rounded px-4 py-2"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="email">Email Address:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    maxLength={50}
+                                    className="w-full border rounded px-4 py-2"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="phoneNumber">Phone Number:</label>
+                                <input
+                                    type="number"
+                                    name="phoneNumber"
+                                    id="phoneNumber"
+                                    value={formData.phoneNumber}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border rounded px-4 py-2"
+                                />
+                            </div>
+
+                            {/* Gender */}
+                            <div className="my-10">
+                                <label>Gender:</label>
+                                <Select
+                                    value={formData.gender}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            gender: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Gender" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="Male">Male</SelectItem>
+                                        <SelectItem value="Female">Female</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Age Grade */}
+                            <div className="my-10">
+                                <label>Age Grade:</label>
+                                <Select
+                                    value={formData.ageGrade}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            ageGrade: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Age Grade" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="Adult">Adult</SelectItem>
+                                        <SelectItem value="Youth">Youth</SelectItem>
+                                        <SelectItem value="Teen">Teen</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Country of Residence */}
+                            <div className="my-10">
+                                <label>Country of Residence:</label>
+                                <Select
+                                    value={formData.country}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            country: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Country" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {countries.map((country) => (
+                                            <SelectItem key={country} value={country}>
+                                                {country}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* State of Residence */}
+
+                            {formData.country && (
+                                formData.country === 'Nigeria' ? (
+                                    <div className="my-10">
+                                        <label>State of Residence:</label>
+                                        <Select
+                                            value={formData.state}
+                                            onValueChange={(value) =>
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    state: value,
+                                                }))
+                                            }>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select State" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {nigerianStates.map((state) => (
+                                                    <SelectItem key={state} value={state}>
+                                                        {state}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                ) : (
+                                    <div className="my-10">
+                                        <label htmlFor="state">State of Residence:</label>
+                                        <input
+                                            type="text"
+                                            name="state"
+                                            id="state"
+                                            value={formData.state}
+                                            onChange={(e) =>
+                                                setFormData((prev) => ({
+                                                    ...prev,
+                                                    state: e.target.value,
+                                                }))
+                                            }
+                                            required
+                                            maxLength={50}
+                                            className="w-full border rounded px-4 py-2"
+                                        />
+                                    </div>
+                                )
+                            )}
+
+                            {/* Select Region */}
+                            <div className="my-10">
+                                <label>Region</label>
+                                <Select
+                                    value={formData.region}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            region: value,
+                                        }))
+
+                                    }>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Region" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {regions.map((region) => (
+                                            <SelectItem
+                                                key={region}
+                                                value={`Region ${region}`}
+                                            >
+                                                {`Region ${region}`}
+                                            </SelectItem>
+                                        ))}
+                                        <SelectItem value="Redemption City">
+                                            Redemption City
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Conditionally render Province select if Region is selected */}
+                            {formData.region && formData.region !== 'Redemption City' && (
+                                <div className="my-10">
+                                    <label>Province</label>
+                                    <Select
+                                        value={formData.province}
+                                        onValueChange={(value) =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                province: value,
+                                            }))
+                                        }>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select Province" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {(regionProvinces[formData.region as keyof typeof regionProvinces] || []).map((province) => (
+                                                <SelectItem key={province} value={province}>
+                                                    {province}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
+
+                            <button onClick={handleNext} className='mt-5 text-white py-3 px-6' type='button' style={{ background: "#363635" }}> Proceed </button>
+
+                        </div>
+                    )}
+                    {currentStep === 2 && (
+                        <div>
+                            <h5 className="borderr">Step Two: Competition Data</h5>
+
+                            <div className='mb-5'>
+                                <label htmlFor="groupName">Choir Name:</label>
+                                <small>Please Note that you are creating a new choir group and as such you are the leader.</small>
+                                <input
+                                    type="text"
+                                    name="groupName"
+                                    id="groupName"
+                                    value={formData.groupName}
+                                    onChange={handleChange}
+                                    required
+                                    maxLength={50}
+                                    className="w-full border rounded px-4"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="groupsize">Choir Size (At least 20):</label>
+                                <input
+                                    type="number"
+                                    name="groupsize"
+                                    id="groupSize"
+                                    value={formData.groupsize}
+                                    onChange={handleChange}
+                                    required
+                                    maxLength={50}
+                                    min={30}
+                                    className="w-full border rounded px-4 py-2"
+                                />
+                            </div>
+
+                            {/* Terms and Conditions Checkbox */}
+                            <div className="flex items-center gap-3 mt-4">
+                                <input
+                                    type="checkbox"
+                                    id="agree"
+                                    checked={agreed}
+                                    onChange={(e) => setAgreed(e.target.checked)}
+                                    className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
+                                />
+                                <label htmlFor="agree" className="mt-2">
+                                    I agree to Shift <a href="/terms" className="underline" style={{ color: "#F5245F" }}>Terms and Conditions</a>
+                                </label>
+                            </div>
+
+                            {agreed &&
+                                <p className='mt-3'>By clicking the Proceed button, I confirm that I have read, understood, and agree to be bound by the International Shift Talent
+                                    Registration Terms and Conditions. I understand that my registration is subject to acceptance by the Organizer,
+                                    and I agree to comply with all Event rules and instructions.</p>
+                            }
+
+                            <div className='flex gap-5'>
+                                <button onClick={handlePrev} className='mt-5 text-white py-3 px-6' type='button' style={{ background: "#363635" }} disabled={loading}> <ArrowBigLeft /> </button>
+
+                                <button
+                                    type='button'
+                                    id="register"
+                                    name="register"
+                                    className='mt-5 text-white py-3 px-6' style={{ background: "#363635" }}
+                                    onClick={handleNext}
+                                    disabled={loading}
+                                > Proceed </button>
+                            </div>
+                        </div>
+                    )}
+                    {currentStep === 3 && (
+                        <div>
+                            <h5 className="borderr">Step Three: Payment</h5>
+                            <p>Please click on the button below to pay the required registration fee</p>
+
+                            <PaystackButton
+                                className="button w-100"
+                                {...componentProps}
+                            ></PaystackButton>
+
+                        </div>
+                    )}
                 </>
             )}
         </>

@@ -58,8 +58,6 @@ export async function generateMetadata({ params, searchParams }: { params: { id:
 
 const ContestantSingle = async ({ params, searchParams }: { params: { id: string }; searchParams: { type?: string } }) => {
     const id = params.id;
-    const type = searchParams?.type || 'default'; 
-    console.log("Type is:",type)
 
     let data;
     try {
@@ -67,7 +65,7 @@ const ContestantSingle = async ({ params, searchParams }: { params: { id: string
         const headersInit: HeadersInit = authorization ? { authorization } : {};
         const response = await fetch(`${apiUrl}/api/contestant/single`, {
             method: 'POST',
-            body: JSON.stringify({ id, type }),
+            body: JSON.stringify({ id }),
             cache: 'no-store',
             headers: headersInit,
         });

@@ -35,8 +35,8 @@ export const POST = async (req: Request) => {
             return errorHandler('Please fill in all required fields.', 400);
         }
 
-        if (type === 2 && (groupsize < 30 || !groupName || !groupName)) {
-            return errorHandler('Choir Size must be at least 30.', 400);
+        if (type === 2 && (groupsize < 20 || !groupName || !groupName)) {
+            return errorHandler('Choir Size must be at least 20.', 400);
         }
 
         if (participation === 'Group' && (!groupName || !groupsize)) {
