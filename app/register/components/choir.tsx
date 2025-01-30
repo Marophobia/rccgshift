@@ -147,6 +147,7 @@ const ChoirForm = () => {
 
                 const response = await update.json()
 
+
                 if (update.ok) {
                     toast.dismiss()
                     setCurrentStep(currentStep + 1);
@@ -161,7 +162,7 @@ const ChoirForm = () => {
             } catch (error: any) {
                 toast.dismiss()
                 console.error('Error:', error);
-                toast.error('An error occurred');
+                toast.error('Error:', error);
                 return
             } finally {
                 setLoading(false)

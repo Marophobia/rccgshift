@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
                                 click the button below to do so when the time comes, 
                                 but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
 
-                             <a href="https://rccgshift.org/register/${contestant?.tag}" 
+                             <a href="https://rccgshift.org/register/${contestant?.id}" 
                                 style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
                                 color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
                                 border-radius: 5px;"> Open Bank Account </a> 
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest) {
                             click the button below to do so when the time comes,
                             but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
 
-                             <a href="https://rccgshift.org/register/${contestant?.tag}" 
+                             <a href="https://rccgshift.org/register/${contestant?.id}" 
                                 style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
                                 color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
                                 border-radius: 5px;"> Open Bank Account </a> 
