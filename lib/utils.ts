@@ -56,7 +56,7 @@ export const generateEmailBody = async (name: string, message: string) => {
                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600;">
                                             <tr>
                                                 <td bgcolor="#ffffff" align="center"
-                                                    style="height: 200px; background-image: url('https://rccgshift.org/images/mail.png'); background-position: center; background-repeat: no-repeat; background-size: contain;">
+                                                    style="height: 200px; background-image: url('https://rccgshift.org/images/snip.png'); background-position: center; background-repeat: no-repeat; background-size: contain;">
                                                 </td>
                                             </tr>
                                         </table>

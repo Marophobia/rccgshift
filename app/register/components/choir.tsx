@@ -18,13 +18,7 @@ const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import dynamic from 'next/dynamic';
 const PaystackButton = dynamic(
-    () =>
-        import('react-paystack')
-            .then((mod) => mod.PaystackButton)
-            .catch((err) => {
-                console.error('Failed to load PaystackButton:', err);
-                return () => <div>Error loading Paystack</div>;
-            }),
+    () => import('react-paystack').then((mod) => mod.PaystackButton),
     { ssr: false }
 );
 
