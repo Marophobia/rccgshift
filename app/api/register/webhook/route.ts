@@ -57,9 +57,7 @@ export async function POST(req: NextRequest) {
 
             const contestant = await prisma.user.findFirst({
                 where: {
-                    tag,
-                    seasonId: season,
-                    competitionType: type
+                    id: tag
                 },
                 include: {
                     Group: true
