@@ -217,7 +217,7 @@ const RegistrationForm = () => {
             season: season,
             tag: tag,
             amount: amount,
-            type: 1,
+            type: activeType,
             custom_fields: [
                 {
                     display_name: 'Season',
