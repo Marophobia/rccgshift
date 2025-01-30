@@ -5,21 +5,24 @@ export const POST = async (req: Request) => {
     const data = await req.json();
     const { id } = data;
     try {
-        const contestant = await prisma.user.findFirst({
-            where: {
-                id: Number(id),
-            },
-            include: {
-                user_sessions: {
-                    include: {
-                        round: true,
-                    },
-                    orderBy: {
-                        round_id: 'desc',
-                    },
+
+         const contestant = await prisma.user.findFirst({
+                where: {
+                    id: Number(id),
                 },
-            },
-        });
+                include: {
+                    user_sessions: {
+                        include: {
+                            round: true,
+                        },
+                        orderBy: {
+                            round_id: 'desc',
+                        },
+                    },
+                    Group: true
+                },
+            });
+
 
         const settings = await prisma.settings.findFirst({
             include: {

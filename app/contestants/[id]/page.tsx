@@ -7,13 +7,14 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers';
 import Single from '../components/single';
 
-export async function generateMetadata({ params }: { params: { id: number } }) {
+export async function generateMetadata({ params, searchParams }: { params: { id: string }; searchParams: { type?: string } }){
     // read route params
     const id = params.id;
+    const type = searchParams?.type || 'default'; 
 
     const data = await fetch(`${apiUrl}/api/contestant/single`, {
         method: 'POST',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, type }),
     }).then((res) => res.json());
     const contestant = data.data.contestant;
 
@@ -55,15 +56,18 @@ export async function generateMetadata({ params }: { params: { id: number } }) {
     };
 }
 
-const ContestantSingle = async ({ params }: { params: { id: number } }) => {
+const ContestantSingle = async ({ params, searchParams }: { params: { id: string }; searchParams: { type?: string } }) => {
     const id = params.id;
+    const type = searchParams?.type || 'default'; 
+    console.log("Type is:",type)
+
     let data;
     try {
         const authorization = headers().get('authorization');
         const headersInit: HeadersInit = authorization ? { authorization } : {};
         const response = await fetch(`${apiUrl}/api/contestant/single`, {
             method: 'POST',
-            body: JSON.stringify({ id }),
+            body: JSON.stringify({ id, type }),
             cache: 'no-store',
             headers: headersInit,
         });
@@ -82,7 +86,8 @@ const ContestantSingle = async ({ params }: { params: { id: number } }) => {
                 <main id="main">
                     <div id="page-title">
                         <h1>
-                            <span>{contestant.name}</span>
+                            <span> {contestant.competitionType === 2 || contestant.type === 'Group' ? (
+                                `${contestant.Group?.name}`) : (`${contestant.name}`)}</span>
                         </h1>
                     </div>
                     <div id="page-container">

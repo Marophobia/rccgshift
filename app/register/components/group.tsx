@@ -27,7 +27,7 @@ const RegistrationSingleGroupForm = (data: Props) => {
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false)
     const router = useRouter()
-
+    const [agreed, setAgreed] = useState(false);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -47,37 +47,42 @@ const RegistrationSingleGroupForm = (data: Props) => {
         }));
     };
 
-    const handleNext = async () => {
+    // const handleNext = async () => {
 
-        // Scroll to the top of the page with a smooth effect
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
+    //     // Scroll to the top of the page with a smooth effect
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: 'smooth',
+    //     });
 
-        if (currentStep === 1) {
-            if (
-                !formData.name ||
-                !formData.email ||
-                !formData.gender ||
-                !formData.phoneNumber ||
-                !formData.ageGrade
-            ) {
-                toast.error('Please fill all required fields.');
-                return;
-            }
+    //     if (currentStep === 1) {
+    //         if (
+    //             !formData.name ||
+    //             !formData.email ||
+    //             !formData.gender ||
+    //             !formData.phoneNumber ||
+    //             !formData.ageGrade
+    //         ) {
+    //             toast.error('Please fill all required fields.');
+    //             return;
+    //         }
 
-            setCurrentStep(currentStep + 1);
-        }
-    }
+    //         setCurrentStep(currentStep + 1);
+    //     }
+    // }
 
-    const handlePrev = () => {
-        setCurrentStep(currentStep - 1);
-    };
+    // const handlePrev = () => {
+    //     setCurrentStep(currentStep - 1);
+    // };
 
 
     const handleSubmit = async () => {
         setLoading(true);
+
+        if (!agreed) {
+            toast.dismiss()
+            return toast.error("Please agree to the Terms and Conditions")
+        }
 
         toast.loading("Please Wait")
         try {
@@ -123,7 +128,7 @@ const RegistrationSingleGroupForm = (data: Props) => {
 
             {currentStep === 1 && (
                 <div>
-                    <h5 className="borderr">Step One: Bio Data</h5>
+                    <h5 className="borderr">Bio Data</h5>
                     <div>
                         <label htmlFor="name">Full Name (as it appears on your bank account):</label>
                         <input
@@ -210,13 +215,38 @@ const RegistrationSingleGroupForm = (data: Props) => {
                         </Select>
                     </div>
 
-                    <button onClick={handleNext} className='mt-5 text-white py-3 px-6' type='button' style={{ background: "#363635" }}> Proceed </button>
+                    {/* Terms and Conditions Checkbox */}
+                    <div className="flex items-center gap-3 mt-4">
+                        <input
+                            type="checkbox"
+                            id="agree"
+                            checked={agreed}
+                            onChange={(e) => setAgreed(e.target.checked)}
+                            className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
+                        />
+                        <label htmlFor="agree" className="mt-2">
+                            I agree to Shift <a href="/terms" className="underline" style={{ color: "#F5245F" }}>Terms and Conditions</a>
+                        </label>
+                    </div>
 
+                    {agreed &&
+                        <p className='mt-3'>By clicking the Proceed button, I confirm that I have read, understood, and agree to be bound by the International Shift Talent
+                            Registration Terms and Conditions. I understand that my registration is subject to acceptance by the Organizer,
+                            and I agree to comply with all Event rules and instructions.</p>
+                    }
+
+                    {/* <button onClick={handleNext} className='mt-5 text-white py-3 px-6' type='button' style={{ background: "#363635" }}> Proceed </button> */}
+                    <button
+                        type='button'
+                        className='my-5 text-white py-3 px-6' style={{ background: "#363635" }}
+                        onClick={handleSubmit}
+                        disabled={loading}
+                    > Register </button>
                 </div>
 
             )}
 
-            {currentStep === 2 && (
+            {/* {currentStep === 2 && (
                 <div>
                     <h5 className="borderr">Step Two: Account Opening</h5>
                     <p>You will be redirected to Stanbic IBTC&apos;s Secure Website to Open an account. Once you have completed the process,
@@ -257,7 +287,7 @@ const RegistrationSingleGroupForm = (data: Props) => {
                         > Complete Registration </button>
                     </div>
                 </div>
-            )}
+            )} */}
 
         </>
     );

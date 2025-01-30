@@ -9,12 +9,14 @@ export const POST = async (req: Request) => {
         const contestants = await prisma.user.findMany({
             where: {
                 seasonId: seasonId,
+                paid: 1
             },
             orderBy: {
                 id: "asc",
             },
             include: {
-                Season: true
+                Season: true,
+                Group: true
             },
         });
 

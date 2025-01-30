@@ -20,8 +20,10 @@ model Group {
   id           Int            @id @default(autoincrement())
   name         String         @db.VarChar(255)
   size         Int
+  type         Int            @default(1)
   User         User[]
   GroupMembers GroupMembers[]
+  // Choir        Choir[]
 }
 
 model User {
@@ -36,6 +38,7 @@ model User {
   age_grade         String?
   category          String?
   type              String?
+  competitionType   Int            @default(1)
   number_of_members Int            @default(1)
   country           String?
   state             String?
@@ -43,17 +46,46 @@ model User {
   province          String?
   picture           String?
   paid              Int            @default(0)
-  account_number    String?        
+  account_number    String?
   date              DateTime?      @default(now())
   status            UserStatus     @default(registered)
   seasonId          Int            @default(1)
-  groupId           Int?           
+  groupId           Int?
   Season            Season?        @relation(fields: [seasonId], references: [id])
   Group             Group?         @relation(fields: [groupId], references: [id])
   user_sessions     User_session[]
 
-  // @@unique([tag, seasonId]) 
+  // @@unique([tag, seasonId, competitionType])
 }
+
+// model Choir {
+//   id                Int            @id @default(autoincrement())
+//   tag               Int            @default(1)
+//   name              String
+//   email             String?        @unique @db.VarChar(255)
+//   telephone         String?
+//   bio               String?        @db.Text
+//   regional_pastor   String?
+//   gender            String?
+//   age_grade         String?
+//   number_of_members Int            @default(1)
+//   country           String?
+//   state             String?
+//   region            String?
+//   province          String?
+//   picture           String?
+//   paid              Int            @default(0)
+//   account_number    String?
+//   date              DateTime?      @default(now())
+//   status            UserStatus     @default(registered)
+//   seasonId          Int            @default(1)
+//   groupId           Int?
+//   Season            Season?        @relation(fields: [seasonId], references: [id])
+//   Group             Group?         @relation(fields: [groupId], references: [id])
+//   user_sessions     User_session[]
+
+//   // @@unique([tag, seasonId]) 
+// }
 
 model GroupMembers {
   id             Int        @id @default(autoincrement())
@@ -63,7 +95,7 @@ model GroupMembers {
   gender         String?
   age_grade      String?
   paid           Int        @default(0)
-  account_number String?      
+  account_number String?
   date           DateTime?  @default(now())
   status         UserStatus @default(registered)
   seasonId       Int        @default(1)
@@ -80,6 +112,7 @@ model Season {
   user_sessions  User_session[]
   round          Round[]
   User           User[]
+  // Choir          Choir[]
   GroupMembers   GroupMembers[]
 }
 
@@ -115,6 +148,7 @@ model User_session {
   votes        Int               @default(0)
   score        Int               @default(0)
   user_id      Int
+  type         Int               @default(1)
   judge_votes1 Int               @default(0)
   judge_votes2 Int               @default(0)
   judge_votes3 Int               @default(0)
@@ -127,6 +161,8 @@ model User_session {
   round        Round             @relation(fields: [round_id], references: [id])
   user         User              @relation(fields: [user_id], references: [id])
   season       Season            @relation(fields: [season_id], references: [id])
+  // Choir        Choir?            @relation(fields: [choirId], references: [id])
+  choirId      Int?
 
   @@unique([user_id, round_id, season_id])
   @@index([user_id], map: "user_id")

@@ -30,7 +30,9 @@ export interface Icontestants {
     date: Date;
     seasonId: number
     groupId: number
+    competitionType: number
     user_sessions: IuserSession[] | null;
+    Group: IGroup | null
 }
 
 export interface IGroup {

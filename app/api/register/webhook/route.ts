@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import prisma from '@/lib/db';
 import { errorHandler, sucessHandler } from '@/lib/functions';
 import nodemailer from 'nodemailer';
+import { generateEmailBody, sendEmail } from '@/lib/utils';
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET || ''; // Ensure this is set in your environment variables
 
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
         // Create the hash using the secret key
         const hash = crypto
             .createHmac('sha512', PAYSTACK_SECRET_KEY)
-            .update(buf)
+            .update(new Uint8Array(buf))
             .digest('hex');
 
         // Check if the hash matches the signature
@@ -50,24 +51,34 @@ export async function POST(req: NextRequest) {
             // const amount = event.data.amount / 100;
             const email = event.data.customer.email;
 
-            const { name, season, tag, amount } = event.data.metadata;
+            const { name, season, tag, amount, type } = event.data.metadata;
             console.log(event.data.metadata)
 
             const contestant = await prisma.user.findFirst({
                 where: {
                     tag,
-                    seasonId: season
+                    seasonId: season,
+                    competitionType: type
+                },
+                include: {
+                    Group: true
                 }
             })
+
+            if (!contestant){
+                return errorHandler(
+                    'Contestant not found',
+                    402
+                );
+            }
 
             try {
 
                 const updateUserStatus = await prisma.$transaction(async (tx) => {
 
-                    // send success mail
                     const transporter = nodemailer.createTransport({
                         port: 465,
-                        host: 'mail.privateemail.com',
+                        host: "mail.privateemail.com",
                         auth: {
                             user: 'info@rccgshift.org',
                             pass: process.env.PASSWORD,
@@ -75,130 +86,59 @@ export async function POST(req: NextRequest) {
                         secure: true,
                     });
 
-                    const fromName = 'RCCG SHIFT TALENT';
-                    const fromEmail = 'info@rccgshift.org';
+                    let message
+                    type === 2 || contestant.type === 'Group' ? (
+                        message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
+                            Thank you. <br> Please find the details of your registration below <br>
 
-                    const mailData = {
-                        from: `"${fromName}" <${fromEmail}>`,
-                        to: email,
-                        subject: 'Shift Registration - Next Steps',
-                        html: `
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td align="center" style="padding: 0px 10px 0px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                            <td bgcolor="#F9F1E6" align="left" valign="top" style="padding-top: 30px; padding-left: 20px;">
-                                            </td>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr></tr>
-                                <tr style="max-width: 600;">
-                                    <td align="center" style="padding: 0px 10px 0px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600;">
-                                            <tr>
-                                                <td bgcolor="#ffffff" align="center"
-                                                    style="height: 200px; background-image: url('https://rccgshift.org/images/mail.png'); background-position: center; background-repeat: no-repeat; background-size: contain;">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="padding: 0px 10px 0px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                            <tr>
-                                                <td bgcolor="#ffffff" align="left"
-                                                    style="padding: 20px 30px 0px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
-                                                    <p style="margin: 0;"><b>Hello,</b></p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td bgcolor="#ffffff" align="left"
-                                                    style="padding: 20px 30px 20px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
-                                                    <p style="margin: 0;">Thank you for registering for the RCCG International SHIFT Talent Hunt Season 3.</p>
-                                                    <p>Please click the button below to continue your registration and complete the process.</p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td bgcolor="#ffffff" align="center" style="padding: 20px;">
-                                                    <a href="https://rccgshift.org/register/${contestant?.tag}" 
-                                                    style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
-                                                    color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                                                    border-radius: 5px;">
-                                                        Complete your Registration
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td bgcolor="#ffffff" align="left"
-                                                    style="padding: 5px 30px 20px 30px; color: black; font-family: 'Poppins', sans-serif; font-size: 20px;">
-                                                    <p style="margin: 0;"><b>Best Regards, <br> RCCG SHIFT</b></p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="padding: 0px 10px 0px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                            <tr>
-                                                <td bgcolor="#F9F1E6" align="center" style="padding: 10px;">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="padding: 0px 10px 0px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                            <tr>
-                                                <td bgcolor="#F9F1E6" align="center" valign="top"
-                                                    style="padding-top: 50px; padding-bottom: 10px; margin: 0; width: 30%;">
-                                                    <a href="https://www.facebook.com/people/Rccgshift/61551057372506/?mibextid=ibOpuV">
-                                                        <img src="https://www.rccgyayaglobal.org/images/facebook.png" width="15" />
-                                                    </a>
-                                                    <a href="https://www.instagram.com/rccgshift/?igsh=MTFtbWRybHRuNHp6dQ%3D%3D">
-                                                        <img src="https://www.rccgyayaglobal.org/images/instagram.png" width="15" />
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td bgcolor="#F9F1E6" align="center" valign="top"
-                                                    style="padding: 5px 30px 5px 30px; color: #000000; font-family: 'Poppins', sans-serif; font-size: 16px;">
-                                                    <p style="margin: 0;">© 2024 <a href="https://www.rccgshift.org"
-                                                            style="margin: 0; text-decoration: none; color: #000000;">rccgshift.org</a></p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="padding: 0px 10px 20px 10px;">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                                            <tr>
-                                                <td bgcolor="#F9F1E6" align="center" valign="top" style="padding: 30px 30px;">
-                                                    <a href="https://rccgshift.org/"
-                                                        style="color: #000000; margin: 0; font-family: 'Poppins', sans-serif; text-decoration: none;">Home</a>
-                                                </td>
-                                                <td bgcolor="#F9F1E6" align="center" valign="top" style="padding: 30px 30px;">
-                                                    <a href="https://rccgshift.org/about"
-                                                        style="color: #000000; margin: 0; font-family: 'Poppins', sans-serif; text-decoration: none;">About
-                                                        Us</a>
-                                                </td>
-                                                <td bgcolor="#F9F1E6" align="center" valign="top" style="padding: 30px 30px;">
-                                                    <a href="https://rccgshift.org/contestants"
-                                                        style="color: #000000; margin: 0; font-family: 'Poppins', sans-serif; text-decoration: none;">Contestants</a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        `,
-                    };
+                            <li>Name: ${contestant.name}</li>
+                            <li>Email Address: ${contestant.email}</li>
+                            <li>Phone: ${contestant.telephone}</li>
+                            <li>Region: ${contestant.region}</li>
+                            <li>Province: ${contestant.province}</li>
+                            <li>Category: ${contestant.category}</li>
+                            <li>Participation: ${contestant.type}</li>  <br>
 
+                            You have choosen to participate as a group with the name ${contestant.Group?.name}. Please give the following
+                            link to your team members to register. This link must not be shared with anyone else. Thanks. <br><br>
 
+                             <a href="https://rccgshift.org/register/group/${contestant.Group?.id}" 
+                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                                border-radius: 5px;"> Click Here </a> <br>
+
+                                At a later date, you'll be required to create a bank account. 
+                                click the button below to do so, but for now, congratulations and Welcome to International Shift Talent Hunt
+
+                             <a href="https://rccgshift.org/register/${contestant?.tag}" 
+                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                                border-radius: 5px;"> Open Bank Account </a> 
+
+                </p>`
+                    ) : (
+                        message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
+                            Thank you. <br> Please find the details of your registration below <br>
+
+                            <li>Name: ${contestant.name}</li>
+                            <li>Email Address: ${contestant.email}</li>
+                            <li>Phone: ${contestant.telephone}</li>
+                            <li>Region: ${contestant.region}</li>
+                            <li>Province: ${contestant.province}</li>
+                            <li>Category: ${contestant.category}</li>
+                            <li>Participation: ${contestant.type}</li> 
+
+                            At a later date, you'll be required to create a bank account.
+                            click the button below to do so, but for now, congratulations and Welcome to International Shift Talent Hunt
+
+                             <a href="https://rccgshift.org/register/${contestant?.tag}" 
+                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                                border-radius: 5px;"> Open Bank Account </a> 
+                </p>`
+                    )
+
+                    const body = await generateEmailBody(name, message)
 
                     // log action
                     let description = `Payment for Registration: #${amount}, Reference: ${reference} for: ${name}`;
@@ -230,13 +170,7 @@ export async function POST(req: NextRequest) {
                         );
                     }
 
-                    transporter.sendMail(mailData, function (err: Error | null, info: any) {
-                        if (err) {
-                            console.error(err);
-                            return errorHandler(`Unable to send mail`, 500);
-                        }
-                    });
-
+                    await sendEmail(email, 'Registration Completed!', body, transporter)
                     return update;
 
                 });

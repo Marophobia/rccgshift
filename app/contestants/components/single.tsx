@@ -25,33 +25,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
 import dynamic from 'next/dynamic';
+import { Icontestants } from '@/app/types/contestants';
 const PaystackButton = dynamic(
     () => import('react-paystack').then((mod) => mod.PaystackButton),
     { ssr: false }
 );
 
 type Props = {
-    contestant: {
-        id: number;
-        name: string;
-        email: string;
-        telephone: string;
-        bio: string;
-        regional_pastor: string;
-        gender: string;
-        age_grade: string;
-        category: string;
-        type: string;
-        number_of_members: number;
-        country: string;
-        state: string;
-        region: string;
-        province: string;
-        picture: string;
-        status: UserStatus;
-        date: Date;
-        user_sessions: IuserSession[];
-    };
+    contestant: Icontestants
     settings: {
         id: number;
         current_round: number;
@@ -107,7 +88,7 @@ const Single = (props: Props) => {
     // Calculate the total amount
     const totalAmount = votes * voteCost;
 
-    const session = contestant.user_sessions.find(
+    const session = contestant.user_sessions?.find(
         (session) => session.round_id === settings.current_round
     );
 
@@ -175,12 +156,12 @@ const Single = (props: Props) => {
     let statusText = 'Registered';
 
     if (settings.competition) {
-        highestSession = contestant.user_sessions.reduce((prev, current) =>
+        highestSession = contestant.user_sessions?.reduce((prev, current) =>
             prev.round_id > current.round_id ? prev : current
         );
 
         // Determine status based on highestSession and settings.current_round
-        isActive = highestSession.round_id === settings.current_round;
+        isActive = highestSession?.round_id === settings.current_round;
         statusText = isActive ? 'Active' : 'Eliminated';
     }
 
@@ -194,7 +175,7 @@ const Single = (props: Props) => {
                         style={{ height: '450px' }}
                     >
                         <img
-                            src={`/images/contestants/${contestant.picture}`}
+                            src={`https://images.rccgshift.org/${contestant.picture}`}
                             style={{
                                 width: '100%',
                                 height: '100%',
@@ -213,7 +194,8 @@ const Single = (props: Props) => {
                                 }}
                             >
                                 <i className="fa fa-check mr-3"></i>Vote for{' '}
-                                {contestant.name}
+                                {contestant.competitionType === 2 || contestant.type === 'Group' ? (
+                                    `${contestant.Group?.name}`) : (`${contestant.name}`)}
                             </div>
                         </DialogTrigger>
                         <DialogContent
@@ -306,7 +288,7 @@ const Single = (props: Props) => {
                         {/* Timeline component */}
                         <div className="timeline">
                             <ul>
-                                {contestant.user_sessions.map((session) => (
+                                {contestant.user_sessions?.map((session) => (
                                     <li key={session.id}>
                                         <div className="timeline-content">
                                             <h6>{session.round.name}</h6>

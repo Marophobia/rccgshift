@@ -1,10 +1,11 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Icontestants } from '../../types/contestants'
+import { Icontestants, IGroup } from '../../types/contestants'
 import { Iseason } from '@/app/types/round'
 import { toast } from 'react-toastify'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Props = {
@@ -19,6 +20,7 @@ const Card = (props: Props) => {
     const [activeSeason, setActiveSeason] = useState(currentSeason);
     const [loading, setLoading] = useState(false);
     const [seasonContestants, setSeasonContestants] = useState(data);
+    const [activeType, setActiveType] = useState<number | null>(1);
 
 
     // Fetch contestants for a specific season
@@ -56,8 +58,45 @@ const Card = (props: Props) => {
 
     };
 
+    // Fetch contestants for a specific season and type
+    const fetchContestantsForType = async (seasonId: number, type: number) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${apiUrl}/api/seasons//type`, {
+                method: 'POST',
+                cache: 'no-store',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seasonId, type }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                console.error('Failed to update: ', error);
+                toast.error('An error occurred');
+            }
+
+            const data = await response.json();
+            console.log(data)
+            setSeasonContestants(data.data);
+            setFilteredContestants(data.data);
+
+        } catch (error) {
+            console.error(
+                'An error occurred while fetching contestants:',
+                error
+            );
+            toast.error('An error occurred');
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
     // Handle season selection
     const handleSeasonChange = (seasonId: number) => {
+        setActiveType(1)
         const selectedSeason = season.find((s) => s.id === seasonId);
         if (!selectedSeason) return;
 
@@ -71,6 +110,13 @@ const Card = (props: Props) => {
             // Fetch data for the selected season
             fetchContestantsForSeason(seasonId);
         }
+    };
+
+    const handleTypeChange = (type: number) => {
+
+        setActiveType(type)
+        fetchContestantsForType(activeSeason.id, type);
+
     };
 
     // Pagination state
@@ -164,6 +210,23 @@ const Card = (props: Props) => {
                     </Select>
                 </div>
 
+                <div className="flex flex-col items-center space-y-4 pb-10 md:flex-row md:space-x-4 md:space-y-0">
+                    <Button
+                        onClick={() => handleTypeChange(1)}
+                        className={`py-5 w-full text-white transition-all ${activeType === 1 ? "bg-green-500 hover:bg-green-600" : "bg-neutral-500 hover:bg-neutral-600"
+                            }`}
+                    >
+                        International Shift Talent Hunt
+                    </Button>
+                    <Button
+                        onClick={() => handleTypeChange(2)}
+                        className={`py-5 w-full text-white transition-all ${activeType === 2 ? "bg-green-500 hover:bg-green-600" : "bg-neutral-500 hover:bg-neutral-600"
+                            }`}
+                    >
+                        Shift Choir Competition
+                    </Button>
+                </div>
+
 
                 {/* Search Box */}
                 <div className="unit whole" style={{ padding: "0px" }}>
@@ -195,7 +258,7 @@ const Card = (props: Props) => {
                                                 <Link href={`/contestants/${contestant.id}`} className="gallery link">
                                                     <div className="h-96">
                                                         <img
-                                                            src={`/images/contestants/${contestant.picture}`}
+                                                            src={`https://images.rccgshift.org/${contestant.picture}`}
                                                             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                                                             alt="Contestant"
                                                         />
@@ -206,11 +269,17 @@ const Card = (props: Props) => {
                                             <div className="grid-content" style={{ padding: "20px" }}>
                                                 <p style={{ fontSize: '19px' }}>
                                                     <Link href={`/contestants/${contestant.id}`}>
-                                                        {contestant.name} ({String(contestant.tag).padStart(3, '0')})
+                                                        {activeType === 2 || contestant.type === 'Group' ? (
+                                                            `${contestant.Group?.name} (${String(contestant.tag).padStart(3, '0')})`
+                                                        ) : (
+                                                            `${contestant.name} (${String(contestant.tag).padStart(3, '0')})`
+                                                        )}
                                                     </Link>
                                                 </p>
                                             </div>
-                                            <Link className="arrow-button" href={`/contestants/${contestant.id}`}>View Profile</Link>
+                                            <Link className="arrow-button" href={`/contestants/${contestant.id}`}>
+                                                View Profile
+                                            </Link>
                                         </div>
                                     </div>
                                 ))
