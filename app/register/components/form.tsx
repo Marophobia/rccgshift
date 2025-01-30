@@ -86,6 +86,7 @@ const RegistrationForm = () => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+            type: activeType
         }));
     };
 
