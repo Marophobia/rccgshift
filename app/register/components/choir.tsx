@@ -200,7 +200,7 @@ const ChoirForm = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful',
-                text: 'We are processing your registration. You will receive a confirmation shortly with instructions on how to complete your registration.',
+                text: 'We are processing your registration. You will receive a confirmation shortly.',
                 confirmButtonColor: '#F5245F',
             });
 
@@ -468,7 +468,7 @@ const ChoirForm = () => {
                     <h5 className="borderr">Step Two: Competition Data</h5>
 
                     <div className='mb-5'>
-                        <label htmlFor="groupName">Group Name:</label>
+                        <label htmlFor="groupName">Choir Name:</label>
                         <small>Please Note that you are creating a new choir group and as such you are the leader.</small>
                         <input
                             type="text"
@@ -483,7 +483,7 @@ const ChoirForm = () => {
                     </div>
 
                     <div>
-                        <label htmlFor="groupsize">Group Size (At least 30):</label>
+                        <label htmlFor="groupsize">Choir Size (At least 30):</label>
                         <input
                             type="number"
                             name="groupsize"

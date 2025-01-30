@@ -75,9 +75,9 @@ export const POST = async (req: Request) => {
 
         // Generate unique filename and save image
         const uniqueFileName = `${crypto.randomUUID()}_${file.name}`;
-        const savePath = path.join('/var/www/images.rccgshift.org', uniqueFileName);
-        const buffer = new Uint8Array(await file.arrayBuffer()); // Convert to Uint8Array
-        writeFileSync(savePath, buffer); // Write file using Uint8Array
+        // const savePath = path.join('/var/www/images.rccgshift.org', uniqueFileName);
+        // const buffer = new Uint8Array(await file.arrayBuffer()); // Convert to Uint8Array
+        // writeFileSync(savePath, buffer); // Write file using Uint8Array
 
         // Determine next tag
         const highestTag = await prisma.user.findFirst({
@@ -128,7 +128,7 @@ export const POST = async (req: Request) => {
             }
         });
 
-        return sucessHandler('Details added successfully.', 201, { tag: newUser.tag, season: settings.current_season });
+        return sucessHandler('Details added successfully.', 201, { tag: newUser.id, season: settings.current_season });
 
     } catch (error) {
         console.error('Error adding new user:', error);

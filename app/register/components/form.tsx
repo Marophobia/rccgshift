@@ -217,7 +217,7 @@ const RegistrationForm = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful',
-                text: 'We are processing your registration. You will receive a confirmation shortly with instructions on how to complete your registration.',
+                text: 'We are processing your registration. You will receive a confirmation shortly',
                 confirmButtonColor: '#F5245F',
             });
 

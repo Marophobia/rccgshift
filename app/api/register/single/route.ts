@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
 
         const contestant = await prisma.user.findFirst({
             where: {
-                tag: Number(id),
+                id: Number(id),
                 seasonId: settings?.current_season
             },
             include: {

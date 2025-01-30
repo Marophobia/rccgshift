@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import { errorHandler, sucessHandler } from '@/lib/functions';
 import nodemailer from 'nodemailer';
 import { generateEmailBody, sendEmail } from '@/lib/utils';
+import { UserStatus } from '@/app/types/contestants';
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET || ''; // Ensure this is set in your environment variables
 
@@ -89,7 +90,7 @@ export async function POST(req: NextRequest) {
                     let message
                     type === 2 || contestant.type === 'Group' ? (
                         message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
-                            Thank you. <br> Please find the details of your registration below <br>
+                            Thank you. <br> Please find the details of your registration below <br><br>
 
                             <li>Name: ${contestant.name}</li>
                             <li>Email Address: ${contestant.email}</li>
@@ -99,16 +100,17 @@ export async function POST(req: NextRequest) {
                             <li>Category: ${contestant.category}</li>
                             <li>Participation: ${contestant.type}</li>  <br>
 
-                            You have choosen to participate as a group with the name ${contestant.Group?.name}. Please give the following
+                            You have choosen to participate as a group with the name: <b>${contestant.Group?.name}</b>. Please give the following
                             link to your team members to register. This link must not be shared with anyone else. Thanks. <br><br>
 
                              <a href="https://rccgshift.org/register/group/${contestant.Group?.id}" 
                                 style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
                                 color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                                border-radius: 5px;"> Click Here </a> <br>
+                                border-radius: 5px;"> Group Link </a> <br><br>
 
                                 At a later date, you'll be required to create a bank account. 
-                                click the button below to do so, but for now, congratulations and Welcome to International Shift Talent Hunt
+                                click the button below to do so when the time comes, 
+                                but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
 
                              <a href="https://rccgshift.org/register/${contestant?.tag}" 
                                 style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
@@ -118,7 +120,7 @@ export async function POST(req: NextRequest) {
                 </p>`
                     ) : (
                         message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
-                            Thank you. <br> Please find the details of your registration below <br>
+                            Thank you. <br> Please find the details of your registration below <br><br>
 
                             <li>Name: ${contestant.name}</li>
                             <li>Email Address: ${contestant.email}</li>
@@ -126,10 +128,11 @@ export async function POST(req: NextRequest) {
                             <li>Region: ${contestant.region}</li>
                             <li>Province: ${contestant.province}</li>
                             <li>Category: ${contestant.category}</li>
-                            <li>Participation: ${contestant.type}</li> 
+                            <li>Participation: ${contestant.type}</li>  <br>
 
                             At a later date, you'll be required to create a bank account.
-                            click the button below to do so, but for now, congratulations and Welcome to International Shift Talent Hunt
+                            click the button below to do so when the time comes,
+                            but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
 
                              <a href="https://rccgshift.org/register/${contestant?.tag}" 
                                 style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
@@ -158,7 +161,8 @@ export async function POST(req: NextRequest) {
                             id: contestant?.id,
                         },
                         data: {
-                            paid: 1
+                            paid: 1,
+                            // status: UserStatus.approved
                         }
                     });
 

@@ -47,11 +47,14 @@ const Footer = (props: Props) => {
                             <li>
                                 <Link href="/vote">How to Vote</Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link href="/contestants">Contestants</Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link href="/contact">Contact and FAQs</Link>
+                            </li>
+                            <li>
+                                <Link href="/terms">Terms and Conditions</Link>
                             </li>
                         </ul>
                     </div>
