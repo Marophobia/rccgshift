@@ -30,7 +30,7 @@ model User {
   id                Int            @id @default(autoincrement())
   tag               Int            @default(1)
   name              String
-  email             String?        @unique @db.VarChar(255)
+  email             String?        @db.VarChar(255)
   telephone         String?
   bio               String?        @db.Text
   regional_pastor   String?

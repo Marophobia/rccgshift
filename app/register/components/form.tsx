@@ -1141,15 +1141,41 @@ const RegistrationForm = () => {
 
                             {/* Terms and Conditions Checkbox */}
                             <div className="flex items-center gap-3 mt-4">
-                                <input
-                                    type="checkbox"
-                                    id="agree"
-                                    checked={agreed}
-                                    onChange={(e) =>
-                                        setAgreed(e.target.checked)
-                                    }
-                                    className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
-                                />
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <input
+                                            type="checkbox"
+                                            id="agree"
+                                            checked={agreed}
+                                            className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
+                                        />
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent className="bg-gray-900">
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>
+                                                Terms and Conditions
+                                            </AlertDialogTitle>
+                                            {/* <AlertDialogDescription></AlertDialogDescription> */}
+                                        </AlertDialogHeader>
+                                        <div className="overflow-auto max-h-[50vh] mb-4">
+                                            <TermsAndConditionsDialog />
+                                        </div>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel
+                                                onClick={(e) =>
+                                                    setAgreed(false)
+                                                }
+                                            >
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={(e) => setAgreed(true)}
+                                            >
+                                                I Accept
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                                 <label htmlFor="agree" className="mt-2">
                                     I agree to Shift{' '}
                                     <a
