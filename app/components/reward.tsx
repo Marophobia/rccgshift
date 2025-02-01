@@ -14,7 +14,7 @@ const Reward = (props: Props) => {
                     </div>
                     <div className="icon-text">
                         <h3>Winner <br />  ₦10 Million</h3>
-                        <p>Cash & Deals, A new SUV, Promotional Deals, Endorsements, Branding</p>
+                        <p>Cash & Deals, An SUV, Promotional Deals, Endorsements, Branding</p>
                     </div>
                 </div>
                 <div className="unit one-third">

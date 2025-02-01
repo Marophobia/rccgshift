@@ -41,14 +41,16 @@ const RegistrationSingleForm = (data: Props) => {
     useEffect(() => {
         if (data.contestant.type === 'Group') {
             setAmount(10000)
+        } else if (data.contestant.competitionType === 2) {
+            setAmount(20000)
         }
     }, [data.contestant]);
 
 
     const componentProps = {
         email: data.contestant.email,
-        // amount: amount * 100,
-        amount: 100 * 100,
+        amount: amount * 100,
+        // amount: 100 * 100,
         fname: data.contestant.name + `(${data.contestant.tag})`,
         // lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
@@ -160,7 +162,7 @@ const RegistrationSingleForm = (data: Props) => {
                         If you already have a Stanbic IBTC account, just insert it and complete your registration
                     </p> */}
 
-                    <p>When it is time, you will be required to open an account. But for now, You are a certified Contestant of 
+                    <p>When it is time, you will be required to open an account. But for now, You are a certified Contestant of
                         the RCCG Shift Talent Hunt Season 3. Thank you!
                     </p>
 

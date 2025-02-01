@@ -108,13 +108,13 @@ export const POST = async (req: Request) => {
         writeFileSync(savePath, buffer); // Write file using Uint8Array
 
         // Determine next tag
-        const highestTag = await prisma.user.findFirst({
-            where: { seasonId: settings.current_season, competitionType: type },
-            orderBy: { tag: 'desc' },
-            select: { tag: true },
-        });
+        // const highestTag = await prisma.user.findFirst({
+        //     where: { seasonId: settings.current_season, competitionType: type },
+        //     orderBy: { tag: 'desc' },
+        //     select: { tag: true },
+        // });
 
-        const nextTag = (highestTag?.tag || 0) + 1;
+        // const nextTag = (highestTag?.tag || 0) + 1;
 
         // Handle group creation if applicable
         let groupId = null;
@@ -140,7 +140,7 @@ export const POST = async (req: Request) => {
             paid: 0,
             status: UserStatus.registered,
             seasonId: settings.current_season,
-            tag: nextTag,
+            // tag: nextTag,
             ...(groupId && { groupId }),
             competitionType: type,
         };

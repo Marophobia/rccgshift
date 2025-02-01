@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 type Props = {}
 
 const Outline = (props: Props) => {
@@ -20,7 +21,7 @@ const Outline = (props: Props) => {
                                 <div className="relative border-l" style={{ borderColor: "#F5245F" }}>
                                     {/* Timeline Item */}
                                     <div className="mb-8 pl-6 relative">
-                                        <div className="absolute -left-3 w-6 h-6 rounded-full border-2 border-white" style={{background: "#F5245F"}}></div>
+                                        <div className="absolute -left-3 w-6 h-6 rounded-full border-2 border-white" style={{ background: "#F5245F" }}></div>
                                         <h3 className="text-lg font-medium ">
                                             January 2025
                                         </h3>
@@ -98,7 +99,7 @@ const Outline = (props: Props) => {
 
                 </div>
                 <div className="unit half">
-                    <h6 style={{ background: "#3E3E3E" }} className='py-2 pl-2'>2025 International Shift Talent Hunt Season 3</h6>
+                    <Link href={'/register'}><h6 style={{ background: "#F5245F" }} className='py-2 pl-2'>Register for 2025 Int&apos;l Shift Talent</h6> </Link>
                     <div className="position-relative h-100">
                         <Image
                             width={1000}

@@ -1,5 +1,4 @@
 "use client"
-import Link from 'next/link';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useRef } from 'react';
@@ -11,6 +10,7 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import Link from 'next/link';
 
 const Slider = () => {
 
@@ -37,9 +37,12 @@ const Slider = () => {
                             <div className="overlay sliderCaptionContainer">
                                 <div className="ns_slideContent">
                                     <div className="pt-10">
-                                        <h4 className="animated slideInRight py-7 px-10 mb-0" style={{ background: "#F5245F", display: "inline-block" }}>
-                                            RCCG INT&apos;L SHIFT TALENT HUNT
-                                        </h4>
+                                        <Link href={'/register'}>
+                                            <h4 className="animated slideInRight py-7 px-10 mb-0" style={{ background: "#F5245F", display: "inline-block" }}>
+                                                {/* RCCG INT&apos;L SHIFT TALENT HUNT */}
+                                                CLICK TO REGISTER NOW!
+                                            </h4>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

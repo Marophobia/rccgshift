@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import React from 'react';
 
 type Props = {};
@@ -7,7 +9,7 @@ const About = (props: Props) => {
         <>
             <div className="grid">
                 <div className="unit two-thirds">
-                    <h3 className="borderr">About</h3>
+                    <h3 className="borderr">Register</h3>
                     <div className="responsive-img">
                         <img src="/img/about.jpg" alt="" />
                     </div>
@@ -25,6 +27,8 @@ const About = (props: Props) => {
                         The competition is divided into different categories,
                         including Music, dancing, and Unusual Creativity.
                     </p>
+                    <Link href={'/register'}><Button size="lg" style={{ background: "#F5245F" }}>Register for Season 3</Button></Link>
+
                     <ol className="rounded-list">
                         <li>
                             <span>4 Judges</span>
@@ -33,7 +37,6 @@ const About = (props: Props) => {
                             <span>Over 1,000 Contestants</span>
                         </li>
                     </ol>
-                    <p>.</p>
                 </div>
             </div>
         </>

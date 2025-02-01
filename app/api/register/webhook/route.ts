@@ -183,6 +183,20 @@ export async function POST(req: NextRequest) {
                         },
                     });
 
+                    // Retrieve competition settings
+                    const settings = await prisma.settings.findFirst();
+                    if (!settings?.current_season) {
+                        return errorHandler('Settings or current season not found.', 404);
+                    }
+
+                    const highestTag = await prisma.user.findFirst({
+                        where: { seasonId: settings.current_season, competitionType: type },
+                        orderBy: { tag: 'desc' },
+                        select: { tag: true },
+                    });
+
+                    const nextTag = (highestTag?.tag || 0) + 1;
+
                     // Update the user's paid status
                     const update = await tx.user.update({
                         where: {
@@ -190,6 +204,7 @@ export async function POST(req: NextRequest) {
                         },
                         data: {
                             paid: 1,
+                            tag: nextTag
                             // status: UserStatus.approved
                         }
                     });

@@ -151,6 +151,7 @@ const ContestantTable = (props: Props) => {
                             <TableHead>State</TableHead>
                             <TableHead>Region</TableHead>
                             <TableHead>Province</TableHead>
+                            <TableHead>Paid</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Actions</TableHead>
                         </TableRow>
@@ -183,6 +184,7 @@ const ContestantTable = (props: Props) => {
                                 <TableCell>{contestant.state}</TableCell>
                                 <TableCell>{contestant.region}</TableCell>
                                 <TableCell>{contestant.province}</TableCell>
+                                <TableCell>{contestant.paid ? 'True' : 'False'}</TableCell>
                                 <TableCell>
                                     {contestant.status ==
                                     UserStatus.approved ? (
