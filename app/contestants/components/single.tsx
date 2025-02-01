@@ -185,7 +185,7 @@ const Single = (props: Props) => {
                         />
                     </div>
                     <Dialog>
-                        <DialogTrigger className="w-full">
+                        {/* <DialogTrigger className="w-full">
                             <div
                                 className="w-full py-3 mb-10"
                                 style={{
@@ -197,7 +197,7 @@ const Single = (props: Props) => {
                                 {contestant.competitionType === 2 || contestant.type === 'Group' ? (
                                     `${contestant.Group?.name}`) : (`${contestant.name}`)}
                             </div>
-                        </DialogTrigger>
+                        </DialogTrigger> */}
                         <DialogContent
                             style={{ background: '#16171C', border: 'none' }}
                         >
