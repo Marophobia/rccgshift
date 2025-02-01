@@ -151,8 +151,8 @@ export const POST = async (req: Request) => {
         const newUser =
             type === 1
                 ? await prisma.user.create({
-                      data: { ...commonData, category, type: participation },
-                  })
+                    data: { ...commonData, category, type: participation },
+                })
                 : await prisma.user.create({ data: commonData });
 
         // Get or create first round
@@ -194,9 +194,7 @@ export const POST = async (req: Request) => {
                 <li>Email Address: ${newUser.email}</li>
                 <li>Phone: ${newUser.telephone}</li>
                 <li>Region: ${newUser.region}</li>
-                <li>Province: ${newUser.province}</li>
-                <li>Category: ${newUser.category}</li>
-                <li>Participation: ${newUser.type}</li>  <br>
+                <li>Province: ${newUser.province}</li> <br>
 
                     <a href="https://rccgshift.org/register/${newUser.id}" 
                     style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 

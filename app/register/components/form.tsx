@@ -212,7 +212,7 @@ const RegistrationForm = () => {
     const componentProps = {
         email: formData.email,
         // amount: amount * 100,
-        amount: 10 * 100,
+        amount: 100 * 100,
         fname: formData.name + `(${tag})`,
         // lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
@@ -251,31 +251,28 @@ const RegistrationForm = () => {
     return (
         <>
             <ToastContainer />
+            <img src='/images/register.jpg' className='mb-10'/>
             {!activeType && <h5>Please select your registration type</h5>}
             <div className="flex flex-col items-center space-y-4 pb-10 md:flex-row md:space-x-4 md:space-y-0">
                 <Button
                     hidden={activeType === 2}
                     onClick={() => setActiveType(1)}
-                    className={`py-5 w-full text-white transition-all ${
-                        activeType === 2 ? 'hidden' : ''
-                    } ${
-                        activeType === 1
+                    className={`py-5 w-full text-white transition-all ${activeType === 2 ? 'hidden' : ''
+                        } ${activeType === 1
                             ? 'bg-green-500 hover:bg-green-600'
                             : 'bg-neutral-500 hover:bg-neutral-600'
-                    }`}
+                        }`}
                 >
                     International Shift Talent Hunt
                 </Button>
                 <Button
                     hidden={activeType === 1}
                     onClick={() => setActiveType(2)}
-                    className={`py-5 w-full text-white transition-all  ${
-                        activeType === 1 ? 'hidden' : ''
-                    } ${
-                        activeType === 2
+                    className={`py-5 w-full text-white transition-all  ${activeType === 1 ? 'hidden' : ''
+                        } ${activeType === 2
                             ? 'bg-green-500 hover:bg-green-600'
                             : 'bg-neutral-500 hover:bg-neutral-600'
-                    }`}
+                        }`}
                 >
                     Shift Choir Competition
                 </Button>
@@ -350,7 +347,7 @@ const RegistrationForm = () => {
 
                             <div>
                                 <label htmlFor="phoneNumber">
-                                    Phone Number:
+                                    Phone Number (Whatsapp Only):
                                 </label>
                                 <input
                                     type="number"
@@ -550,7 +547,7 @@ const RegistrationForm = () => {
                                             <SelectContent>
                                                 {(
                                                     regionProvinces[
-                                                        formData.region as keyof typeof regionProvinces
+                                                    formData.region as keyof typeof regionProvinces
                                                     ] || []
                                                 ).map((province) => (
                                                     <SelectItem
@@ -708,7 +705,7 @@ const RegistrationForm = () => {
                                             className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
                                         />
                                     </AlertDialogTrigger>
-                                    <AlertDialogContent style={{ background: "#16171E", border: "none"}}>
+                                    <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>
                                                 Terms and Conditions
@@ -866,7 +863,7 @@ const RegistrationForm = () => {
 
                             <div>
                                 <label htmlFor="phoneNumber">
-                                    Phone Number:
+                                    Phone Number (Whatsapp Only):
                                 </label>
                                 <input
                                     type="number"
@@ -1066,7 +1063,7 @@ const RegistrationForm = () => {
                                             <SelectContent>
                                                 {(
                                                     regionProvinces[
-                                                        formData.region as keyof typeof regionProvinces
+                                                    formData.region as keyof typeof regionProvinces
                                                     ] || []
                                                 ).map((province) => (
                                                     <SelectItem

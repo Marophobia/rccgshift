@@ -158,7 +158,7 @@ const RegistrationSingleGroupForm = (data: Props) => {
                     </div>
 
                     <div>
-                        <label htmlFor="phoneNumber">Phone Number:</label>
+                        <label htmlFor="phoneNumber">Phone Number (Whatsapp Only):</label>
                         <input
                             type="number"
                             name="phoneNumber"
