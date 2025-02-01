@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
                 }
             })
 
-            if (!contestant){
+            if (!contestant) {
                 return errorHandler(
                     'Contestant not found',
                     402
@@ -85,57 +85,89 @@ export async function POST(req: NextRequest) {
                         secure: true,
                     });
 
-                    let message
-                    type === 2 || contestant.type === 'Group' ? (
-                        message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
-                            Thank you. <br> Please find the details of your registration below <br><br>
+                    let message = ''
 
-                            <li>Name: ${contestant.name}</li>
-                            <li>Email Address: ${contestant.email}</li>
-                            <li>Phone: ${contestant.telephone}</li>
-                            <li>Region: ${contestant.region}</li>
-                            <li>Province: ${contestant.province}</li>  <br>
+                    if (type === 2) {
+                        // Scenario 1: type === 2
+                    message = `<p>
+                        You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3 - Choir Competition.
+                        Thank you. <br> Please find the details of your registration below: <br><br>
 
-                            You have choosen to participate as a group with the name: <b>${contestant.Group?.name}</b>. Please give the following
-                            link to your team members to register. This link must not be shared with anyone else. Thanks. <br><br>
+                        <li>Name: ${contestant.name}</li>
+                        <li>Email Address: ${contestant.email}</li>
+                        <li>Phone: ${contestant.telephone}</li>
+                        <li>Region: ${contestant.region}</li>
+                        <li>Province: ${contestant.province}</li> <br>
 
-                             <a href="https://rccgshift.org/register/group/${contestant.Group?.id}" 
-                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
-                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                                border-radius: 5px;"> Group Link </a> <br><br>
+                        You have chosen to participate as a choir with the name: <b>${contestant.Group?.name}</b>. Please give the following
+                        link to your choir members to register. This link must not be shared with anyone else. <br><br>
 
-                                At a later date, you'll be required to create a bank account. 
-                                click the button below to do so when the time comes, 
-                                but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
+                        <a href="https://rccgshift.org/register/group/${contestant.Group?.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Choir Link </a> <br><br>
 
-                             <a href="https://rccgshift.org/register/${contestant?.id}" 
-                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
-                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                                border-radius: 5px;"> Open Bank Account </a> 
+                        At a later date, you'll be required to create a bank account. Click the button below to do so when the time comes,
+                        but for now, congratulations and Welcome to International Shift Talent Hunt. <br><br>
 
-                </p>`
-                    ) : (
-                        message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
-                            Thank you. <br> Please find the details of your registration below <br><br>
+                        <a href="https://rccgshift.org/register/${contestant?.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Open Bank Account </a>
 
-                            <li>Name: ${contestant.name}</li>
-                            <li>Email Address: ${contestant.email}</li>
-                            <li>Phone: ${contestant.telephone}</li>
-                            <li>Region: ${contestant.region}</li>
-                            <li>Province: ${contestant.province}</li>
-                            <li>Category: ${contestant.category}</li>
-                            <li>Participation: ${contestant.type}</li>  <br>
+                    </p>`;
+                     } else if (contestant.type === 'Group') {
+                        message = `<p>
+                        You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3.
+                        Thank you. <br> Please find the details of your registration below: <br><br>
 
-                            At a later date, you'll be required to create a bank account.
-                            click the button below to do so when the time comes,
-                            but for now, congratulations and Welcome to International Shift Talent Hunt <br><br>
+                        <li>Name: ${contestant.name}</li>
+                        <li>Email Address: ${contestant.email}</li>
+                        <li>Phone: ${contestant.telephone}</li>
+                        <li>Region: ${contestant.region}</li>
+                        <li>Province: ${contestant.province}</li>
+                        <li>Category: ${contestant.category}</li>
+                        <li>Participation: ${contestant.type}</li> <br>
 
-                             <a href="https://rccgshift.org/register/${contestant?.id}" 
-                                style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
-                                color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                                border-radius: 5px;"> Open Bank Account </a> 
-                </p>`
-                    )
+                        You have chosen to participate as a group with the name: <b>${contestant.Group?.name}</b>. Please give the following
+                        link to your team members to register. This link must not be shared with anyone else. <br><br>
+
+                        <a href="https://rccgshift.org/register/group/${contestant.Group?.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Group Link </a> <br><br>
+
+                        At a later date, you'll be required to create a bank account. Click the button below to do so when the time comes,
+                        but for now, congratulations and Welcome to International Shift Talent Hunt. <br><br>
+
+                        <a href="https://rccgshift.org/register/${contestant?.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Open Bank Account </a>
+                    </p>`;
+                        } else if (type === 1) {
+                        message = `<p>
+                        You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3.
+                        Thank you. <br> Please find the details of your registration below: <br><br>
+
+                        <li>Name: ${contestant.name}</li>
+                        <li>Email Address: ${contestant.email}</li>
+                        <li>Phone: ${contestant.telephone}</li>
+                        <li>Region: ${contestant.region}</li>
+                        <li>Province: ${contestant.province}</li>
+                        <li>Category: ${contestant.category}</li>
+                        <li>Participation: ${contestant.type}</li> <br>
+
+                        At a later date, you'll be required to create a bank account. Click the button below to do so when the time comes,
+                        but for now, congratulations and Welcome to International Shift Talent Hunt. <br><br>
+
+                        <a href="https://rccgshift.org/register/${contestant?.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Open Bank Account </a>
+                    </p>`;
+                                        }
+
 
                     const body = await generateEmailBody(name, message)
 

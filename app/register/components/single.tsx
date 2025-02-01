@@ -57,6 +57,7 @@ const RegistrationSingleForm = (data: Props) => {
             name: data.contestant.name,
             season: data.settings.current_season,
             tag: data.contestant.id,
+            type: data.contestant.competitionType,
             amount: amount,
             custom_fields: [
                 {
@@ -70,13 +71,13 @@ const RegistrationSingleForm = (data: Props) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful',
-                text: 'We are processing your registration. You will receive a confirmation shortly with instructions on how to complete your registration.',
+                text: 'We are processing your registration. You will receive a confirmation shortly',
                 confirmButtonColor: '#F5245F',
             });
 
             setTimeout(() => {
-                router.refresh()
-            }, 10000);
+                router.replace('/')
+            }, 1000);
         },
         onClose: () => {
             toast.error('What went wrong?');
