@@ -41,7 +41,6 @@ export const nigerianStates = [
 ];
 
 export const countries = [
-    'Nigeria',
     'Afghanistan',
     'Albania',
     'Algeria',
@@ -166,6 +165,7 @@ export const countries = [
     'New Zealand',
     'Nicaragua',
     'Niger',
+    'Nigeria',
     'North Korea',
     'North Macedonia',
     'Norway',
@@ -234,7 +234,7 @@ export const countries = [
     'Vietnam',
     'Yemen',
     'Zambia',
-    'Zimbabwe'
+    'Zimbabwe',
 ];
 
 export const regionProvinces = {
@@ -430,7 +430,6 @@ export const regionProvinces = {
         'Lagos Province 115',
         'Lagos Province 116',
         'Lagos Province 126',
-
     ],
     'Region 20': [
         'Regional Headquaters',
@@ -460,7 +459,6 @@ export const regionProvinces = {
         'Oyo Province 21',
         'Oyo Province 23',
         'Oyo Province 24',
-
     ],
     'Region 22': [
         'Regional Headquaters',
@@ -593,7 +591,6 @@ export const regionProvinces = {
         'Ogun Province 28',
         'Ogun Province 34',
         'Ogun Province 35',
-
     ],
     'Region 33': [
         'Regional Headquaters',
@@ -865,4 +862,3 @@ export const regionProvinces = {
         'Lagos Province 113',
     ],
 };
-

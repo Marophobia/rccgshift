@@ -74,16 +74,16 @@ export const POST = async (req: Request) => {
         }
 
         // Check if the user is already registered for this season in either table
-        const userExists = await prisma.user.findFirst({
-            where: { email, seasonId: settings.current_season },
-        });
+        // const userExists = await prisma.user.findFirst({
+        //     where: { email, seasonId: settings.current_season },
+        // });
 
-        if (userExists) {
-            return errorHandler(
-                'This email is already registered for the competition.',
-                409
-            );
-        }
+        // if (userExists) {
+        //     return errorHandler(
+        //         'This email is already registered for the competition.',
+        //         409
+        //     );
+        // }
 
         // Validate image upload
         const file = formData.get('file');

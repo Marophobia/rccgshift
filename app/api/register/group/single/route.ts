@@ -4,38 +4,39 @@ import { UserStatus } from '@/app/types/contestants';
 import { generateEmailBody, sendEmail } from '@/lib/utils';
 import nodemailer from 'nodemailer';
 
-
 export const POST = async (req: Request) => {
-    const { name, email, phoneNumber, gender, ageGrade, groupId } = await req.json();
+    const { name, email, phoneNumber, gender, ageGrade, groupId } =
+        await req.json();
 
     try {
         // Validate request data
-        if (!name || !email || !phoneNumber || !gender || !ageGrade || !groupId) {
+        if (
+            !name ||
+            !email ||
+            !phoneNumber ||
+            !gender ||
+            !ageGrade ||
+            !groupId
+        ) {
             return errorHandler('All fields are required.', 400);
         }
 
         //get the group
         const group = await prisma.group.findFirst({
             where: {
-                id: groupId
+                id: groupId,
             },
             include: {
-                GroupMembers: true
-            }
-        })
+                GroupMembers: true,
+            },
+        });
 
         if (!group) {
-            return errorHandler(
-                'Group Not FOund',
-                409
-            );
+            return errorHandler('Group Not FOund', 409);
         }
 
         if (group?.GroupMembers.length >= group?.size - 1) {
-            return errorHandler(
-                'Group Already Filled',
-                409
-            );
+            return errorHandler('Group Already Filled', 409);
         }
 
         // console.log(contestant)
@@ -71,20 +72,20 @@ export const POST = async (req: Request) => {
         const settings = await prisma.settings.findFirst();
 
         // Check if the user is already registered for this season
-        const contestantExists = await prisma.user.findFirst({
-            where: { email, seasonId: settings?.current_season },
-        });
+        // const contestantExists = await prisma.user.findFirst({
+        //     where: { email, seasonId: settings?.current_season },
+        // });
 
-        const groupMemberExists = await prisma.groupMembers.findFirst({
-            where: { email, seasonId: settings?.current_season },
-        });
+        // const groupMemberExists = await prisma.groupMembers.findFirst({
+        //     where: { email, seasonId: settings?.current_season },
+        // });
 
-        if (contestantExists || groupMemberExists) {
-            return errorHandler(
-                'This email is already registered for the competition.',
-                409
-            );
-        }
+        // if (contestantExists || groupMemberExists) {
+        //     return errorHandler(
+        //         'This email is already registered for the competition.',
+        //         409
+        //     );
+        // }
 
         await prisma.groupMembers.create({
             data: {
@@ -97,9 +98,9 @@ export const POST = async (req: Request) => {
                 groupId,
                 paid: 1,
                 seasonId: settings?.current_season,
-                status: UserStatus.approved
-            }
-        })
+                status: UserStatus.approved,
+            },
+        });
 
         let message = `<p> You have successfully completed your registration for RCCG International Shift talent Hunt Season 3. 
                             Thank you. <br> You are currently registered under ${group.name} as one of the group members
@@ -111,12 +112,11 @@ export const POST = async (req: Request) => {
                             <li>Group: ${group.name}</li>
                             <li>Group Size: ${group.size}</li>
 
-                </p>`
-
+                </p>`;
 
         const transporter = nodemailer.createTransport({
             port: 465,
-            host: "mail.privateemail.com",
+            host: 'mail.privateemail.com',
             auth: {
                 user: 'info@rccgshift.org',
                 pass: process.env.PASSWORD,
@@ -124,8 +124,8 @@ export const POST = async (req: Request) => {
             secure: true,
         });
 
-        const body = await generateEmailBody(name, message)
-        await sendEmail(email, 'Registration Completed!', body, transporter)
+        const body = await generateEmailBody(name, message);
+        await sendEmail(email, 'Registration Completed!', body, transporter);
 
         return sucessHandler('Account verified successfully.', 200);
 
