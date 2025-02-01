@@ -172,36 +172,37 @@ const RegistrationForm = () => {
 
             setLoading(true);
             toast.loading('Please Wait');
-            fetch(`${apiUrl}/api/register`, {
-                method: 'POST',
-                cache: 'no-store',
-                // headers: { 'Content-Type': 'application/json' },
-                body: data,
-            })
-                .then((update) => {
-                    return update.json().then((response) => {
-                        console.log('Update Query', update);
-                        console.log('Finished Response', response);
-                        if (update.ok) {
-                            toast.dismiss();
-                            setCurrentStep(currentStep + 1);
-                            setTag(response.data.tag);
-                            setSeason(response.data.season);
-                        } else {
-                            toast.dismiss();
-                            toast.error(`${response.error}`);
-                            console.error(response.error);
-                        }
-                    });
-                })
-                .catch((error) => {
-                    toast.dismiss();
-                    console.error('Error:', error);
-                    toast.error(`Error: ${error.message}`);
-                })
-                .finally(() => {
-                    setLoading(false);
+            try {
+                const update = await fetch(`${apiUrl}/api/register`, {
+                    method: 'POST',
+                    cache: 'no-store',
+                    // headers: { 'Content-Type': 'application/json' },
+                    body: data,
                 });
+
+                const response = await update.json();
+                console.log('Update Query', update);
+                console.log('Finished Response', response);
+
+                if (update.ok) {
+                    toast.dismiss();
+                    setCurrentStep(currentStep + 1);
+                    setTag(response.data.tag);
+                    setSeason(response.data.season);
+                } else {
+                    toast.dismiss();
+                    toast.error(`${response.error}`);
+                    console.log(`${response.error}`);
+                    return;
+                }
+            } catch (error: any) {
+                toast.dismiss();
+                console.log('Error:', error);
+                toast.error('Error:', error.message);
+                return;
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
