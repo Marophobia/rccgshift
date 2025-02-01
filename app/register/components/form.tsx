@@ -175,24 +175,33 @@ const RegistrationForm = () => {
             fetch(`${apiUrl}/api/register`, {
                 method: 'POST',
                 cache: 'no-store',
-                // headers: { 'Content-Type': 'application/json' },
                 body: data,
             })
                 .then((update) => {
-                    return update.json().then((response) => {
-                        console.log('Update Query', update);
-                        console.log('Finished Response', response);
-                        if (update.ok) {
-                            toast.dismiss();
-                            setCurrentStep(currentStep + 1);
-                            setTag(response.data.tag);
-                            setSeason(response.data.season);
-                        } else {
-                            toast.dismiss();
-                            toast.error(`${response.error}`);
-                            console.error(response.error);
-                        }
-                    });
+                    // Check if the response content-type is JSON
+                    const contentType = update.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return update.json().then((response) => ({ response, update }));
+                    } else {
+                        // If not JSON, return the text to help debug
+                        return update.text().then((text) => {
+                            throw new Error(`Expected JSON but received: ${text}`);
+                        });
+                    }
+                })
+                .then(({ response, update }) => {
+                    console.log('Update Query', update);
+                    console.log('Finished Response', response);
+                    if (update.ok) {
+                        toast.dismiss();
+                        setCurrentStep(currentStep + 1);
+                        setTag(response.data.tag);
+                        setSeason(response.data.season);
+                    } else {
+                        toast.dismiss();
+                        toast.error(`${response.error}`);
+                        console.error(`${response.error}`);
+                    }
                 })
                 .catch((error) => {
                     toast.dismiss();
