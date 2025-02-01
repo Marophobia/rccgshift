@@ -37,7 +37,7 @@ const PaystackButton = dynamic(
 );
 
 const RegistrationForm = () => {
-    const [currentStep, setCurrentStep] = useState(2);
+    const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [tag, setTag] = useState();
     const [season, setSeason] = useState();
