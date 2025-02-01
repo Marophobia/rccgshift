@@ -49,7 +49,7 @@ const RegistrationForm = () => {
     const [agreed, setAgreed] = useState(false);
 
     const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    const maxImageSize = 3 * 1024 * 1024; // 3MB
+    const maxImageSize = 1 * 1024 * 1024; // 1MB
 
     const [formData, setFormData] = useState({
         profilePicture: null as string | null,
