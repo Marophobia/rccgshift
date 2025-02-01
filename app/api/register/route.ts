@@ -96,9 +96,9 @@ export const POST = async (req: Request) => {
             return errorHandler('Invalid image type.', 409);
         }
 
-        if (file.size > 1 * 1024 * 1024) {
+        if (file.size > 5 * 1024 * 1024) {
             // 3MB limit
-            return errorHandler('File must not be more than 1MB.', 409);
+            return errorHandler('File must not be more than 5MB.', 409);
         }
 
         // Generate unique filename and save image

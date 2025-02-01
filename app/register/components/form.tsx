@@ -49,7 +49,7 @@ const RegistrationForm = () => {
     const [agreed, setAgreed] = useState(false);
 
     const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    const maxImageSize = 1 * 1024 * 1024; // 1MB
+    const maxImageSize = 5 * 1024 * 1024; // 1MB
 
     const [formData, setFormData] = useState({
         profilePicture: null as string | null,
@@ -86,7 +86,7 @@ const RegistrationForm = () => {
             if (selectedFile.size > maxImageSize) {
                 toast.dismiss();
                 return toast.error(
-                    'Image size exceeds 3MB limit. Please select a smaller file.'
+                    'Image size exceeds 5MB limit. Please select a smaller file.'
                 );
             }
 
