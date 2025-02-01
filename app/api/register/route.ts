@@ -194,7 +194,7 @@ export const POST = async (req: Request) => {
                 <li>Province: ${newUser.province}</li> <br>
 
                 Please click on the following link to continue your registration and pay the required
-                amount for registration. <br>
+                amount for registration. <br><br>
 
                     <a href="https://rccgshift.org/register/${newUser.id}" 
                     style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 

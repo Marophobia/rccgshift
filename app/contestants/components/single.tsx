@@ -315,7 +315,7 @@ const Single = (props: Props) => {
                             <li>
                                 <div className="ombre-table-left">TAG</div>
                                 <div className="ombre-table-right">
-                                    {String(contestant.id).padStart(3, '0')}
+                                    {String(contestant.tag).padStart(3, '0')}
                                 </div>
                             </li>
                             <li>
