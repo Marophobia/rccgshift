@@ -103,7 +103,7 @@ const ContestantTable = (props: Props) => {
                     method: 'POST',
                     cache: 'no-store',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: id, type: 'delete' }),
+                    body: JSON.stringify({ id: id, type: 'deleteUser' }),
                 }
             );
 
