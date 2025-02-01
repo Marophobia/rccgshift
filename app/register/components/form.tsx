@@ -28,6 +28,7 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import TermsAndConditionsDialog from './termsConditions';
+import { Input } from '@/components/ui/input';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
@@ -251,7 +252,6 @@ const RegistrationForm = () => {
     return (
         <>
             <ToastContainer />
-            <img src='/images/register.jpg' className='mb-10'/>
             {!activeType && <h5>Please select your registration type</h5>}
             <div className="flex flex-col items-center space-y-4 pb-10 md:flex-row md:space-x-4 md:space-y-0">
                 <Button
@@ -280,6 +280,7 @@ const RegistrationForm = () => {
 
             {activeType === 1 && (
                 <>
+                    <img src='/images/register.jpg' className='mb-10' />
                     <p>
                         Please fill in your details to register for the RCCG
                         Shift Talent Hunt Season 3
@@ -796,6 +797,8 @@ const RegistrationForm = () => {
 
             {activeType === 2 && (
                 <>
+                    <img src='/images/choir.jpg' className='mb-10' />
+
                     <p>
                         Please fill in your details to register for the RCCG
                         Shift Choir Competition
@@ -1101,14 +1104,14 @@ const RegistrationForm = () => {
                                     Please Note that you are creating a new
                                     choir group and as such you are the leader.
                                 </small>
-                                <input
+                                <Input
                                     type="text"
                                     name="groupName"
                                     id="groupName"
                                     value={formData.groupName}
                                     onChange={handleChange}
                                     required
-                                    maxLength={50}
+                                    min="20"
                                     className="w-full border rounded px-4"
                                 />
                             </div>

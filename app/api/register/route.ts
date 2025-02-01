@@ -103,7 +103,7 @@ export const POST = async (req: Request) => {
 
         // Generate unique filename and save image
         const uniqueFileName = `${crypto.randomUUID()}_${file.name}`;
-        const savePath = path.join('/var/www/images.rccgshift.org',uniqueFileName);
+        const savePath = path.join('/var/www/images.rccgshift.org', uniqueFileName);
         const buffer = new Uint8Array(await file.arrayBuffer()); // Convert to Uint8Array
         writeFileSync(savePath, buffer); // Write file using Uint8Array
 
@@ -193,12 +193,13 @@ export const POST = async (req: Request) => {
                 <li>Region: ${newUser.region}</li>
                 <li>Province: ${newUser.province}</li> <br>
 
+                Please click on the following link to continue your registration and pay the required
+                amount for registration. <br>
+
                     <a href="https://rccgshift.org/register/${newUser.id}" 
                     style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
                     color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
-                    border-radius: 5px;"> Click Here </a> <br><br>
-
-                    to continue your registration at any time <br><br>
+                    border-radius: 5px;"> Continue Registration </a> <br><br>
             </p>`;
         // reg started continue here...
 

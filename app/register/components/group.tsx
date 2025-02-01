@@ -16,6 +16,18 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { group } from 'console';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import TermsAndConditionsDialog from './termsConditions';
 
 type Props = {
     group: IGroup
@@ -215,17 +227,47 @@ const RegistrationSingleGroupForm = (data: Props) => {
                         </Select>
                     </div>
 
+
                     {/* Terms and Conditions Checkbox */}
                     <div className="flex items-center gap-3 mt-4">
-                        <input
-                            type="checkbox"
-                            id="agree"
-                            checked={agreed}
-                            onChange={(e) => setAgreed(e.target.checked)}
-                            className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
-                        />
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <input
+                                    type="checkbox"
+                                    id="agree"
+                                    checked={agreed}
+                                    className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
+                                />
+                            </AlertDialogTrigger>
+                            <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Terms and Conditions
+                                    </AlertDialogTitle>
+                                    {/* <AlertDialogDescription></AlertDialogDescription> */}
+                                </AlertDialogHeader>
+                                <div className="overflow-auto max-h-[50vh] mb-4">
+                                    <TermsAndConditionsDialog />
+                                </div>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel
+                                        onClick={(e) =>
+                                            setAgreed(false)
+                                        }
+                                    >
+                                        I do not Agree
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={(e) => setAgreed(true)}
+                                        className='bg-green-500'
+                                    >
+                                        I Agree
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                         <label htmlFor="agree" className="mt-2">
-                            I agree to Shift <a href="/terms" className="underline" style={{ color: "#F5245F" }}>Terms and Conditions</a>
+                            I agree to Shift{' '} Terms and Conditions
                         </label>
                     </div>
 

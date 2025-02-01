@@ -138,19 +138,19 @@ const ContestantTable = (props: Props) => {
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[100px]">S/N</TableHead>
+                            <TableHead>Tag</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Email</TableHead>
-                            {/* <TableHead>Bio</TableHead> */}
-                            <TableHead>Number</TableHead>
+                            <TableHead>Phone</TableHead>
+                            <TableHead>Competition</TableHead>
                             <TableHead>Category</TableHead>
                             <TableHead>Type</TableHead>
-                            {/* <TableHead>Age</TableHead> */}
+                            <TableHead>Age</TableHead>
                             <TableHead>Gender</TableHead>
                             <TableHead>Country</TableHead>
-                            {/* <TableHead>State</TableHead> */}
+                            <TableHead>State</TableHead>
                             <TableHead>Region</TableHead>
-                            {/* <TableHead>Regional Pastor</TableHead> */}
-                            {/* <TableHead>Province</TableHead> */}
+                            <TableHead>Province</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Actions</TableHead>
                         </TableRow>
@@ -161,30 +161,28 @@ const ContestantTable = (props: Props) => {
                                 <TableCell className="font-medium">
                                     {indexOfFirstContestant + index + 1}
                                 </TableCell>
+                                <TableCell>{contestant.tag}</TableCell>
                                 <TableCell>{contestant.name}</TableCell>
                                 <TableCell>{contestant.email}</TableCell>
-                                {/* <TableCell>{contestant.bio}</TableCell> */}
                                 <TableCell>{contestant.telephone}</TableCell>
+                                <TableCell>{contestant.competitionType === 1 ? 'Internation Shift' : 'Chior Competition'}</TableCell>
                                 <TableCell>{contestant.category}</TableCell>
                                 <TableCell>
                                     {contestant.type}{' '}
                                     {contestant.type === 'Group' ? (
                                         <span>
-                                            : {contestant.number_of_members}
+                                            : {contestant.Group?.GroupMembers?.length}
                                         </span>
                                     ) : (
                                         <span></span>
                                     )}
                                 </TableCell>
-                                {/* <TableCell>{contestant.age_grade}</TableCell> */}
+                                <TableCell>{contestant.age_grade}</TableCell>
                                 <TableCell>{contestant.gender}</TableCell>
                                 <TableCell>{contestant.country}</TableCell>
-                                {/* <TableCell>{contestant.state}</TableCell> */}
+                                <TableCell>{contestant.state}</TableCell>
                                 <TableCell>{contestant.region}</TableCell>
-                                {/* <TableCell>
-                                    {contestant.regional_pastor}
-                                </TableCell> */}
-                                {/* <TableCell>{contestant.province}</TableCell> */}
+                                <TableCell>{contestant.province}</TableCell>
                                 <TableCell>
                                     {contestant.status ==
                                     UserStatus.approved ? (

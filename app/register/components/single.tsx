@@ -150,19 +150,23 @@ const RegistrationSingleForm = (data: Props) => {
 
             {data.contestant.status === UserStatus.registered && data.contestant.paid === 1 && (
                 <div>
-                    <p>Welcome to the Final Phase of the International Shift Registration for Season 3</p>
+                    <p>Welcome to the Account Opening Phase of the International Shift Registration for Season 3</p>
 
                     <h5 className="borderr">Step Four: Account Opening</h5>
-                    <p>You will be redirected to Stanbic IBTC&apos;s Secure Website to Open an account. Once you have completed the process,
+                    {/* <p>You will be redirected to Stanbic IBTC&apos;s Secure Website to Open an account. Once you have completed the process,
                         please return to this page and put the account number to confirm and complete your registration. Please Note that
                         the name on the account must match your shift registered name.
 
                         If you already have a Stanbic IBTC account, just insert it and complete your registration
+                    </p> */}
+
+                    <p>When it is time, you will be required to open an account. But for now, You are a certified Contestant of 
+                        the RCCG Shift Talent Hunt Season 3. Thank you!
                     </p>
 
                     <a className='mt-5 text-white py-3 px-6 my-10 flex' style={{ background: "#363635" }}
                         target='_blank'
-                        href='https://ienroll.stanbicibtc.com:8444/OnlineAccountOnboarding'>
+                        href='#'>
                         <span className='flex gap-2'>Create Account <SquareArrowUpRight /></span>
                     </a>
 
@@ -184,7 +188,7 @@ const RegistrationSingleForm = (data: Props) => {
                         type='button'
                         className='my-5 text-white py-3 px-6' style={{ background: "#363635" }}
                         onClick={handleSubmit}
-                        disabled={loading}
+                        disabled={true}
                     > Complete Registration </button>
 
                 </div>
