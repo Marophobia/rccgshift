@@ -56,7 +56,7 @@ const RegistrationSingleForm = (data: Props) => {
         metadata: {
             name: data.contestant.name,
             season: data.settings.current_season,
-            tag: data.contestant.tag,
+            tag: data.contestant.id,
             amount: amount,
             custom_fields: [
                 {

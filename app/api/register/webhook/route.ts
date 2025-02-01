@@ -94,9 +94,7 @@ export async function POST(req: NextRequest) {
                             <li>Email Address: ${contestant.email}</li>
                             <li>Phone: ${contestant.telephone}</li>
                             <li>Region: ${contestant.region}</li>
-                            <li>Province: ${contestant.province}</li>
-                            <li>Category: ${contestant.category}</li>
-                            <li>Participation: ${contestant.type}</li>  <br>
+                            <li>Province: ${contestant.province}</li>  <br>
 
                             You have choosen to participate as a group with the name: <b>${contestant.Group?.name}</b>. Please give the following
                             link to your team members to register. This link must not be shared with anyone else. Thanks. <br><br>
