@@ -224,15 +224,15 @@ const ContestantTable = (props: Props) => {
                                         className="pt-3"
                                         href={`/admin/contestants/${contestant.id}`}
                                     >
-                                        <Eye size={20} />
+                                        <Eye size={15} />
                                     </Link>
-                                    {/* <Trash2
-                                        size={20}
+                                    <Trash2
+                                        size={15}
                                         className="mt-3"
                                         onClick={() =>
                                             deleteUser(contestant.id)
                                         }
-                                    /> */}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}

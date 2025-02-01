@@ -159,7 +159,7 @@ model User_session {
   position     Int?
   parameters   Parameters[]
   round        Round             @relation(fields: [round_id], references: [id])
-  user         User              @relation(fields: [user_id], references: [id])
+  user         User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
   season       Season            @relation(fields: [season_id], references: [id])
   // Choir        Choir?            @relation(fields: [choirId], references: [id])
   choirId      Int?

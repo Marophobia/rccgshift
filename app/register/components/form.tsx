@@ -37,7 +37,7 @@ const PaystackButton = dynamic(
 );
 
 const RegistrationForm = () => {
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(2);
     const [loading, setLoading] = useState(false);
     const [tag, setTag] = useState();
     const [season, setSeason] = useState();
@@ -708,7 +708,7 @@ const RegistrationForm = () => {
                                             className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
                                         />
                                     </AlertDialogTrigger>
-                                    <AlertDialogContent className="bg-gray-900">
+                                    <AlertDialogContent style={{ background: "#16171E", border: "none"}}>
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>
                                                 Terms and Conditions
@@ -724,25 +724,19 @@ const RegistrationForm = () => {
                                                     setAgreed(false)
                                                 }
                                             >
-                                                Cancel
+                                                I do not Agree
                                             </AlertDialogCancel>
                                             <AlertDialogAction
                                                 onClick={(e) => setAgreed(true)}
+                                                className='bg-green-500'
                                             >
-                                                I Accept
+                                                I Agree
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
                                 <label htmlFor="agree" className="mt-2">
-                                    I agree to Shift{' '}
-                                    <a
-                                        href="/terms"
-                                        className="underline"
-                                        style={{ color: '#F5245F' }}
-                                    >
-                                        Terms and Conditions
-                                    </a>
+                                    I agree to Shift{' '} Terms and Conditions
                                 </label>
                             </div>
 
@@ -1132,9 +1126,8 @@ const RegistrationForm = () => {
                                     id="groupSize"
                                     value={formData.groupsize}
                                     onChange={handleChange}
+                                    min="20"
                                     required
-                                    maxLength={50}
-                                    min={20}
                                     className="w-full border rounded px-4 py-2"
                                 />
                             </div>
@@ -1150,7 +1143,7 @@ const RegistrationForm = () => {
                                             className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
                                         />
                                     </AlertDialogTrigger>
-                                    <AlertDialogContent className="bg-gray-900">
+                                    <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
                                         <AlertDialogHeader>
                                             <AlertDialogTitle>
                                                 Terms and Conditions
@@ -1166,25 +1159,19 @@ const RegistrationForm = () => {
                                                     setAgreed(false)
                                                 }
                                             >
-                                                Cancel
+                                                I do not Agree
                                             </AlertDialogCancel>
                                             <AlertDialogAction
                                                 onClick={(e) => setAgreed(true)}
+                                                className='bg-green-500'
                                             >
-                                                I Accept
+                                                I Agree
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
                                 <label htmlFor="agree" className="mt-2">
-                                    I agree to Shift{' '}
-                                    <a
-                                        href="/terms"
-                                        className="underline"
-                                        style={{ color: '#F5245F' }}
-                                    >
-                                        Terms and Conditions
-                                    </a>
+                                    I agree to Shift{' '} Terms and Conditions
                                 </label>
                             </div>
 

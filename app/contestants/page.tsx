@@ -37,7 +37,7 @@ export const metadata = {
 const getContestants = async () => {
     const authorization = headers().get('authorization')
     const headersInit: HeadersInit = authorization ? { authorization } : {};
-    const res = await fetch(`${apiUrl}/api/admin/contestants`,
+    const res = await fetch(`${apiUrl}/api/contestant`,
         {
             method: 'POST',
             cache: 'no-store',
