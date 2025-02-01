@@ -49,8 +49,8 @@ const RegistrationSingleForm = (data: Props) => {
 
     const componentProps = {
         email: data.contestant.email,
-        amount: amount * 100,
-        // amount: 100 * 100,
+        // amount: amount * 100,
+        amount: 100 * 100,
         fname: data.contestant.name + `(${data.contestant.tag})`,
         // lname: fname + `(${contestant.id})`,
         publicKey: publicKey,
