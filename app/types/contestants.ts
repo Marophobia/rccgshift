@@ -17,6 +17,7 @@ export interface Icontestants {
     gender: string;
     age_grade: string;
     category: string;
+    creativity: string
     type: string;
     number_of_members: number;
     country: string;

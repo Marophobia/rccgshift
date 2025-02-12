@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { countries, nigerianStates } from '@/app/forms/components';
 import {
@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import TermsAndConditionsDialog from './termsConditions';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
@@ -47,6 +48,7 @@ const RegistrationForm = () => {
     const [file, setFile] = useState<File | null>(null);
     const [activeType, setActiveType] = useState<number | null>(null);
     const [agreed, setAgreed] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     const maxImageSize = 5 * 1024 * 1024; // 1MB
@@ -258,10 +260,16 @@ const RegistrationForm = () => {
         },
     };
 
+    useEffect(() => {
+        setIsOpen(true);
+    }, []);
+
     return (
         <>
             <ToastContainer />
             {!activeType && <h5>Please select your registration type</h5>}
+            <h4 className='text-red-100'>Please Note that this registration is NOT FREE!
+            </h4>
             <div className="flex flex-col items-center space-y-4 pb-10 md:flex-row md:space-x-4 md:space-y-0">
                 <Button
                     hidden={activeType === 2}
@@ -663,6 +671,13 @@ const RegistrationForm = () => {
                                 </Select>
                             </div>
 
+                            {/* Price Disclaimer */}
+                            {formData.participation &&
+                                <h6 className="mt-1 text-red-50">
+                                    You will be required to pay {formData.participation === 'Single' ? (<>₦5,000</>) : (<>₦10,000</>)}
+                                </h6>
+                            }
+
                             {formData.participation === 'Group' && (
                                 <>
                                     <div className="mb-5">
@@ -703,6 +718,8 @@ const RegistrationForm = () => {
                                     </div>
                                 </>
                             )}
+
+
 
                             {/* Terms and Conditions Checkbox */}
                             <div className="flex items-center gap-3 mt-4">
@@ -1140,6 +1157,12 @@ const RegistrationForm = () => {
                                 />
                             </div>
 
+                            {formData.groupName &&
+                                <h6 className="mt-1 text-red-50">
+                                    You will be required to pay ₦20,000
+                                </h6>
+                            }
+
                             {/* Terms and Conditions Checkbox */}
                             <div className="flex items-center gap-3 mt-4">
                                 <AlertDialog>
@@ -1239,6 +1262,49 @@ const RegistrationForm = () => {
                     )}
                 </>
             )}
+
+
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                {/* <AlertDialogTrigger asChild>
+                    <h3>Click me</h3>
+                </AlertDialogTrigger> */}
+                <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
+                    <AlertDialogHeader>
+                        <div className="bg-gray-800 border-l-4 border-yellow-400 p-4 rounded-lg my-5 text-left">
+                            <h3 className="text-yellow-400 font-semibold text-lg mb-3">
+                                Important Notice: Registration Fee Required
+                            </h3>
+                            <p className="text-gray-200 mb-3">
+                                Please note that this registration is <strong className="text-yellow-400">NOT FREE</strong>. A registration fee is required to complete your application. The fee varies based on the category you select:
+                            </p>
+                            <ul className="list-disc list-inside text-gray-200 mb-3 pl-5">
+                                <li><strong className="text-yellow-400">International Shift (Single):</strong> ₦5,000</li>
+                                <li><strong className="text-yellow-400">International Shift (Group):</strong> ₦10,000</li>
+                                <li><strong className="text-yellow-400">Shift Choir Competition:</strong> ₦20,000</li>
+                            </ul>
+                            <p className="text-gray-200 mb-3">
+                                <strong className="text-yellow-400">Do not proceed with registration unless you are ready and willing to pay the required fee.</strong> Failure to pay will result in an incomplete registration.
+                            </p>
+                            <p className="text-gray-200">
+                                By proceeding, you acknowledge and agree to the payment terms outlined above.
+                            </p>
+                        </div>
+                    </AlertDialogHeader>
+                    <div className="overflow-auto max-h-[50vh] mb-4">
+
+                    </div>
+                    <AlertDialogFooter>
+                        <AlertDialogAction className='bg-red-500 border-red-500 text-white sm:my-0 my-2'>
+                            <Link href="/">
+                                I do not Agree
+                            </Link>
+                        </AlertDialogAction>
+                        <AlertDialogCancel className='bg-green-500 border-green-500 text-white sm:my-0 my-2'>
+                            I Agree
+                        </AlertDialogCancel>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 };

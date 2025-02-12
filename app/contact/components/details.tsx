@@ -182,9 +182,9 @@ const Details = (props: Props) => {
                             <AccordionTrigger style={{ fontSize: "20px", textAlign: "left" }}>What are the prizes for the winners?</AccordionTrigger>
                             <AccordionContent>
                                 <li>It&apos;s a one (1) winner competition</li>
-                                <li>The winner walks a way with 10,000,000 (Cash and Deal), a Car, and a 3-day luxury getaway.</li>
-                                <li>The 1st Runner walks away with 1 million Naira Only</li>
-                                <li>The 2nd Runner walks away with 500,000 Naira Only</li>
+                                <li>The winner walks a way with 10,000,000 (Cash and Deal), and a SUV</li>
+                                <li>The 1st Runner walks away with 2 Million Naira Only</li>
+                                <li>The 2nd Runner walks away with 1 Million Naira Only</li>
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-3">

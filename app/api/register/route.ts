@@ -33,6 +33,7 @@ export const POST = async (req: Request) => {
             groupName,
             groupsize,
             type,
+            creativity
         } = data;
 
         console.log(data);
@@ -148,7 +149,7 @@ export const POST = async (req: Request) => {
         const newUser =
             type === 1
                 ? await prisma.user.create({
-                    data: { ...commonData, category, type: participation },
+                    data: { ...commonData, category, type: participation, creativity },
                 })
                 : await prisma.user.create({ data: commonData });
 

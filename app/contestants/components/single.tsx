@@ -324,6 +324,14 @@ const Single = (props: Props) => {
                                     {contestant.category}
                                 </div>
                             </li>
+                            {contestant.category === 'Unusual Creativity' &&
+                                <li>
+                                    <div className="ombre-table-left">Creativity Type</div>
+                                    <div className="ombre-table-right">
+                                        {contestant.creativity}
+                                    </div>
+                                </li>
+                            }
                             <li>
                                 <div className="ombre-table-left">TYPE</div>
                                 <div className="ombre-table-right">
