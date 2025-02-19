@@ -21,8 +21,7 @@ const About = (props: Props) => {
                         Affairs (YAYA). It is a platform for young people to
                         showcase their talents and to be rewarded for their
                         creativity and excellence. The RCCG Int&apos;l Shift
-                        Talent Hunt is open to all young people between the ages
-                        of 13 and 45 who are members of the RCCG
+                        Talent Hunt is open to all (No Age limit) who are members of the RCCG
                         <br /> <br />
                         The competition is divided into different categories,
                         including Music, dancing, and Unusual Creativity.
