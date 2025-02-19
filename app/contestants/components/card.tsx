@@ -127,11 +127,15 @@ const Card = (props: Props) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredContestants, setFilteredContestants] = useState(data)
 
+    const sortByTag = (a: Icontestants, b: Icontestants) => a.tag - b.tag;
     useEffect(() => {
-        const filtered = seasonContestants.filter(contestant =>
-            contestant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            String(contestant.id).includes(searchTerm)
-        );
+        const filtered = seasonContestants
+            .filter(contestant =>
+                contestant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                String(contestant.tag).includes(searchTerm)
+            )
+            .sort(sortByTag);
+        
         setFilteredContestants(filtered);
         setCurrentPage(1); // Reset to page 1 on search
     }, [searchTerm, seasonContestants]);
@@ -139,7 +143,7 @@ const Card = (props: Props) => {
     // Calculate the contestants for the current page
     const indexOfLastContestant = currentPage * contestantsPerPage
     const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage
-    const currentContestants = filteredContestants.slice(indexOfFirstContestant, indexOfLastContestant)
+    const currentContestants = filteredContestants.slice(indexOfFirstContestant, indexOfLastContestant).sort(sortByTag)
 
     // Handle page navigation
     const paginate = (pageNumber: number) => {

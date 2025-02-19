@@ -11,7 +11,7 @@ const AboutBody = (props: Props) => {
                     The<span className="text-sm text-[#CC3300]"> RCCG SHIFT Talent Hunt </span> is a talent competition organized by the
                     <span className="text-sm text-[#CC3300]"> Redeemed Christian Church of God (RCCG) Young Adults and Youth Affairs (YAYA). </span>
                     It is a platform for young people to showcase their talents and to be rewarded for their creativity and excellence. The RCCG SHIFT Talent Hunt is open to
-                    all young people between the ages of 13 and 45 who are members of the RCCG.
+                    all young people (No age limit) who are members of the RCCG.
                     <br /><br />
                     <span className="text-sm text-[#CC3300]">
                         The competition is divided into different categories, including Music, dancing, and Unusual Creativity.

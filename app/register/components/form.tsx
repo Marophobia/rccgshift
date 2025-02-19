@@ -426,8 +426,8 @@ const RegistrationForm = () => {
                                         <SelectItem value="Youth">
                                             Youth
                                         </SelectItem>
-                                        <SelectItem value="Teen">
-                                            Teen
+                                        <SelectItem value="Minor">
+                                            Minor
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -953,8 +953,8 @@ const RegistrationForm = () => {
                                         <SelectItem value="Youth">
                                             Youth
                                         </SelectItem>
-                                        <SelectItem value="Teen">
-                                            Teen
+                                        <SelectItem value="Minor">
+                                            Minor
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
