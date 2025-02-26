@@ -104,7 +104,7 @@ const ContestantSingle = (props: Props) => {
                                                             </div>
                                                             <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
                                                                 <li className="badge badge-primary-light">
-                                                                    Group Size: {contestant.number_of_members}
+                                                                    Group Size: {contestant.Group?.size}
                                                                 </li>
                                                                 <li className="badge badge-primary-light">
                                                                     Registered Members: {contestant.Group?.GroupMembers?.length}
@@ -223,7 +223,7 @@ const ContestantSingle = (props: Props) => {
                                                     </div>
                                                     <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
                                                         <li className="badge badge-primary-light">
-                                                            Choir Size: {contestant.number_of_members}
+                                                            Choir Size: {contestant.Group?.size}
                                                         </li>
                                                         <li className="badge badge-primary-light">
                                                             Registered Members: {contestant.Group?.GroupMembers?.length}

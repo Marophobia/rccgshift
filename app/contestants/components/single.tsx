@@ -339,7 +339,7 @@ const Single = (props: Props) => {
                                             <li>
                                                 <div className="ombre-table-left">Group Size</div>
                                                 <div className="ombre-table-right">
-                                                    {contestant.number_of_members}
+                                                    {contestant.Group?.size}
                                                 </div>
                                             </li>
 
@@ -358,7 +358,7 @@ const Single = (props: Props) => {
                                     <li>
                                         <div className="ombre-table-left">Choir Size</div>
                                         <div className="ombre-table-right">
-                                            {contestant.number_of_members}
+                                            {contestant.Group?.size}
                                         </div>
                                     </li>
 

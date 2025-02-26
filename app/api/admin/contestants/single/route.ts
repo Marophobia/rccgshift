@@ -10,6 +10,11 @@ export const POST = async (req: Request) => {
                 id: Number(id),
             },
             include: {
+                Group: {
+                    include: {
+                        GroupMembers: true,
+                    }
+                },
                 user_sessions: {
                     include: {
                         round: true,
