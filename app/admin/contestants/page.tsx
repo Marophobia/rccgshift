@@ -21,10 +21,27 @@ const getData = async () => {
     return res.json();
 }
 
+const getSeasons = async () => {
+    const authorization = headers().get('authorization')
+    const headersInit: HeadersInit = authorization ? { authorization } : {};
+    const res = await fetch(`${apiUrl}/api/seasons`,
+        {
+            method: 'POST',
+            cache: 'no-store',
+            headers: headersInit
+        })
+    if (!res.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return res.json();
+}
+
 const Contestants = async () => {
     const session = await getAuthSession()
     const userSession = session?.user
     const contestants = await getData()
+    const seasons = await getSeasons()
+    
     return (
         <>
             <div className='flex bg-body-light w-full dark:bg-dark-body'>
@@ -37,7 +54,7 @@ const Contestants = async () => {
                         </div>
                         <div className="grid grid-cols-12">
                             <div className="col-span-full">
-                                <ContestantTable contestants={contestants.data} />
+                                <ContestantTable contestants={contestants.data} seasons={seasons.data} />
                             </div>
                         </div>
                     </div>

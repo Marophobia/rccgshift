@@ -34,9 +34,9 @@ const Contestant = async ({ params }: { params: { id: number } }) => {
                 <div className="w-full xl:pl-[300px] ">
                     <Header session={userSession} />
 
-                    <div className="card-body">
+                    {/* <div className="card-body">
                         <AlterVotes contestant={contestant} />
-                    </div>
+                    </div> */}
 
                     <div className="main-content group-data-[sidebar-size=lg]:xl:ml-[52px] group-data-[sidebar-size=sm]:xl:ml-[32px] px-4 ac-transition">
                         <ContestantSingle contestant={contestant} />

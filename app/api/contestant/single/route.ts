@@ -19,7 +19,11 @@ export const POST = async (req: Request) => {
                             round_id: 'desc',
                         },
                     },
-                    Group: true
+                    Group: {
+                        include: {
+                            GroupMembers: true
+                        }
+                    }
                 },
             });
 

@@ -17,7 +17,7 @@ const COntestants = (props: Props) => {
         <>
             <div className="grid">
                 <div className="unit whole">
-                    <h3 className="borderr">SHIFT Contestants, 2023</h3>
+                    <h3 className="borderr">SHIFT Contestants, 2024</h3>
                     <div id="models" className="owl-carousel">
 
                         <Carousel
@@ -29,12 +29,16 @@ const COntestants = (props: Props) => {
                             className="w-full"
                         >
                             <CarouselContent className='gap-5'>
-                                <Item image='/img/service-1.jpg' />
-                                <Item image='/img/service-2.jpg' />
-                                <Item image='/img/service-3.jpg' />
-                                <Item image='/img/service-4.jpg' />
-                                <Item image='/img/service-5.jpg' />
-                                <Item image='/img/service-6.jpg' />
+                                <Item image='/img/previous/1.jpg' text='Winner, Season 2' />
+                                <Item image='/img/previous/2.jpg' text='1st Runner Up, Season 2' />
+                                <Item image='/img/previous/3.jpg' text='2nd Runner Up, Season 2' />
+                                <Item image='/img/previous/4.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/5.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/6.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/7.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/8.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/9.jpg' text='Finalist, Season 2' />
+                                <Item image='/img/previous/10.jpg' text='Finalist, Season 2' />
                             </CarouselContent>
                         </Carousel>
                     </div>

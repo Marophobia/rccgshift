@@ -318,12 +318,59 @@ const Single = (props: Props) => {
                                     {String(contestant.tag).padStart(3, '0')}
                                 </div>
                             </li>
-                            <li>
-                                <div className="ombre-table-left">CATEGORY</div>
-                                <div className="ombre-table-right">
-                                    {contestant.category}
-                                </div>
-                            </li>
+                            {contestant.competitionType === 1 &&
+                                <>
+                                    <li>
+                                        <div className="ombre-table-left">CATEGORY</div>
+                                        <div className="ombre-table-right">
+                                            {contestant.category}
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div className="ombre-table-left">TYPE</div>
+                                        <div className="ombre-table-right">
+                                            {contestant.type}
+                                        </div>
+                                    </li>
+
+                                    {contestant.type === 'Group' &&
+                                        <>
+                                            <li>
+                                                <div className="ombre-table-left">Group Size</div>
+                                                <div className="ombre-table-right">
+                                                    {contestant.number_of_members}
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div className="ombre-table-left">Registered Members</div>
+                                                <div className="ombre-table-right">
+                                                    {contestant.Group?.GroupMembers?.length}
+                                                </div>
+                                            </li>
+                                        </>
+                                    }
+                                </>
+                            }
+                            {contestant.competitionType === 2 &&
+                                <>
+                                    <li>
+                                        <div className="ombre-table-left">Choir Size</div>
+                                        <div className="ombre-table-right">
+                                            {contestant.number_of_members}
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div className="ombre-table-left">Registered Members</div>
+                                        <div className="ombre-table-right">
+                                            {contestant.Group?.GroupMembers?.length}
+                                        </div>
+                                    </li>
+                                </>
+                            }
+
                             {contestant.category === 'Unusual Creativity' &&
                                 <li>
                                     <div className="ombre-table-left">Creativity Type</div>
@@ -332,12 +379,9 @@ const Single = (props: Props) => {
                                     </div>
                                 </li>
                             }
-                            <li>
-                                <div className="ombre-table-left">TYPE</div>
-                                <div className="ombre-table-right">
-                                    {contestant.type}
-                                </div>
-                            </li>
+
+
+
                             <li>
                                 <div className="ombre-table-left">AGE</div>
                                 <div className="ombre-table-right">

@@ -5,10 +5,11 @@ import {
 
 type Props = {
     image: string
+    text: string
 }
 
 const Item = (props: Props) => {
-    const { image } = props
+    const { image, text } = props
     return (
         <>
             <CarouselItem className="basis-[320px]">
@@ -17,7 +18,7 @@ const Item = (props: Props) => {
                         <img src={image} alt="" />
                     </div>
                     <figcaption>
-                        <a className="arrow-button">Music Category</a>
+                        <a className="arrow-button">{text}</a>
                     </figcaption>
                 </figure>
             </CarouselItem>

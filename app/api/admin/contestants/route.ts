@@ -11,9 +11,9 @@ export const POST = async (req: Request) => {
         }
 
         const contestants = await prisma.user.findMany({
-            where: {
-                seasonId: settings.current_season
-            },
+            // where: {
+            //     seasonId: settings.current_season
+            // },
             orderBy: {
                 id: "asc",
             },

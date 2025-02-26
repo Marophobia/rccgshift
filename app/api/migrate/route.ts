@@ -4,7 +4,12 @@ import prisma from '@/lib/db';
 export const POST = async (req: Request) => {
     try {
 
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany({
+            where: {
+                seasonId: 1
+            }
+        });
+        
         for (const user of users) {
             await prisma.user.update({
                 where: { id: user.id },

@@ -76,21 +76,260 @@ const ContestantSingle = (props: Props) => {
                                 </div>
                                 <div className="grid lg:grid-cols-12 w-full">
                                     <div className="col-span-6">
-                                        <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
-                                            <div className="flex-center-between">
-                                                <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
-                                                    Category and Type
-                                                </h6>
-                                            </div>
-                                            <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
-                                                <li className="badge badge-primary-light">
-                                                    {contestant.category}
-                                                </li>
-                                                <li className="badge badge-primary-light">
-                                                    {contestant.type}
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        {contestant.competitionType === 1 &&
+                                            <>
+                                                <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
+                                                    <div className="flex-center-between">
+                                                        <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
+                                                            Category and Type
+                                                        </h6>
+                                                    </div>
+                                                    <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
+                                                        <li className="badge badge-primary-light">
+                                                            {contestant.category}
+                                                        </li>
+                                                        <li className="badge badge-primary-light">
+                                                            {contestant.type}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                {contestant.type === 'Group' &&
+                                                    <>
+                                                        <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
+                                                            <div className="flex-center-between">
+                                                                <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
+                                                                    Group Size and Registered Members
+                                                                </h6>
+                                                            </div>
+                                                            <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
+                                                                <li className="badge badge-primary-light">
+                                                                    Group Size: {contestant.number_of_members}
+                                                                </li>
+                                                                <li className="badge badge-primary-light">
+                                                                    Registered Members: {contestant.Group?.GroupMembers?.length}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                        {contestant.Group?.GroupMembers &&
+                                                            contestant.Group?.GroupMembers?.length > 0 &&
+                                                            <div className="col-span-6 ">
+                                                                <div className="py-5 border-t border-gray-200 text-left">
+                                                                    <div className="flex-center-between h-20">
+                                                                    <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
+                                                                        Group Members
+                                                                    </h6>
+                                                                </div>
+
+                                                                <Table>
+                                                                    <TableHeader>
+                                                                        <TableRow>
+                                                                            <TableHead>
+                                                                                S/N
+                                                                            </TableHead>
+                                                                            <TableHead>
+                                                                                Name
+                                                                            </TableHead>
+                                                                            <TableHead>
+                                                                                Email
+                                                                            </TableHead>
+                                                                            <TableHead>
+                                                                                Telephone
+                                                                            </TableHead>
+                                                                            <TableHead>
+                                                                                Gender
+                                                                            </TableHead>
+                                                                            <TableHead>
+                                                                                Age
+                                                                            </TableHead>
+                                                                        </TableRow>
+                                                                    </TableHeader>
+                                                                    <TableBody>
+                                                                        {contestant.Group?.GroupMembers &&
+                                                                            contestant.Group?.GroupMembers
+                                                                                .length > 0 ? (
+                                                                            contestant.Group?.GroupMembers.map(
+                                                                                (
+                                                                                    member,
+                                                                                    index
+                                                                                ) => (
+                                                                                    <TableRow
+                                                                                        className={`${index %
+                                                                                            2 ==
+                                                                                            0
+                                                                                            ? 'bg-gray-50'
+                                                                                            : ''
+                                                                                            }`}
+                                                                                        key={
+                                                                                            member.id
+                                                                                        }
+                                                                                    >
+                                                                                        <TableCell>
+                                                                                            {index +
+                                                                                                1}
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            {
+                                                                                                member.name
+                                                                                            }
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            {
+                                                                                                member.email
+                                                                                            }
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            {
+                                                                                                member.telephone
+                                                                                            }
+                                                                                        </TableCell>
+
+                                                                                        <TableCell>
+                                                                                            {
+                                                                                                member.gender
+                                                                                            }
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            {
+                                                                                                member.age_grade
+                                                                                            }
+                                                                                        </TableCell>
+                                                                                    </TableRow>
+                                                                                )
+                                                                            )
+                                                                        ) : (
+                                                                            <div>
+                                                                                No group members found
+                                                                            </div>
+                                                                        )}
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                    </>
+                                                }
+                                            </>
+                                        }
+
+                                        {contestant.competitionType === 2 &&
+                                            <>
+                                                <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
+                                                    <div className="flex-center-between">
+                                                        <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
+                                                            Choir Size and Registered Members
+                                                        </h6>
+                                                    </div>
+                                                    <ul className="flex items-center flex-wrap gap-2.5 *:rounded-full *:px-2.5 *:py-1.5 mt-4">
+                                                        <li className="badge badge-primary-light">
+                                                            Choir Size: {contestant.number_of_members}
+                                                        </li>
+                                                        <li className="badge badge-primary-light">
+                                                            Registered Members: {contestant.Group?.GroupMembers?.length}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+
+                                                {contestant.Group?.GroupMembers &&
+                                                    contestant.Group?.GroupMembers?.length > 0 &&
+                                                    <div className="col-span-6 ">
+                                                        <div className="py-5 border-t border-gray-200 text-left">
+                                                            <div className="flex-center-between h-20">
+                                                            <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
+                                                                Choir Members
+                                                            </h6>
+                                                        </div>
+
+                                                        <Table>
+                                                            <TableHeader>
+                                                                <TableRow>
+                                                                    <TableHead>
+                                                                        S/N
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Name
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Email
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Telephone
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Gender
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Age
+                                                                    </TableHead>
+                                                                </TableRow>
+                                                            </TableHeader>
+                                                            <TableBody>
+                                                                {contestant.Group?.GroupMembers &&
+                                                                    contestant.Group?.GroupMembers
+                                                                        .length > 0 ? (
+                                                                    contestant.Group?.GroupMembers.map(
+                                                                        (
+                                                                            member,
+                                                                            index
+                                                                        ) => (
+                                                                            <TableRow
+                                                                                className={`${index %
+                                                                                    2 ==
+                                                                                    0
+                                                                                    ? 'bg-gray-50'
+                                                                                    : ''
+                                                                                    }`}
+                                                                                key={
+                                                                                    member.id
+                                                                                }
+                                                                            >
+                                                                                <TableCell>
+                                                                                    {index +
+                                                                                        1}
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    {
+                                                                                        member.name
+                                                                                    }
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    {
+                                                                                        member.email
+                                                                                    }
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    {
+                                                                                        member.telephone
+                                                                                    }
+                                                                                </TableCell>
+
+                                                                                <TableCell>
+                                                                                    {
+                                                                                        member.gender
+                                                                                    }
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    {
+                                                                                        member.age_grade
+                                                                                    }
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                        )
+                                                                    )
+                                                                ) : (
+                                                                    <div>
+                                                                        No choir members found
+                                                                    </div>
+                                                                )}
+                                                            </TableBody>
+                                                        </Table>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </>
+                                        }
                                         <div className="py-5 border-t border-gray-200 dark:border-dark-border text-left">
                                             <div className="flex-center-between">
                                                 <h6 className="text-gray-500 dark:text-dark-text leading-none font-semibold">
@@ -172,21 +411,20 @@ const ContestantSingle = (props: Props) => {
                                                 </TableHeader>
                                                 <TableBody>
                                                     {contestant.user_sessions &&
-                                                    contestant.user_sessions
-                                                        .length > 0 ? (
+                                                        contestant.user_sessions
+                                                            .length > 0 ? (
                                                         contestant.user_sessions.map(
                                                             (
                                                                 session,
                                                                 index
                                                             ) => (
                                                                 <TableRow
-                                                                    className={`${
-                                                                        index %
-                                                                            2 ==
+                                                                    className={`${index %
+                                                                        2 ==
                                                                         0
-                                                                            ? 'bg-gray-50'
-                                                                            : ''
-                                                                    }`}
+                                                                        ? 'bg-gray-50'
+                                                                        : ''
+                                                                        }`}
                                                                     key={
                                                                         session.id
                                                                     }
@@ -232,9 +470,9 @@ const ContestantSingle = (props: Props) => {
                                                                         <DropdownMenuContent>
                                                                             {session.parameters !==
                                                                                 null &&
-                                                                            session
-                                                                                .parameters
-                                                                                .length >
+                                                                                session
+                                                                                    .parameters
+                                                                                    .length >
                                                                                 0 ? (
                                                                                 session.parameters.map(
                                                                                     (

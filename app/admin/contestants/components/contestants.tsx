@@ -1,5 +1,6 @@
 'use client';
 import { Icontestants } from '@/app/types/contestants';
+import { Iseason } from '@/app/types/round';
 import {
     Table,
     TableBody,
@@ -22,30 +23,45 @@ import { Button } from '@/components/ui/button';
 import { UserStatus } from '@/app/types/contestants';
 import { Download, Eye, Trash, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/navigation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Props = {
     contestants: Icontestants[];
+    seasons: Iseason[];
 };
 
 const ContestantTable = (props: Props) => {
-    const { contestants } = props;
+    const { contestants, seasons } = props;
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 20;
+    const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
+    const [paymentStatus, setPaymentStatus] = useState<'all' | 'paid' | 'unpaid'>('all');
+    const [filteredContestants, setFilteredContestants] = useState<Icontestants[]>(contestants);
+
+    useEffect(() => {
+        // Filter contestants based on selected season and payment status
+        const filtered = contestants.filter(contestant => {
+            const matchesSeason = selectedSeason ? contestant.seasonId === selectedSeason : true;
+            const matchesPayment = paymentStatus === 'all' ? true : paymentStatus === 'paid' ? contestant.paid : !contestant.paid;
+            return matchesSeason && matchesPayment;
+        });
+        setFilteredContestants(filtered);
+    }, [selectedSeason, paymentStatus, contestants]);
 
     // Calculate the indexes for slicing the contestants array
     const indexOfLastContestant = currentPage * contestantsPerPage;
     const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = contestants.slice(
+    const currentContestants = filteredContestants.slice(
         indexOfFirstContestant,
         indexOfLastContestant
     );
 
-    const totalPages = Math.ceil(contestants.length / contestantsPerPage);
+    const totalPages = Math.ceil(filteredContestants.length / contestantsPerPage);
 
     const approve = async (id: number) => {
         try {
@@ -126,6 +142,69 @@ const ContestantTable = (props: Props) => {
     return (
         <>
             <div className="card p-5">
+                {/* Season Selector */}
+                <div className="mb-4">
+                    <label htmlFor="season-select" className="block text-sm font-medium mb-2">
+                        Select Season:
+                    </label>
+                    <Select
+                        value={String(selectedSeason || '')}
+                        onValueChange={(value) => setSelectedSeason(Number(value))}
+                    >
+                        <SelectTrigger className="w-full border rounded-lg px-4 py-2 text-gray-900">
+                            <SelectValue placeholder="Choose a season" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {/* Assuming you have a list of seasons available */}
+                            {seasons.map((season) => (
+                                <SelectItem key={season.id} value={String(season.id)}>
+                                    {season.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* Payment Status Filter */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-2">Payment Status:</label>
+                    <div className="flex gap-4">
+                        <label>
+                            <input
+                                type="radio"
+                                name="paymentStatus"
+                                value="all"
+                                className='mr-2'
+                                checked={paymentStatus === 'all'}
+                                onChange={() => setPaymentStatus('all')}
+                            />
+                            All
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="paymentStatus"
+                                value="paid"
+                                checked={paymentStatus === 'paid'}
+                                onChange={() => setPaymentStatus('paid')}
+                                className='mr-2'
+                            />
+                            Paid
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="paymentStatus"
+                                value="unpaid"
+                                checked={paymentStatus === 'unpaid'}
+                                onChange={() => setPaymentStatus('unpaid')}
+                                className='mr-2'
+                            />
+                            Unpaid
+                        </label>
+                    </div>
+                </div>
+
                 {/* <div className="w-full flex justify-end">
                     <button
                         className="btn b-solid btn-primary-solid text-white mb-5"

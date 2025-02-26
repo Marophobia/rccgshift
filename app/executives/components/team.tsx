@@ -34,7 +34,7 @@ const Team = (props: Props) => {
                 <TeamCard image='sandra.jpg' name='Emesiri Sandra Ikide' position='Director of Contestants' />
             </div>
 
-            <h4 className='borderr'>REGIONAL COORDINATORS</h4>
+            {/* <h4 className='borderr'>REGIONAL COORDINATORS</h4>
             <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' style={{ display: 'grid' }}>
                 <TeamCard image='samuel.jpg' name='Pst Oluwaseyi Samuel' position='Region 41 Shift Coordinator' />
                 <TeamCard image='stan.jpg' name='Pst Azimhi Stan.' position='Region 32 Shift Coordinator' />
@@ -42,7 +42,7 @@ const Team = (props: Props) => {
                 <TeamCard image='olorunshola.jpg' name='Pst Olorunshola Omotayo' position='Region 42 Shift Coordinator' />
                 <TeamCard image='joseph.jpg' name='Pst Joseph Bisong Ekpang' position='Region 28 Shift Coordinator' />
                 <TeamCard image='usoro.jpg' name='Pst Samuel Usoro' position='Region 47 Shift Coordinator' />
-            </div >
+            </div> */}
         </>
     )
 }
