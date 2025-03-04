@@ -36,7 +36,6 @@ export const POST = async (req: Request) => {
             creativity
         } = data;
 
-        console.log(data);
 
         // Validate required fields
         if (

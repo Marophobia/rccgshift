@@ -52,44 +52,46 @@ export async function POST(req: NextRequest) {
             // const amount = event.data.amount / 100;
             const email = event.data.customer.email;
 
-            const { name, season, tag, amount, type } = event.data.metadata;
-            console.log(event.data.metadata)
+            if (event.data.metadata.registration_type === 'contestant') {
 
-            const contestant = await prisma.user.findFirst({
-                where: {
-                    id: tag
-                },
-                include: {
-                    Group: true
+                const { name, season, tag, amount, type } = event.data.metadata;
+
+
+                const contestant = await prisma.user.findFirst({
+                    where: {
+                        id: tag
+                    },
+                    include: {
+                        Group: true
+                    }
+                })
+
+                if (!contestant) {
+                    return errorHandler(
+                        'Contestant not found',
+                        402
+                    );
                 }
-            })
 
-            if (!contestant) {
-                return errorHandler(
-                    'Contestant not found',
-                    402
-                );
-            }
+                try {
 
-            try {
+                    const updateUserStatus = await prisma.$transaction(async (tx) => {
 
-                const updateUserStatus = await prisma.$transaction(async (tx) => {
+                        const transporter = nodemailer.createTransport({
+                            port: 465,
+                            host: "mail.privateemail.com",
+                            auth: {
+                                user: 'info@rccgshift.org',
+                                pass: process.env.PASSWORD,
+                            },
+                            secure: true,
+                        });
 
-                    const transporter = nodemailer.createTransport({
-                        port: 465,
-                        host: "mail.privateemail.com",
-                        auth: {
-                            user: 'info@rccgshift.org',
-                            pass: process.env.PASSWORD,
-                        },
-                        secure: true,
-                    });
+                        let message = ''
 
-                    let message = ''
-
-                    if (type === 2) {
-                        // Scenario 1: type === 2
-                    message = `<p>
+                        if (type === 2) {
+                            // Scenario 1: type === 2
+                            message = `<p>
                         You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3 - Choir Competition.
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
@@ -116,8 +118,8 @@ export async function POST(req: NextRequest) {
                         border-radius: 5px;"> Open Bank Account </a>
 
                     </p>`;
-                     } else if (contestant.type === 'Group') {
-                        message = `<p>
+                        } else if (contestant.type === 'Group') {
+                            message = `<p>
                         You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3.
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
@@ -146,7 +148,7 @@ export async function POST(req: NextRequest) {
                         border-radius: 5px;"> Open Bank Account </a>
                     </p>`;
                         } else if (type === 1) {
-                        message = `<p>
+                            message = `<p>
                         You have successfully completed your registration for RCCG International Shift Talent Hunt Season 3.
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
@@ -166,74 +168,205 @@ export async function POST(req: NextRequest) {
                         color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
                         border-radius: 5px;"> Open Bank Account </a>
                     </p>`;
-                                        }
-
-
-                    const body = await generateEmailBody(name, message)
-
-                    // log action
-                    let description = `Payment for Registration: #${amount}, Reference: ${reference} for: ${name}`;
-                    await prisma.logs.create({
-                        data: {
-                            action: 'Payment',
-                            description: description,
-                            amount: amount,
-                            candidate: String(contestant?.id),
-                            session: "Audition One",
-                        },
-                    });
-
-                    // Retrieve competition settings
-                    const settings = await prisma.settings.findFirst();
-                    if (!settings?.current_season) {
-                        return errorHandler('Settings or current season not found.', 404);
-                    }
-
-                    const highestTag = await prisma.user.findFirst({
-                        where: { seasonId: settings.current_season, competitionType: type },
-                        orderBy: { tag: 'desc' },
-                        select: { tag: true },
-                    });
-
-                    const nextTag = (highestTag?.tag || 0) + 1;
-
-                    // Update the user's paid status
-                    const update = await tx.user.update({
-                        where: {
-                            id: contestant?.id,
-                        },
-                        data: {
-                            paid: 1,
-                            tag: nextTag
-                            // status: UserStatus.approved
                         }
+
+
+                        const body = await generateEmailBody(name, message)
+
+                        // log action
+                        let description = `Payment for Registration: #${amount}, Reference: ${reference} for: ${name}`;
+                        await prisma.logs.create({
+                            data: {
+                                action: 'Payment',
+                                description: description,
+                                amount: amount,
+                                candidate: String(contestant?.id),
+                                session: "Audition One",
+                            },
+                        });
+
+                        // Retrieve competition settings
+                        const settings = await prisma.settings.findFirst();
+                        if (!settings?.current_season) {
+                            return errorHandler('Settings or current season not found.', 404);
+                        }
+
+                        const highestTag = await prisma.user.findFirst({
+                            where: { seasonId: settings.current_season, competitionType: type },
+                            orderBy: { tag: 'desc' },
+                            select: { tag: true },
+                        });
+
+                        const nextTag = (highestTag?.tag || 0) + 1;
+
+                        // Update the user's paid status
+                        const update = await tx.user.update({
+                            where: {
+                                id: contestant?.id,
+                            },
+                            data: {
+                                paid: 1,
+                                tag: nextTag
+                                // status: UserStatus.approved
+                            }
+                        });
+
+                        // Ensure the update was successful
+                        if (!update) {
+                            return errorHandler(
+                                'Failed to update the user status.',
+                                402
+                            );
+                        }
+
+                        await sendEmail(email, 'Registration Completed!', body, transporter)
+                        return update;
+
                     });
 
-                    // Ensure the update was successful
-                    if (!update) {
-                        return errorHandler(
-                            'Failed to update the user status.',
-                            402
-                        );
+                    return sucessHandler('Update Successful', 201);
+
+                } catch (transactionError: any) {
+                    // Log the specific error that caused the transaction to fail
+                    console.error(
+                        `Transaction failed: ${transactionError.message}`,
+                        transactionError
+                    );
+                    return errorHandler(
+                        `Unable to update vote: ${transactionError.message}`,
+                        500
+                    );
+                }
+
+            } else if (event.data.metadata.registration_type === 'coordinator') {
+
+                const { name, season, id, amount, type } = event.data.metadata;
+                console.log(event.data.metadata)
+
+                const officialSession = await prisma.official_Session.findFirst({
+                    where: {
+                        id: id,
+                        seasonId: season
+                    },
+                    include: {
+                        official: true
                     }
+                })
 
-                    await sendEmail(email, 'Registration Completed!', body, transporter)
-                    return update;
+                if (!officialSession) {
+                    return errorHandler('Official Session not found', 402);
+                }
 
-                });
+                try {
 
-                return sucessHandler('Update Successful', 201);
+                    const updateCoordinatorStatus = await prisma.$transaction(async (tx) => {
+                        const transporter = nodemailer.createTransport({
+                            port: 465,
+                            host: "mail.privateemail.com",
+                            auth: {
+                                user: 'info@rccgshift.org',
+                                pass: process.env.PASSWORD,
+                            },
+                            secure: true,
+                        });
 
-            } catch (transactionError: any) {
-                // Log the specific error that caused the transaction to fail
-                console.error(
-                    `Transaction failed: ${transactionError.message}`,
-                    transactionError
-                );
-                return errorHandler(
-                    `Unable to update vote: ${transactionError.message}`,
-                    500
-                );
+                        let message = ''
+
+                        if (officialSession.amount_to_pay > (amount + officialSession.amount_paid)) {
+                            //Partial Payment
+                            message = `<p>
+                        You have successfully paid ${amount} for your contribution as an Executive / Coordinator for 
+                        RCCG International Shift Talent Hunt Season 3.
+                        Thank you. 
+                        
+                        <br> Please find the details of your registration below: <br><br>
+
+                        <li>Name: ${officialSession.official.name}</li>
+                        <li>Email Address: ${officialSession.official.email}</li>
+                        <li>Phone: ${officialSession.official.phone}</li>
+                        <li>Region: ${officialSession.region}</li>
+                        <li>Province: ${officialSession.province}</li> <br>
+
+                        You have made an installmental Payment of ${amount} of ${officialSession.amount_to_pay}. 
+                        You can continue your registration by paying the remaining balance of ${officialSession.amount_to_pay - (amount + officialSession.amount_paid)}.
+                        <br>
+                        <br>
+
+                        <a href="https://rccgshift.org/register/coordinator/${officialSession.official.id}" 
+                        style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
+                        color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
+                        border-radius: 5px;"> Continue Payment </a> <br><br> `
+
+
+                            const update = await tx.official_Session.update({
+                                where: {
+                                    id: officialSession.id
+                                },
+                                data: {
+                                    amount_paid: amount
+                                }
+                            })
+
+                            if (!update) {
+                                return errorHandler('Failed to update the official session status.', 402);
+                            }
+
+                        } else if (officialSession.amount_to_pay === (amount + officialSession.amount_paid)) {
+                            //Full Payment
+                            message = `
+                            <p>
+                                You have successfully completed your payment as an Executive / Coordinator for RCCG International Shift Talent Hunt Season 3.
+                                Thank you. <br> Please find the details of your registration below: <br><br>
+
+                                <li>Name: ${officialSession.official.name}</li>
+                                <li>Email Address: ${officialSession.official.email}</li>
+                                <li>Phone: ${officialSession.official.phone}</li>
+                                <li>Region: ${officialSession.region}</li>
+                                <li>Province: ${officialSession.province}</li> <br>
+
+                                You have made a full payment by paying ${amount} for your contribution, Thank you and God Bless!
+                                </p>`;
+
+                            const update = await tx.official_Session.update({
+                                where: {
+                                    id: officialSession.id
+                                },
+                                data: {
+                                    amount_paid: amount + officialSession.amount_paid,
+                                    status: true
+                                }
+                            })
+
+                            //update the official status
+                            const updateOfficial = await tx.officials.update({
+                                where: {
+                                    id: officialSession.official.id
+                                },
+                                data: { status: true }
+                            })
+
+                            if (!update) {
+                                return errorHandler('Failed to update the official session status.', 402);
+                            }
+                        }
+            
+                    const body = await generateEmailBody(name, message)
+                    await sendEmail(email, 'Registration Update!', body, transporter)
+                   
+                })
+
+                } catch (transactionError: any) {
+                    // Log the specific error that caused the transaction to fail
+                    console.error(
+                        `Transaction failed: ${transactionError.message}`,
+                        transactionError
+                    );
+                    return errorHandler(
+                        `Unable to update vote: ${transactionError.message}`,
+                        500
+                    );
+                }
+
             }
         }
 

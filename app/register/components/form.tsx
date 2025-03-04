@@ -232,6 +232,7 @@ const RegistrationForm = () => {
         metadata: {
             name: formData.name,
             season: season,
+            registration_type: 'contestant',
             tag: tag,
             amount: amount,
             type: activeType,

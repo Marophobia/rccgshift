@@ -115,6 +115,7 @@ model Season {
   User           User[]
   // Choir          Choir[]
   GroupMembers   GroupMembers[]
+  official_sessions Official_Session[]
 }
 
 model Round {
@@ -218,6 +219,49 @@ model ProvincialPastor {
   provincial_shift_coordinator_name  String
   provincial_shift_coordinator_phone String
   createdAt                          DateTime @default(now())
+}
+
+model Officials {
+  id Int @id @default(autoincrement())
+  name String
+  image String
+  email String @unique
+  phone String
+  country String
+  state String
+  type OfficialType
+  createdAt DateTime @default(now())
+  status Boolean @default(false)
+  official_sessions Official_Session[]
+}
+
+model Official_Session {
+  id Int @id @default(autoincrement())
+  amount_to_pay Int
+  amount_paid Int @default(0)
+  position String?
+  status Boolean @default(false)
+  region String
+  province String
+  officialId Int
+  official Officials @relation(fields: [officialId], references: [id])
+  seasonId Int
+  season Season @relation(fields: [seasonId], references: [id])
+  departmentId Int?
+  department Departments? @relation(fields: [departmentId], references: [id])
+}
+
+model Departments {
+  id Int @id @default(autoincrement())
+  name String
+  official_sessions Official_Session[]
+}
+
+enum OfficialType {
+  regional_shift_coordinator
+  assistant_regional_shift_coordinator
+  provincial_shift_coordinator
+  shift_executive
 }
 
 enum Role {
