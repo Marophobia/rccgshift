@@ -28,6 +28,8 @@ import { ToastContainer, toast } from 'react-toastify';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 type Props = {
     contestants: Icontestants[];
@@ -39,7 +41,7 @@ const ContestantTable = (props: Props) => {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 20;
-    const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
+    const [selectedSeason, setSelectedSeason] = useState<number | null>(seasons[seasons.length - 1].id);
     const [paymentStatus, setPaymentStatus] = useState<'all' | 'paid' | 'unpaid'>('all');
     const [filteredContestants, setFilteredContestants] = useState<Icontestants[]>(contestants);
 
@@ -136,12 +138,68 @@ const ContestantTable = (props: Props) => {
     };
 
     const download = () => {
-        console.log('download contestants');
+        const headers = [
+            'Tag',
+            'Name',
+            'Email',
+            'Phone',
+            'Competition',
+            'Category',
+            'Type',
+            'Age',
+            'Gender',
+            'State',
+            'Country',
+            'Region',
+            'Province',
+            'Paid',
+            'Status',
+        ];
+
+        // Filter contestants by paid and current season
+        const paidContestants = contestants.filter(contestant => contestant.paid && contestant.seasonId === selectedSeason);
+
+        const rows = paidContestants.map((contestant) => [
+            contestant.tag,
+            contestant.name,
+            contestant.email,
+            contestant.telephone,
+            contestant.competitionType === 1 ? 'International Shift' : 'Choir Competition',
+            contestant.category,
+            contestant.type,
+            contestant.age_grade,
+            contestant.gender,
+            contestant.state,
+            contestant.country,
+            contestant.region,
+            contestant.province,
+            contestant.paid ? 'True' : 'False',
+            contestant.status,
+        ]);
+
+        // Convert array to CSV string
+        const csvContent = [
+            headers.join(','), // Add headers as first row
+            ...rows.map(row => row.map(value => `"${value}"`).join(',')), // Add data rows, ensuring values are quoted
+        ].join('\n');
+
+        // Create Blob and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Contestants - Season ${selectedSeason}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
+
+
+
 
     return (
         <>
             <div className="card p-5">
+
                 {/* Season Selector */}
                 <div className="mb-4">
                     <label htmlFor="season-select" className="block text-sm font-medium mb-2">
@@ -205,14 +263,14 @@ const ContestantTable = (props: Props) => {
                     </div>
                 </div>
 
-                {/* <div className="w-full flex justify-end">
+                <div className="w-full flex justify-end">
                     <button
                         className="btn b-solid btn-primary-solid text-white mb-5"
                         onClick={download}
                     >
                         Download PDF <Download size={15} />{' '}
                     </button>
-                </div> */}
+                </div>
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -266,7 +324,7 @@ const ContestantTable = (props: Props) => {
                                 <TableCell>{contestant.paid ? 'True' : 'False'}</TableCell>
                                 <TableCell>
                                     {contestant.status ==
-                                    UserStatus.approved ? (
+                                        UserStatus.approved ? (
                                         <span className="text-green-600 font-bold">
                                             {contestant.status}
                                         </span>
