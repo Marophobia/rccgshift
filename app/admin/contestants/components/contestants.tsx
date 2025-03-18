@@ -64,7 +64,8 @@ const ContestantTable = (props: Props) => {
             const matchesSeason = selectedSeason ? contestant.seasonId === selectedSeason : true;
             const matchName = contestant.name.toLowerCase().includes(searchTerm.toLowerCase());
             const matchTag = String(contestant.tag).includes(searchTerm);
-            return matchesSeason && (matchName || matchTag);
+            const matchEmail = contestant.email.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesSeason && matchEmail && (matchName || matchTag);
         })
         setFilteredContestants(filtered);
     }, [searchTerm, contestants]);
