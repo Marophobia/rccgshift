@@ -58,14 +58,14 @@ const ContestantTable = (props: Props) => {
         setFilteredContestants(filtered);
     }, [selectedSeason, paymentStatus, contestants]);
 
-    //flter based on tag and name
+    //flter based on name, email and tag
     useEffect(() => {
         const filtered = contestants.filter(contestant => {
             const matchesSeason = selectedSeason ? contestant.seasonId === selectedSeason : true;
             const matchName = contestant.name.toLowerCase().includes(searchTerm.toLowerCase());
             const matchTag = String(contestant.tag).includes(searchTerm);
             const matchEmail = contestant.email.toLowerCase().includes(searchTerm.toLowerCase());
-            return matchesSeason && matchEmail && (matchName || matchTag);
+            return matchesSeason && (matchName || matchTag || matchEmail);
         })
         setFilteredContestants(filtered);
     }, [searchTerm, contestants]);
