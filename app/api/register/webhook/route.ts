@@ -56,6 +56,8 @@ export async function POST(req: NextRequest) {
 
                 const { name, season, tag, amount, type } = event.data.metadata;
 
+                console.log(event.data.metadata)
+
 
                 const contestant = await prisma.user.findFirst({
                     where: {
@@ -72,6 +74,8 @@ export async function POST(req: NextRequest) {
                         402
                     );
                 }
+
+                console.log("Contestant", contestant)
 
                 try {
 
@@ -170,7 +174,7 @@ export async function POST(req: NextRequest) {
                     </p>`;
                         }
 
-
+                        console.log(message)
                         const body = await generateEmailBody(name, message)
 
                         // log action

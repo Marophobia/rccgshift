@@ -3,6 +3,7 @@ import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/db';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { OfficialType } from '@/app/types/officials';
 
 export async function hashPassword(password: string) {
     const salt = await genSalt(10);
@@ -36,18 +37,52 @@ export const authOptions: NextAuthOptions = {
                     type: 'boolean',
                 },
             },
+
             authorize: async (credentials, req) => {
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Empty email or password');
                 }
 
-                const user = await prisma.admin.findFirst({
+                let user = await prisma.admin.findFirst({
                     where: {
                         email: credentials.email,
                     },
                 });
+
+
                 if (!user) {
-                    throw new Error('No user found');
+
+                    //check the officials table
+                    const official = await prisma.officials.findFirst({
+                        where: {
+                            email: credentials.email,
+                        },
+                    });
+
+                    if (!official || !official.status || official.type !== OfficialType.shift_executive) {
+                        throw new Error('No user found');
+                    }
+
+                    const comparePassword = await verifyPassword(
+                        credentials.password,
+                        official.password
+                    );
+
+                    if (!comparePassword) {
+                        throw new Error('Password does not match');
+                    }
+
+                    const expires = credentials.expires ? '45h' : '2h';
+                    console.log(credentials.expires);
+
+                    return {
+                        id: official.id,
+                        name: official.name,
+                        role: 'executive',
+                        email: official.email,
+                        expires: expires,
+                    };
+
                 }
 
                 const comparePassword = await verifyPassword(
@@ -72,9 +107,14 @@ export const authOptions: NextAuthOptions = {
                     email: user.email,
                     expires: expires,
                 };
+
+
             },
         }),
     ],
+
+
+
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: 'jwt',

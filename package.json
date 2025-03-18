@@ -45,6 +45,7 @@
         "react-dom": "^18",
         "react-hook-form": "^7.53.0",
         "react-paystack": "^6.0.0",
+        "react-quill": "^2.0.0",
         "react-toastify": "^10.0.5",
         "sharp": "^0.33.5",
         "sweetalert2": "^11.13.2",

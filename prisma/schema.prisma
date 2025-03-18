@@ -224,6 +224,7 @@ model ProvincialPastor {
 model Officials {
   id Int @id @default(autoincrement())
   name String
+  password String @default("$2a$10$2lmlBu4TIkVGT6KNbr2aKOc5Os4YrOqirlKxbpvM.5Wy3sNqixYFG")
   image String
   email String @unique
   phone String
@@ -233,6 +234,7 @@ model Officials {
   createdAt DateTime @default(now())
   status Boolean @default(false)
   official_sessions Official_Session[]
+  reports Reports[]
 }
 
 model Official_Session {
@@ -255,6 +257,24 @@ model Departments {
   id Int @id @default(autoincrement())
   name String
   official_sessions Official_Session[]
+}
+
+model Reports {
+  id Int @id @default(autoincrement())
+  name String
+  type ReportType
+  authorId Int
+  report String? @db.Text
+  file String?
+  date DateTime
+  author Officials @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ReportType {
+  text
+  file
 }
 
 enum OfficialType {

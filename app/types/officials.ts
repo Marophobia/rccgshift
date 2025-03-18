@@ -26,6 +26,23 @@ export type IOfficialSession = {
     seasonId: number;
     departmentId: number;
     status: number;
+    department: IDepartments;
+}
+
+export type IReports = {
+    id: number;
+    name: string;
+    authorId: number;
+    report: string;
+    file: string;
+    date: Date;
+    author: IOfficials;
+    type: ReportType;
+}
+
+export enum ReportType {
+    text = "text",
+    file = "file"
 }
 
 export enum OfficialType {

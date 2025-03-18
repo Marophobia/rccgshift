@@ -34,16 +34,19 @@ import 'jspdf-autotable';
 type Props = {
     contestants: Icontestants[];
     seasons: Iseason[];
+    role: string | undefined
 };
 
 const ContestantTable = (props: Props) => {
-    const { contestants, seasons } = props;
+    const { contestants, seasons, role } = props;
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 20;
     const [selectedSeason, setSelectedSeason] = useState<number | null>(seasons[seasons.length - 1].id);
     const [paymentStatus, setPaymentStatus] = useState<'all' | 'paid' | 'unpaid'>('all');
     const [filteredContestants, setFilteredContestants] = useState<Icontestants[]>(contestants);
+    const [searchTerm, setSearchTerm] = useState('')
+
 
     useEffect(() => {
         // Filter contestants based on selected season and payment status
@@ -54,6 +57,17 @@ const ContestantTable = (props: Props) => {
         });
         setFilteredContestants(filtered);
     }, [selectedSeason, paymentStatus, contestants]);
+
+    //flter based on tag and name
+    useEffect(() => {
+        const filtered = contestants.filter(contestant => {
+            const matchesSeason = selectedSeason ? contestant.seasonId === selectedSeason : true;
+            const matchName = contestant.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchTag = String(contestant.tag).includes(searchTerm);
+            return matchesSeason && (matchName || matchTag);
+        })
+        setFilteredContestants(filtered);
+    }, [searchTerm, contestants]);
 
     // Calculate the indexes for slicing the contestants array
     const indexOfLastContestant = currentPage * contestantsPerPage;
@@ -223,43 +237,56 @@ const ContestantTable = (props: Props) => {
                     </Select>
                 </div>
 
-                {/* Payment Status Filter */}
-                <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Payment Status:</label>
-                    <div className="flex gap-4">
-                        <label>
-                            <input
-                                type="radio"
-                                name="paymentStatus"
-                                value="all"
-                                className='mr-2'
-                                checked={paymentStatus === 'all'}
-                                onChange={() => setPaymentStatus('all')}
-                            />
-                            All
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="paymentStatus"
-                                value="paid"
-                                checked={paymentStatus === 'paid'}
-                                onChange={() => setPaymentStatus('paid')}
-                                className='mr-2'
-                            />
-                            Paid
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="paymentStatus"
-                                value="unpaid"
-                                checked={paymentStatus === 'unpaid'}
-                                onChange={() => setPaymentStatus('unpaid')}
-                                className='mr-2'
-                            />
-                            Unpaid
-                        </label>
+                <div className='flex w-full gap-20'>
+                    {/* //add a search bar here */}
+                    <div className='searchbox'>
+                        <input
+                            className='w-full border rounded-lg px-4 py-2 text-gray-900'
+                            type='text'
+                            placeholder='Search By Name or Tag'
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // Update search term on keystroke
+                        />
+                    </div>
+                    
+                    {/* Payment Status Filter */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Payment Status:</label>
+                        <div className="flex gap-4">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentStatus"
+                                    value="all"
+                                    className='mr-2'
+                                    checked={paymentStatus === 'all'}
+                                    onChange={() => setPaymentStatus('all')}
+                                />
+                                All
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentStatus"
+                                    value="paid"
+                                    checked={paymentStatus === 'paid'}
+                                    onChange={() => setPaymentStatus('paid')}
+                                    className='mr-2'
+                                />
+                                Paid
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentStatus"
+                                    value="unpaid"
+                                    checked={paymentStatus === 'unpaid'}
+                                    onChange={() => setPaymentStatus('unpaid')}
+                                    className='mr-2'
+                                />
+                                Unpaid
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -290,7 +317,9 @@ const ContestantTable = (props: Props) => {
                             <TableHead>Province</TableHead>
                             <TableHead>Paid</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Actions</TableHead>
+                            {role === 'admin' && (
+                                <TableHead>Actions</TableHead>
+                            )}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -334,43 +363,53 @@ const ContestantTable = (props: Props) => {
                                         </span>
                                     )}
                                 </TableCell>
-                                {contestant.status !== UserStatus.approved ? (
-                                    <TableCell>
-                                        <Button
-                                            onClick={() =>
-                                                approve(contestant.id)
-                                            }
-                                        >
-                                            Approve
-                                        </Button>
-                                    </TableCell>
-                                ) : (
-                                    <TableCell>
-                                        <Button
-                                            onClick={() =>
-                                                disqualify(contestant.id)
-                                            }
-                                            variant="destructive"
-                                        >
-                                            Disqualify
-                                        </Button>
-                                    </TableCell>
+
+                                {role === 'admin' && (
+                                    <>
+                                        {contestant.status !== UserStatus.approved ? (
+                                            <TableCell>
+                                                <Button
+                                                    onClick={() =>
+                                                        approve(contestant.id)
+                                                    }
+                                                >
+                                                    Approve
+                                                </Button>
+                                            </TableCell>
+                                        ) : (
+                                            <TableCell>
+                                                <Button
+                                                    onClick={() =>
+                                                        disqualify(contestant.id)
+                                                    }
+                                                    variant="destructive"
+                                                >
+                                                    Disqualify
+                                                </Button>
+                                            </TableCell>
+                                        )}
+
+
+                                        <TableCell className="flex justify-center gap-2">
+                                            <Link
+                                                className="pt-3"
+                                                href={`/admin/contestants/${contestant.id}`}
+                                            >
+                                                <Eye size={15} />
+                                            </Link>
+                                            <Trash2
+                                                size={15}
+                                                className="mt-3"
+                                                onClick={() =>
+                                                    deleteUser(contestant.id)
+                                                }
+                                            />
+                                        </TableCell>
+                                    </>
+
                                 )}
-                                <TableCell className="flex justify-center gap-2">
-                                    <Link
-                                        className="pt-3"
-                                        href={`/admin/contestants/${contestant.id}`}
-                                    >
-                                        <Eye size={15} />
-                                    </Link>
-                                    <Trash2
-                                        size={15}
-                                        className="mt-3"
-                                        onClick={() =>
-                                            deleteUser(contestant.id)
-                                        }
-                                    />
-                                </TableCell>
+
+
                             </TableRow>
                         ))}
                     </TableBody>

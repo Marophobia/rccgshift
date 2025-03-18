@@ -1,28 +1,22 @@
 'use client';
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { getSession, signIn } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
+import { Eye, EyeIcon, EyeOff } from 'lucide-react';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
-
+    const [showPassword, setShowPassword] = useState(false);
     // Step 2: Handle form submission
     const login = async (event: any) => {
         event.preventDefault();
+        setLoading(true);
 
         try {
             const result = await signIn('credentials', {
@@ -43,6 +37,9 @@ const LoginForm = () => {
                 if (session?.user?.role === 'admin') {
                     router.push('/admin');
                     router.refresh();
+                } else if (session?.user?.role === 'executive') {
+                    router.push('/executive');
+                    router.refresh();
                 } else {
                     router.push('/judge');
                     router.refresh();
@@ -50,6 +47,8 @@ const LoginForm = () => {
             }
         } catch (error: any) {
             console.error('Error signing in:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -115,7 +114,7 @@ const LoginForm = () => {
                                     </label>
                                     <div className="relative">
                                         <Input
-                                            type="password"
+                                            type={showPassword ? "text" : "password"}
                                             id="password"
                                             placeholder="Password"
                                             value={password}
@@ -125,6 +124,11 @@ const LoginForm = () => {
                                             required
                                             className="form-input px-4 py-3.5 rounded-lg"
                                         />
+                                        
+                                        <div className="absolute w-4 bottom-7 right-1/4 -mr-16 md:-mr-20">
+                                            <Eye className={`absolute w-full cursor-pointer ${showPassword ? "hidden" : "block"}`} onClick={() => setShowPassword(!showPassword)} />
+                                            <EyeOff className={`absolute w-full cursor-pointer ${showPassword ? "block" : "hidden"}`} onClick={() => setShowPassword(!showPassword)} />
+                                        </div>
                                     </div>
                                 </div>
                                 {/* Submit Button */}
@@ -132,8 +136,9 @@ const LoginForm = () => {
                                     type="submit"
                                     className="btn b-solid btn-primary-solid w-full mt-5"
                                     onClick={login}
+                                    disabled={loading}
                                 >
-                                    Sign In
+                                    {loading ? 'Signing In...' : 'Sign In'}
                                 </button>
                             </form>
                         </div>

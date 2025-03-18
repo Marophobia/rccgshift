@@ -1,9 +1,9 @@
-import '../admin.css'
+import '../../admin/admin.css'
 import Header from "../components/header"
 import Menu from "../components/menu"
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { headers } from 'next/headers'
-import ContestantTable from './components/contestants';
+import ContestantTable from '../../admin/contestants/components/contestants';
 import { getAuthSession } from '@/lib/auth';
 
 const getData = async () => {
