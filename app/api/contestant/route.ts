@@ -20,7 +20,8 @@ export const POST = async (req: Request) => {
                 id: "asc",
             },
             include: {
-                Season: true
+                Season: true,
+                Group: true,
             },
         });
 

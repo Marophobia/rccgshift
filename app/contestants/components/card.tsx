@@ -22,6 +22,8 @@ const Card = (props: Props) => {
     const [seasonContestants, setSeasonContestants] = useState(data);
     const [activeType, setActiveType] = useState<number | null>(1);
 
+    console.log(seasonContestants)
+
 
     // Fetch contestants for a specific season
     const fetchContestantsForSeason = async (seasonId: number) => {
