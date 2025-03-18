@@ -60,6 +60,7 @@ const RegistrationSingleForm = (data: Props) => {
             season: data.settings.current_season,
             tag: data.contestant.id,
             type: data.contestant.competitionType,
+            registration_type: 'contestant',
             amount: amount,
             custom_fields: [
                 {

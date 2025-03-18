@@ -207,9 +207,6 @@ const ContestantTable = (props: Props) => {
         document.body.removeChild(link);
     };
 
-
-
-
     return (
         <>
             <div className="card p-5">
