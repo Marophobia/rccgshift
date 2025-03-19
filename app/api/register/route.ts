@@ -103,9 +103,9 @@ export const POST = async (req: Request) => {
 
         // Generate unique filename and save image
         const uniqueFileName = `${crypto.randomUUID()}_${file.name}`;
-        // const savePath = path.join('/var/www/images.rccgshift.org', uniqueFileName);
-        // const buffer = new Uint8Array(await file.arrayBuffer()); 
-        // writeFileSync(savePath, buffer);
+        const savePath = path.join('/var/www/images.rccgshift.org', uniqueFileName);
+        const buffer = new Uint8Array(await file.arrayBuffer()); 
+        writeFileSync(savePath, buffer);
 
         // Determine next tag
         // const highestTag = await prisma.user.findFirst({
