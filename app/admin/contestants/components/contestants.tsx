@@ -208,6 +208,29 @@ const ContestantTable = (props: Props) => {
         document.body.removeChild(link);
     };
 
+    const sendMail = async (id: number) => {
+        try {
+            const update = await fetch(
+                `${apiUrl}/api/admin/contestants/sendMail`,
+                {
+                    method: 'POST',
+                    cache: 'no-store',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id }),
+                }
+            );
+
+            if (update.ok) {
+                toast.success('Contestant Registration Mail Sent');
+            } else {
+                toast.error('Something went wrong');
+            }
+        } catch (error: any) {
+            console.error('Error:', error);
+            toast.error('An error occurred');
+        }
+    };
+
     return (
         <>
             <div className="card p-5">
@@ -246,7 +269,7 @@ const ContestantTable = (props: Props) => {
                             onChange={(e) => setSearchTerm(e.target.value)} // Update search term on keystroke
                         />
                     </div>
-                    
+
                     {/* Payment Status Filter */}
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Payment Status:</label>
@@ -318,6 +341,7 @@ const ContestantTable = (props: Props) => {
                             {role === 'admin' && (
                                 <TableHead>Actions</TableHead>
                             )}
+                            
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -362,6 +386,15 @@ const ContestantTable = (props: Props) => {
                                     )}
                                 </TableCell>
 
+                                {role === 'admin' && contestant.paid === 1 && (
+                                    <TableCell>
+                                        <Button className='bg-green-500'
+                                            onClick={() => sendMail(contestant.id)}>
+                                            Resend Mail
+                                        </Button>
+                                    </TableCell>
+                                )}
+
                                 {role === 'admin' && (
                                     <>
                                         {contestant.status !== UserStatus.approved ? (
@@ -387,7 +420,6 @@ const ContestantTable = (props: Props) => {
                                             </TableCell>
                                         )}
 
-
                                         <TableCell className="flex justify-center gap-2">
                                             <Link
                                                 className="pt-3"
@@ -406,6 +438,8 @@ const ContestantTable = (props: Props) => {
                                     </>
 
                                 )}
+
+                             
 
 
                             </TableRow>

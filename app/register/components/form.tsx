@@ -28,7 +28,6 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import TermsAndConditionsDialog from './termsConditions';
-import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -534,14 +533,11 @@ const RegistrationForm = () => {
                                         {regions.map((region) => (
                                             <SelectItem
                                                 key={region}
-                                                value={`Region ${region}`}
+                                                value={`${region}`}
                                             >
-                                                {`Region ${region}`}
+                                                {`${region}`}
                                             </SelectItem>
                                         ))}
-                                        <SelectItem value="Redemption City">
-                                            Redemption City
-                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
