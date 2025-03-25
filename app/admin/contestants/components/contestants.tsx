@@ -19,6 +19,16 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { Button } from '@/components/ui/button';
 import { UserStatus } from '@/app/types/contestants';
 import { Download, Eye, Trash, Trash2 } from 'lucide-react';
@@ -46,6 +56,8 @@ const ContestantTable = (props: Props) => {
     const [paymentStatus, setPaymentStatus] = useState<'all' | 'paid' | 'unpaid'>('all');
     const [filteredContestants, setFilteredContestants] = useState<Icontestants[]>(contestants);
     const [searchTerm, setSearchTerm] = useState('')
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [contestantId, setContestantId] = useState<number | null>(null)
 
 
     useEffect(() => {
@@ -128,7 +140,7 @@ const ContestantTable = (props: Props) => {
         }
     };
 
-    const deleteUser = async (id: number) => {
+    const deleteUser = async () => {
         try {
             const update = await fetch(
                 `${apiUrl}/api/admin/contestants/actions`,
@@ -136,7 +148,7 @@ const ContestantTable = (props: Props) => {
                     method: 'POST',
                     cache: 'no-store',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: id, type: 'deleteUser' }),
+                    body: JSON.stringify({ id: contestantId, type: 'deleteUser' }),
                 }
             );
 
@@ -229,6 +241,11 @@ const ContestantTable = (props: Props) => {
             console.error('Error:', error);
             toast.error('An error occurred');
         }
+    };
+
+    const handleOpenDialog = (id: number) => {
+        setDialogOpen(true);
+        setContestantId(id);
     };
 
     return (
@@ -430,18 +447,12 @@ const ContestantTable = (props: Props) => {
                                             <Trash2
                                                 size={15}
                                                 className="mt-3"
-                                                onClick={() =>
-                                                    deleteUser(contestant.id)
-                                                }
+                                                onClick={() =>handleOpenDialog(contestant.id)}
                                             />
                                         </TableCell>
                                     </>
 
                                 )}
-
-                             
-
-
                             </TableRow>
                         ))}
                     </TableBody>
@@ -544,6 +555,29 @@ const ContestantTable = (props: Props) => {
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>
+
+
+
+                {/* Confirmation Dialog */}
+                <AlertDialog
+                    open={dialogOpen}
+                    onOpenChange={setDialogOpen}
+                >
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                            <AlertDialogDescription>
+                               Are you sure you want to delete this contestant? THIS ACTION CANNOT BE UNDONE.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={deleteUser}>
+                                Confirm
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
         </>
     );

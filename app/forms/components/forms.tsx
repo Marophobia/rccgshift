@@ -89,12 +89,9 @@ const PastorsForm = (props: Props) => {
                                         key={region}
                                         value={`Region ${region}`}
                                     >
-                                        Region {region}
+                                       {region}
                                     </SelectItem>
                                 ))}
-                                <SelectItem value="Redemption City">
-                                    Redemption City
-                                </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
