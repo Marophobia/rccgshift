@@ -29,25 +29,14 @@ const phoneNumbers: string[] = [
     "08056302618", // Pst Sesan
     "07034666656", // Pst Daniel
     "08112949474", // Pst Maro
-    "09060008891",
-    "08033432033",
-    "07035901959",
-    "07034979194",
-    "08166768999", //Korede
-    "08134954090", //Tom
-    "09011550670", //Kinrin
-    "09136547692", //Jotham
-    "254702675652",
-    "254729870864",
-    "254717546393",
-    "447792059903",
-    "233548314145",
-    "447448735749",
-    "254725400813",
-    "07033037599",
-    "08055192244",
-    "08065558565",
-    "08063483767"
+    "08034305320", //Prof Mokuolu
+    "08164332812", //AY
+    "+447852142970", //Ms Wendy
+    "08169260066", //Pst Abiodun (France)
+    "08054988179", //Pst Abiodun (France)
+    "09046357054", //Pst Titi
+    "08037041752", //Pst Titi
+
 ];
 
 
@@ -69,6 +58,30 @@ export const POST = async (req: Request) => {
             CA: '1',   // Canada
 
         };
+
+        // Extracted valid meeting dates for 2025
+        const validMeetingDates = [
+            "2025-03-31", "2025-04-07", "2025-04-14", "2025-04-21", "2025-05-05",
+            "2025-05-12", "2025-05-19", "2025-06-02", "2025-06-09", "2025-06-16",
+            "2025-06-23", "2025-07-07", "2025-07-14", "2025-07-21", "2025-08-04",
+            "2025-09-01", "2025-09-08", "2025-09-15"
+        ];
+
+        // Get the current date and time in GMT+1
+        const now = new Date();
+        const gmtPlusOneTime = new Date(now.getTime() + 60 * 60 * 1000);
+        const currentDate = gmtPlusOneTime.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        const currentHour = gmtPlusOneTime.getUTCHours(); // Get UTC hours adjusted for GMT+1
+
+        // Check if today is a valid meeting date
+        if (!validMeetingDates.includes(currentDate)) {
+            return errorHandler('Access denied: Today is not a Training Date.', 403);
+        }
+
+        // Check if the current time is between 8 PM - 10 PM (GMT+1)
+        if (currentHour < 19 || (currentHour === 19 && now.getMinutes() < 30) || currentHour >= 22) {
+            return errorHandler("Access is only allowed between 7:30 PM - 10 PM (GMT +1).", 403);
+        }
 
         const normalizePhoneNumber = (number: string | null): string => {
             if (!number) return ''; // Return an empty string for null or undefined values
@@ -100,44 +113,51 @@ export const POST = async (req: Request) => {
             return sucessHandler('Account verified successfully.', 200, zoomLink);
         }
 
-        // Fetch all regionalPastor records
-        const regionalPastors = await prisma.regionalPastor.findMany({
-            select: {
-                regional_shift_coordinator_phone: true,
-                phone: true,
-                assistant_regional_shift_coordinator_phone: true,
+        //fetch all contestant for the current season
+        const settings = await prisma.settings.findFirst();
+
+        if (!settings || !settings.current_season) {
+            return errorHandler("Settings or current season not found", 404);
+        }
+
+        const contestants = await prisma.user.findMany({
+            where: {
+                seasonId: settings.current_season,
+                paid: 1,
+            },
+            orderBy: {
+                id: "asc",
+            },
+            include: {
+                Season: true,
+                Group: true,
             },
         });
 
-        // Fetch all provincialPastor records
-        const provincialPastors = await prisma.provincialPastor.findMany({
-            select: {
-                provincial_shift_coordinator_phone: true,
-                phone: true,
+        const groupMembers = await prisma.groupMembers.findMany({
+            where: {
+                seasonId: settings.current_season,
+            },
+            orderBy: {
+                id: "asc",
             },
         });
 
-        // Extract and normalize phone numbers from regionalPastor
-        const regionalNumbers = regionalPastors.flatMap((pastor) => [
-            pastor.regional_shift_coordinator_phone,
-            pastor.phone,
-            pastor.assistant_regional_shift_coordinator_phone,
-        ]).filter((num): num is string => num !== null); // Remove null values
+        const contestantPhoneNumbers = contestants.flatMap((contestant) => [
+            contestant.telephone,
+        ]).filter((num): num is string => num !== null);
 
-        const normalizedRegionalNumbers = regionalNumbers.map((num) => normalizePhoneNumber(num));
+        const groupContestantPhoneNumbers = groupMembers.flatMap((contestant) => [
+            contestant.telephone,
+        ]).filter((num): num is string => num !== null);
 
-        // Extract and normalize phone numbers from provincialPastor
-        const provincialNumbers = provincialPastors.flatMap((pastor) => [
-            pastor.provincial_shift_coordinator_phone,
-            pastor.phone,
-        ]).filter((num): num is string => num !== null); // Remove null values
-
-        const normalizedProvincialNumbers = provincialNumbers.map((num) => normalizePhoneNumber(num));
+        const normalizedContestantNumbers = contestantPhoneNumbers.map((num) => normalizePhoneNumber(num));
+        const normalizedGroupContestantNumbers = groupContestantPhoneNumbers.map((num) => normalizePhoneNumber(num));
 
         // Combine all normalized numbers
         const allNormalizedNumbers = [
-            ...normalizedRegionalNumbers,
-            ...normalizedProvincialNumbers,
+            ...normalizedContestantNumbers,
+            ...normalizedGroupContestantNumbers,
         ];
 
         // Check if the provided normalizedPhoneNumber exists in the normalized numbers
