@@ -6,25 +6,45 @@ import Link from 'next/link'
 import Training from './components/training'
 
 export const metadata = {
-    title: "Contestants Training | RCCG SHIFT",
-    generator: 'Contestants Training | RCCG SHIFT',
-    applicationName: 'RCCG SHIFT',
+    generator: 'Contestant Training | RCCG SHIFT',
+    applicationName: 'Contestant Training | RCCG SHIFT',
     referrer: 'origin-when-cross-origin',
+    keywords: ['RCCG', 'RCCGYAYA', 'The redeemed christian church of God', 'Young Adults and Youth Church', 'YAYA', 'Youths', 'church', 'international', 'Pst Belemina Obunge', 'Pastor', 'Pst E.A Adeboye', 'Daddy G.O', 'RCCG SHIFT', 'SHIFT', 'Talent Hunt', 'Show'],
+    authors: [{ name: 'Maro Orode' }],
+    creator: 'Maro orode',
     formatDetection: {
         email: false,
         address: false,
         telephone: false,
     },
-
+    metadataBase: new URL('https://rccgshift.org/images'),
+    alternates: {
+        canonical: '/',
+        languages: {
+            'en-US': '/en-US',
+            'de-DE': '/de-DE',
+        },
+    },
     twitter: {
-        card: 'Contestants Training | RCCG SHIFT',
-        title: 'Contestants Training | RCCG SHIFT',
-
+        card: 'RCCG SHIFT',
+        title: 'RCCG SHIFT',
+        description: 'Contestant Training of the RCCG Shift Talent Hunt 2025',
+        creator: 'Maro orode',
+        images: ['/training.jpg'],
     },
     openGraph: {
-        title: 'Contestants Training | RCCG SHIFT',
-        description: 'Waiting Room for Contestants Training 2025 | RCCG Shift',
-        url: 'https://rccgshift.org/vote',
+        title: 'RCCG SHIFT',
+        description: 'Contestant Training of the RCCG Shift Talent Hunt 2025',
+        url: 'https://rccgshift.org',
+        siteName: 'RCCG SHIFT',
+        images: [
+            {
+                url: '/training.jpg',
+                width: 800,
+                height: 600,
+            },
+        ],
+        type: 'website',
     },
 }
 
