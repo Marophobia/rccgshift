@@ -58,7 +58,6 @@ const Training = () => {
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.timer) {
                         window.location.href = link;
-                        console.log("I was closed by the timer");
                     }
                 });
 

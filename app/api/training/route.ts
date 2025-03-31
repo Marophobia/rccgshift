@@ -109,7 +109,7 @@ export const POST = async (req: Request) => {
 
         // Check if the phone number exists in the predefined list
         if (phoneNumbers.includes(normalizedPhoneNumber)) {
-            const zoomLink = 'https://us06web.zoom.us/j/86750499214?pwd=4yI2BQUiJVMcw1ai1fe3gbsFzdky6H.1';
+            const zoomLink = 'https://us06web.zoom.us/j/81763732477?pwd=l6iQmv94nInODvvabhsgQKE0lCvQdr.1';
             return sucessHandler('Account verified successfully.', 200, zoomLink);
         }
 
