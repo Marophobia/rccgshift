@@ -38,6 +38,7 @@ const phoneNumbers: string[] = [
     "08037041752", //Pst Titi
     "09164164268", //Director of Contestants
     "08162194312", //Region 50 Coordinator
+    "07031342484"
 
 ];
 
