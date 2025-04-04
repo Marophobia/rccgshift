@@ -40,6 +40,7 @@ import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import EditContestants from './edit';
 
 type Props = {
     contestants: Icontestants[];
@@ -358,7 +359,7 @@ const ContestantTable = (props: Props) => {
                             {role === 'admin' && (
                                 <TableHead>Actions</TableHead>
                             )}
-                            
+
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -444,10 +445,11 @@ const ContestantTable = (props: Props) => {
                                             >
                                                 <Eye size={15} />
                                             </Link>
+                                            <EditContestants contestant={contestant} />
                                             <Trash2
                                                 size={15}
                                                 className="mt-3"
-                                                onClick={() =>handleOpenDialog(contestant.id)}
+                                                onClick={() => handleOpenDialog(contestant.id)}
                                             />
                                         </TableCell>
                                     </>
@@ -567,7 +569,7 @@ const ContestantTable = (props: Props) => {
                         <AlertDialogHeader>
                             <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
                             <AlertDialogDescription>
-                               Are you sure you want to delete this contestant? THIS ACTION CANNOT BE UNDONE.
+                                Are you sure you want to delete this contestant? THIS ACTION CANNOT BE UNDONE.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
