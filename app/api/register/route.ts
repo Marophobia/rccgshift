@@ -33,7 +33,8 @@ export const POST = async (req: Request) => {
             groupName,
             groupsize,
             type,
-            creativity
+            creativity,
+            heardAbout,
         } = data;
 
 
@@ -47,7 +48,8 @@ export const POST = async (req: Request) => {
             !country ||
             !state ||
             !region ||
-            !province
+            !province ||
+            !heardAbout
         ) {
             return errorHandler('Please fill in all required fields.', 400);
         }
@@ -143,6 +145,7 @@ export const POST = async (req: Request) => {
             // tag: nextTag,
             ...(groupId && { groupId }),
             competitionType: type,
+            heardAbout,
         };
 
         const newUser =

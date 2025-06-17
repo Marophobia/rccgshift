@@ -55,6 +55,7 @@ model User {
   Season            Season?        @relation(fields: [seasonId], references: [id])
   Group             Group?         @relation(fields: [groupId], references: [id])
   user_sessions     User_session[]
+  heardAbout        String?
 
   // @@unique([tag, seasonId, competitionType])
 }

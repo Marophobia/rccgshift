@@ -68,6 +68,7 @@ const RegistrationForm = () => {
         groupsize: '',
         creativity: '',
         type: activeType,
+        heardAbout: '',
     });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -575,6 +576,47 @@ const RegistrationForm = () => {
                                         </Select>
                                     </div>
                                 )}
+
+                            {/* How did you hear */}
+                            <div className="my-10">
+                                <label>How did you hear about SHIFT:</label>
+                                <Select
+                                    value={formData.heardAbout}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            heardAbout: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select How You Heard About SHIFT" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="TV">
+                                            TV
+                                        </SelectItem>
+                                        <SelectItem value="Radio">
+                                            Radio
+                                        </SelectItem>
+                                        <SelectItem value="Church">
+                                            Church
+                                        </SelectItem>
+                                        <SelectItem value="Social Media">
+                                            Social Media
+                                        </SelectItem>
+                                        <SelectItem value="RCCG Books">
+                                            RCCG Books
+                                        </SelectItem>
+                                        <SelectItem value="RCCG Groups">
+                                            RCCG Groups
+                                        </SelectItem>
+                                        <SelectItem value="Individual">
+                                            Individual
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
                             <button
                                 onClick={handleNext}
@@ -1099,6 +1141,47 @@ const RegistrationForm = () => {
                                         </Select>
                                     </div>
                                 )}
+
+                            {/* How did you hear */}
+                            <div className="my-10">
+                                <label>How did you hear about SHIFT:</label>
+                                <Select
+                                    value={formData.heardAbout}
+                                    onValueChange={(value) =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            heardAbout: value,
+                                        }))
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select How You Heard About SHIFT" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="TV">
+                                            TV
+                                        </SelectItem>
+                                        <SelectItem value="Radio">
+                                            Radio
+                                        </SelectItem>
+                                        <SelectItem value="Church">
+                                            Church
+                                        </SelectItem>
+                                        <SelectItem value="Social Media">
+                                            Social Media
+                                        </SelectItem>
+                                        <SelectItem value="RCCG Books">
+                                            RCCG Books
+                                        </SelectItem>
+                                        <SelectItem value="RCCG Groups">
+                                            RCCG Groups
+                                        </SelectItem>
+                                        <SelectItem value="Individual">
+                                            Individual
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
                             <button
                                 onClick={handleNext}

@@ -180,6 +180,7 @@ const ContestantTable = (props: Props) => {
             'Country',
             'Region',
             'Province',
+            'Heard About',
             'Paid',
             'Status',
         ];
@@ -201,6 +202,7 @@ const ContestantTable = (props: Props) => {
             contestant.country,
             contestant.region,
             contestant.province,
+            contestant.heardAbout,
             contestant.paid ? 'True' : 'False',
             contestant.status,
         ]);
@@ -354,6 +356,7 @@ const ContestantTable = (props: Props) => {
                             <TableHead>State</TableHead>
                             <TableHead>Region</TableHead>
                             <TableHead>Province</TableHead>
+                            <TableHead>Heard About</TableHead>
                             <TableHead>Paid</TableHead>
                             <TableHead>Status</TableHead>
                             {role === 'admin' && (
@@ -390,6 +393,7 @@ const ContestantTable = (props: Props) => {
                                 <TableCell>{contestant.state}</TableCell>
                                 <TableCell>{contestant.region}</TableCell>
                                 <TableCell>{contestant.province}</TableCell>
+                                <TableCell>{contestant.heardAbout}</TableCell>
                                 <TableCell>{contestant.paid ? 'True' : 'False'}</TableCell>
                                 <TableCell>
                                     {contestant.status ==

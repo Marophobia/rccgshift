@@ -976,7 +976,6 @@ export const regionProvinces = {
         'Lagos Province 56',
         'Lagos Province 69',
         'Lagos Province 84',
-        'Lagos Province 85',
         'Lagos Province 87',
         'Lagos Province 95',
         'Lagos Province 104',
@@ -1081,6 +1080,7 @@ export const regionProvinces = {
         'Lagos Province 76',
         'Lagos Province 88',
         'Lagos Province 100',
+        'Lagos Province 114',
     ],
     'Region 12': [
         'Regional Headquaters',

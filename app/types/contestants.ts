@@ -34,6 +34,7 @@ export interface Icontestants {
     competitionType: number
     user_sessions: IuserSession[] | null;
     Group: IGroup | null
+    heardAbout: string | null
 }
 
 export interface IGroup {

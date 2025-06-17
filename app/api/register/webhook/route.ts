@@ -6,7 +6,7 @@ import nodemailer from 'nodemailer';
 import { generateEmailBody, sendEmail } from '@/lib/utils';
 import { UserStatus } from '@/app/types/contestants';
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET || ''; // Ensure this is set in your environment variables
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET || '';
 
 export async function POST(req: NextRequest) {
     try {
@@ -56,9 +56,6 @@ export async function POST(req: NextRequest) {
 
                 const { name, season, tag, amount, type } = event.data.metadata;
 
-                console.log(event.data.metadata)
-
-
                 const contestant = await prisma.user.findFirst({
                     where: {
                         id: tag
@@ -74,8 +71,6 @@ export async function POST(req: NextRequest) {
                         402
                     );
                 }
-
-                console.log("Contestant", contestant)
 
                 try {
 
@@ -100,6 +95,7 @@ export async function POST(req: NextRequest) {
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
                         <li>Name: ${contestant.name}</li>
+                        <li>Tag Number : ${contestant.tag}</li>
                         <li>Email Address: ${contestant.email}</li>
                         <li>Phone: ${contestant.telephone}</li>
                         <li>Region: ${contestant.region}</li>
@@ -128,6 +124,7 @@ export async function POST(req: NextRequest) {
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
                         <li>Name: ${contestant.name}</li>
+                        <li>Tag Number : ${contestant.tag}</li>
                         <li>Email Address: ${contestant.email}</li>
                         <li>Phone: ${contestant.telephone}</li>
                         <li>Region: ${contestant.region}</li>
@@ -157,6 +154,7 @@ export async function POST(req: NextRequest) {
                         Thank you. <br> Please find the details of your registration below: <br><br>
 
                         <li>Name: ${contestant.name}</li>
+                        <li>Tag Number : ${contestant.tag}</li>
                         <li>Email Address: ${contestant.email}</li>
                         <li>Phone: ${contestant.telephone}</li>
                         <li>Region: ${contestant.region}</li>
@@ -174,7 +172,6 @@ export async function POST(req: NextRequest) {
                     </p>`;
                         }
 
-                        console.log(message)
                         const body = await generateEmailBody(name, message)
 
                         // log action
