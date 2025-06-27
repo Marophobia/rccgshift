@@ -92,7 +92,7 @@ export const POST = async (req: Request) => {
                 data: {
                     amount_to_pay: Number(amount),
                     position,
-                    departmentId: Number(department),
+                    departmentId: Number(department) || null,
                     region,
                     province,
                     officialId: newOfficial.id,
