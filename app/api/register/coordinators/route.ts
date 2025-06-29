@@ -126,7 +126,7 @@ export const POST = async (req: Request) => {
                 Please click on the following link to continue your registration and pay the required
                 amount you want to contribute to the competition. <br><br>
 
-                    <a href="https://rccgshift.org/register/coordinator/${official.newOfficial.id}" 
+                    <a href="https://rccgshift.org/register/coordinators/${official.newOfficial.id}" 
                     style="display: inline-block; font-family: 'Poppins', sans-serif; font-size: 18px; 
                     color: #ffffff; text-decoration: none; background-color: #4CAF50; padding: 15px 25px; 
                     border-radius: 5px;"> Continue Registration </a> <br><br>

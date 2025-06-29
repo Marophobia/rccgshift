@@ -247,7 +247,7 @@ model Official_Session {
   region String
   province String
   officialId Int
-  official Officials @relation(fields: [officialId], references: [id])
+  official Officials @relation(fields: [officialId], references: [id], onDelete: Cascade)
   seasonId Int
   season Season @relation(fields: [seasonId], references: [id])
   departmentId Int?
@@ -268,7 +268,7 @@ model Reports {
   report String? @db.Text
   file String?
   date DateTime
-  author Officials @relation(fields: [authorId], references: [id])
+  author Officials @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
