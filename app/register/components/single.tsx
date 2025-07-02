@@ -22,7 +22,7 @@ type Props = {
 const RegistrationSingleForm = (data: Props) => {
 
     const [loading, setLoading] = useState(false)
-    const [amount, setAmount] = useState(5000)
+    const [amount, setAmount] = useState(7000)
     const router = useRouter()
     // console.log(data.contestant)
 
@@ -40,9 +40,9 @@ const RegistrationSingleForm = (data: Props) => {
 
     useEffect(() => {
         if (data.contestant.type === 'Group') {
-            setAmount(10000)
+            setAmount(12000)
         } else if (data.contestant.competitionType === 2) {
-            setAmount(20000)
+            setAmount(25000)
         }
     }, [data.contestant]);
 

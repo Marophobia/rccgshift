@@ -41,7 +41,7 @@ const RegistrationForm = () => {
     const [loading, setLoading] = useState(false);
     const [tag, setTag] = useState();
     const [season, setSeason] = useState();
-    const [amount, setAmount] = useState(5000);
+    const [amount, setAmount] = useState(7000);
     const router = useRouter();
     const [file, setFile] = useState<File | null>(null);
     const [activeType, setActiveType] = useState<number | null>(null);
@@ -152,14 +152,14 @@ const RegistrationForm = () => {
                         toast.error('Please fill all required fields.');
                         return;
                     }
-                    setAmount(10000);
+                    setAmount(12000);
                 }
             } else if (activeType === 2) {
                 if (!formData.groupName || !formData.groupsize) {
                     toast.error('Please fill all required fields.');
                     return;
                 }
-                setAmount(20000);
+                setAmount(25000);
             }
 
             if (!file) {
@@ -1354,9 +1354,9 @@ const RegistrationForm = () => {
                                 Please note that this registration is <strong className="text-yellow-400">NOT FREE</strong>. A registration fee is required to complete your application. The fee varies based on the category you select:
                             </p>
                             <ul className="list-disc list-inside text-gray-200 mb-3 pl-5">
-                                <li><strong className="text-yellow-400">International Shift (Single):</strong> ₦5,000</li>
-                                <li><strong className="text-yellow-400">International Shift (Group):</strong> ₦10,000</li>
-                                <li><strong className="text-yellow-400">Shift Choir Competition:</strong> ₦20,000</li>
+                                <li><strong className="text-yellow-400">International Shift (Single):</strong> ₦7,000</li>
+                                <li><strong className="text-yellow-400">International Shift (Group):</strong> ₦12,000</li>
+                                <li><strong className="text-yellow-400">Shift Choir Competition:</strong> ₦25,000</li>
                             </ul>
                             <p className="text-gray-200 mb-3">
                                 <strong className="text-yellow-400">Do not proceed with registration unless you are ready and willing to pay the required fee.</strong> Failure to pay will result in an incomplete registration.
