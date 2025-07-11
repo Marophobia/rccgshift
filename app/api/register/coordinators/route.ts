@@ -13,9 +13,35 @@ export const POST = async (req: Request) => {
         const data = JSON.parse(jData as string);
 
         // Validate required fields
-        const { name, email, phoneNumber, gender, country, state, region, province, type, amount, amount_paid, position, department } = data;
+        const {
+            name,
+            email,
+            phoneNumber,
+            gender,
+            country,
+            state,
+            region,
+            province,
+            type,
+            amount,
+            amount_paid,
+            position,
+            department,
+        } = data;
 
-        if (!name || !email || !phoneNumber || !gender || !country || !state || !region || !province || !type || !amount || !amount_paid) {
+        if (
+            !name ||
+            !email ||
+            !phoneNumber ||
+            !gender ||
+            !country ||
+            !state ||
+            !region ||
+            !province ||
+            !type ||
+            !amount ||
+            !amount_paid
+        ) {
             return errorHandler('All fields are required.', 400);
         }
 
@@ -47,10 +73,9 @@ export const POST = async (req: Request) => {
         const buffer = new Uint8Array(await file.arrayBuffer()); // Convert to Uint8Array
         writeFileSync(savePath, buffer); // Write file using Uint8Array
 
-
         //check for unique email
         const existingOfficial = await prisma.officials.findUnique({
-            where: { email }
+            where: { email },
         });
 
         if (existingOfficial) {
@@ -91,6 +116,7 @@ export const POST = async (req: Request) => {
             const officialSession = await tx.official_Session.create({
                 data: {
                     amount_to_pay: Number(amount),
+                    payment_amount: Number(amount_paid),
                     position,
                     departmentId: Number(department) || null,
                     region,
@@ -136,8 +162,10 @@ export const POST = async (req: Request) => {
         const body = await generateEmailBody(name, message);
         await sendEmail(email, 'Registration Initialized!', body, transporter);
 
-        return sucessHandler('Coordinator/Executive registered successfully', 201, { season: settings.current_season, id: official.officialSession.id });
-
+        return sucessHandler('Coordinator/Executive registered successfully', 201, {
+            season: settings.current_season,
+            id: official.officialSession.id,
+        });
     } catch (error: any) {
         console.error('Error registering coordinator/executive:', error);
         return errorHandler(`Something went wrong: ${error.message}`, 500);
