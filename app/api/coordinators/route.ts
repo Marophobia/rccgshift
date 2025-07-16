@@ -12,13 +12,14 @@ export const POST = async (req: Request) => {
         const coordinators = await prisma.officials.findMany({
             where: {
                 status: true,
-                type: {
-                    in: [
-                        OfficialType.provincial_shift_coordinator,
-                        OfficialType.assistant_regional_shift_coordinator,
-                        OfficialType.regional_shift_coordinator
-                    ]
-                }
+                // type: {
+                //     in: [
+                //         OfficialType.provincial_shift_coordinator,
+                //         OfficialType.assistant_regional_shift_coordinator,
+                //         OfficialType.regional_shift_coordinator,
+                //         OfficialType.shift_executive
+                //     ]
+                // }
             },
             include: {
                 official_sessions: {
