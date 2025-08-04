@@ -137,11 +137,6 @@ const RegistrationForm = () => {
 
             setCurrentStep(currentStep + 1);
         } else if (currentStep === 2) {
-            if (!agreed) {
-                toast.dismiss();
-                return toast.error('Please agree to the Terms and Conditions');
-            }
-
             if (activeType === 1) {
                 if (!formData.category || !formData.participation) {
                     toast.error('Please fill all required fields.');
@@ -173,7 +168,7 @@ const RegistrationForm = () => {
 
             setLoading(true);
             toast.loading('Please Wait');
-            fetch(`${apiUrl}/api/register`, {
+            fetch(`${apiUrl}/api/register/free`, {
                 method: 'POST',
                 cache: 'no-store',
                 body: data,
@@ -195,9 +190,10 @@ const RegistrationForm = () => {
                     console.log('Finished Response', response);
                     if (update.ok) {
                         toast.dismiss();
-                        setCurrentStep(currentStep + 1);
-                        setTag(response.data.tag);
-                        setSeason(response.data.season);
+                        toast.success('Registration Successful!');
+                        setTimeout(() => {
+                            router.push('/register-shine-free');
+                        }, 2000);
                     } else {
                         toast.dismiss();
                         toast.error(`${response.error}`);
@@ -220,46 +216,6 @@ const RegistrationForm = () => {
         setCurrentStep(currentStep - 1);
     };
 
-    const componentProps = {
-        email: formData.email,
-        amount: amount * 100,
-        // amount: 100 * 100,
-        fname: formData.name + `(${tag})`,
-        // lname: fname + `(${contestant.id})`,
-        publicKey: publicKey,
-        text: 'Pay Now',
-        metadata: {
-            name: formData.name,
-            season: season,
-            registration_type: 'contestant',
-            tag: tag,
-            amount: amount,
-            type: activeType,
-            custom_fields: [
-                {
-                    display_name: 'Season',
-                    variable_name: 'season',
-                    value: season ? season : 'N/A',
-                },
-            ],
-        },
-        onSuccess: () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Payment Successful',
-                text: 'We are processing your registration. You will receive a confirmation shortly',
-                confirmButtonColor: '#F5245F',
-            });
-
-            setTimeout(() => {
-                router.replace('/');
-            }, 2000);
-        },
-        onClose: () => {
-            toast.error('What went wrong?');
-        },
-    };
-
     useEffect(() => {
         setIsOpen(true);
     }, []);
@@ -268,7 +224,8 @@ const RegistrationForm = () => {
         <>
             <ToastContainer />
             {!activeType && <h5>Please select your registration type</h5>}
-            <h4 className='text-red-100'>Please Note that this registration is NOT FREE!
+            <h4 className='text-red-100'>Please Note that this registration is FREE and
+                should not be made public!
             </h4>
             <div className="flex flex-col items-center space-y-4 pb-10 md:flex-row md:space-x-4 md:space-y-0">
                 <Button
@@ -709,13 +666,6 @@ const RegistrationForm = () => {
                                 </Select>
                             </div>
 
-                            {/* Price Disclaimer */}
-                            {formData.participation &&
-                                <h6 className="mt-1 text-red-50">
-                                    You will be required to pay {formData.participation === 'Single' ? (<>₦7,000</>) : (<>₦12,000</>)}
-                                </h6>
-                            }
-
                             {formData.participation === 'Group' && (
                                 <>
                                     <div className="mb-5">
@@ -757,64 +707,6 @@ const RegistrationForm = () => {
                                 </>
                             )}
 
-
-
-                            {/* Terms and Conditions Checkbox */}
-                            <div className="flex items-center gap-3 mt-4">
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <input
-                                            type="checkbox"
-                                            id="agree"
-                                            checked={agreed}
-                                            className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
-                                        />
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>
-                                                Terms and Conditions
-                                            </AlertDialogTitle>
-                                            {/* <AlertDialogDescription></AlertDialogDescription> */}
-                                        </AlertDialogHeader>
-                                        <div className="overflow-auto max-h-[50vh] mb-4">
-                                            <TermsAndConditionsDialog />
-                                        </div>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel
-                                                onClick={(e) =>
-                                                    setAgreed(false)
-                                                }
-                                            >
-                                                I do not Agree
-                                            </AlertDialogCancel>
-                                            <AlertDialogAction
-                                                onClick={(e) => setAgreed(true)}
-                                                className='bg-green-500'
-                                            >
-                                                I Agree
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                                <label htmlFor="agree" className="mt-2">
-                                    I agree to Shift{' '} Terms and Conditions
-                                </label>
-                            </div>
-
-                            {agreed && (
-                                <p className="mt-3">
-                                    By clicking the Proceed button, I confirm
-                                    that I have read, understood, and agree to
-                                    be bound by the International Shift Talent
-                                    Registration Terms and Conditions. I
-                                    understand that my registration is subject
-                                    to acceptance by the Organizer, and I agree
-                                    to comply with all Event rules and
-                                    instructions.
-                                </p>
-                            )}
-
                             <div className="flex gap-5">
                                 <button
                                     onClick={handlePrev}
@@ -837,23 +729,9 @@ const RegistrationForm = () => {
                                     disabled={loading}
                                 >
                                     {' '}
-                                    Proceed{' '}
+                                    Register{' '}
                                 </button>
                             </div>
-                        </div>
-                    )}
-                    {currentStep === 3 && (
-                        <div>
-                            <h5 className="borderr">Step Three: Payment</h5>
-                            <p>
-                                Please click on the button below to pay the
-                                required registration fee
-                            </p>
-
-                            <PaystackButton
-                                className="button w-100"
-                                {...componentProps}
-                            ></PaystackButton>
                         </div>
                     )}
                 </>
@@ -1231,69 +1109,7 @@ const RegistrationForm = () => {
                                     required
                                     className="w-full border rounded px-4 py-2"
                                 />
-                            </div>
-
-                            {formData.groupName &&
-                                <h6 className="mt-1 text-red-50">
-                                    You will be required to pay ₦25,000
-                                </h6>
-                            }
-
-                            {/* Terms and Conditions Checkbox */}
-                            <div className="flex items-center gap-3 mt-4">
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <input
-                                            type="checkbox"
-                                            id="agree"
-                                            checked={agreed}
-                                            className="w-5 h-5 cursor-pointer accent-[#F5245F]" // Change color here
-                                        />
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>
-                                                Terms and Conditions
-                                            </AlertDialogTitle>
-                                            {/* <AlertDialogDescription></AlertDialogDescription> */}
-                                        </AlertDialogHeader>
-                                        <div className="overflow-auto max-h-[50vh] mb-4">
-                                            <TermsAndConditionsDialog />
-                                        </div>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel
-                                                onClick={(e) =>
-                                                    setAgreed(false)
-                                                }
-                                            >
-                                                I do not Agree
-                                            </AlertDialogCancel>
-                                            <AlertDialogAction
-                                                onClick={(e) => setAgreed(true)}
-                                                className='bg-green-500'
-                                            >
-                                                I Agree
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                                <label htmlFor="agree" className="mt-2">
-                                    I agree to Shift{' '} Terms and Conditions
-                                </label>
-                            </div>
-
-                            {agreed && (
-                                <p className="mt-3">
-                                    By clicking the Proceed button, I confirm
-                                    that I have read, understood, and agree to
-                                    be bound by the International Shift Talent
-                                    Registration Terms and Conditions. I
-                                    understand that my registration is subject
-                                    to acceptance by the Organizer, and I agree
-                                    to comply with all Event rules and
-                                    instructions.
-                                </p>
-                            )}
+                            </div>                   
 
                             <div className="flex gap-5">
                                 <button
@@ -1317,70 +1133,14 @@ const RegistrationForm = () => {
                                     disabled={loading}
                                 >
                                     {' '}
-                                    Proceed{' '}
+                                    Register{' '}
                                 </button>
                             </div>
-                        </div>
-                    )}
-                    {currentStep === 3 && (
-                        <div>
-                            <h5 className="borderr">Step Three: Payment</h5>
-                            <p>
-                                Please click on the button below to pay the
-                                required registration fee
-                            </p>
-
-                            <PaystackButton
-                                className="button w-100"
-                                {...componentProps}
-                            ></PaystackButton>
                         </div>
                     )}
                 </>
             )}
 
-
-            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-                {/* <AlertDialogTrigger asChild>
-                    <h3>Click me</h3>
-                </AlertDialogTrigger> */}
-                <AlertDialogContent style={{ background: "#16171E", border: "none" }}>
-                    <AlertDialogHeader>
-                        <div className="bg-gray-800 border-l-4 border-yellow-400 p-4 rounded-lg my-5 text-left">
-                            <h3 className="text-yellow-400 font-semibold text-lg mb-3">
-                                Important Notice: Registration Fee Required
-                            </h3>
-                            <p className="text-gray-200 mb-3">
-                                Please note that this registration is <strong className="text-yellow-400">NOT FREE</strong>. A registration fee is required to complete your application. The fee varies based on the category you select:
-                            </p>
-                            <ul className="list-disc list-inside text-gray-200 mb-3 pl-5">
-                                <li><strong className="text-yellow-400">International Shift (Single):</strong> ₦7,000</li>
-                                <li><strong className="text-yellow-400">International Shift (Group):</strong> ₦12,000</li>
-                                <li><strong className="text-yellow-400">Shift Choir Competition:</strong> ₦25,000</li>
-                            </ul>
-                            <p className="text-gray-200 mb-3">
-                                <strong className="text-yellow-400">Do not proceed with registration unless you are ready and willing to pay the required fee.</strong> Failure to pay will result in an incomplete registration.
-                            </p>
-                            <p className="text-gray-200">
-                                By proceeding, you acknowledge and agree to the payment terms outlined above.
-                            </p>
-                        </div>
-                    </AlertDialogHeader>
-                    <div className="overflow-auto max-h-[50vh] mb-4">
-
-                    </div>
-                    <AlertDialogFooter>
-                        <AlertDialogAction className='bg-red-500 border-red-500 text-white sm:my-0 my-2'>
-                            <Link href="/">
-                                I do not Agree
-                            </Link>
-                        </AlertDialogAction>
-                        <AlertDialogCancel className='bg-green-500 border-green-500 text-white sm:my-0 my-2'>
-                            I Agree
-                        </AlertDialogCancel>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
         </>
     );
 };

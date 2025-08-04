@@ -83,7 +83,7 @@ const Header = (props: Props) => {
                                     <Link href="/executives">Our Leaders</Link>
                                 </li>
                                 <li>
-                                    <Link href="/coordinators">Coordinators</Link>
+                                    <Link href="/delegates">Delegates</Link>
                                 </li>
                                 <li>
                                     <Link href="/contestants">Contestants</Link>

@@ -7,8 +7,8 @@ type Props = {};
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import CoordinatorsList from './components/coordinators';
 export const metadata = {
-    title: "OUR COORDINATORS | RCCG SHIFT",
-    generator: 'OUR COORDINATORS | RCCG SHIFT',
+    title: "SHIFT 2025 DELEGATES | RCCG SHIFT",
+    generator: 'SHIFT 2025 DELEGATES | RCCG SHIFT',
     applicationName: 'RCCG SHIFT',
     referrer: 'origin-when-cross-origin',
     formatDetection: {
@@ -18,14 +18,14 @@ export const metadata = {
     },
 
     twitter: {
-        card: 'OUR COORDINATORS | RCCG SHIFT',
-        title: 'OUR COORDINATORS | RCCG SHIFT',
+        card: 'SHIFT 2025 DELEGATES | RCCG SHIFT',
+        title: 'SHIFT 2025 DELEGATES | RCCG SHIFT',
 
     },
     openGraph: {
-        title: 'OUR COORDINATORS | RCCG SHIFT',
-        description: 'Meet our Coordinators for season 2 of the Shift Intl talent',
-        url: 'https://rccgshift.org/coordinators',
+        title: 'SHIFT 2025 DELEGATES | RCCG SHIFT',
+        description: 'Meet our Delegates for season 3 of the Shift Intl talent',
+        url: 'https://rccgshift.org/delegates',
     },
 }
 
@@ -53,7 +53,7 @@ const Coordinators = async (props: Props) => {
                 <Header />
                 <main id="main">
                     <div id="page-title">
-                        <h1><span>Shift Coordinators</span></h1>
+                        <h1><span>SHIFT 2025 Delegates</span></h1>
                     </div>
                     <div id="page-container">
                         <CoordinatorsList coordinators={coordinators.data} />           

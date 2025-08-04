@@ -15,7 +15,7 @@ const TeamCard = (props: Props) => {
                     <div className="grid-img">
                         <div className="h-96">
                             <img
-                                src={`/images/team/${image}`}
+                                src={`${image}`}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                                 alt="Executive"
                             />
