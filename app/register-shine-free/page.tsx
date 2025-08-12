@@ -3,7 +3,7 @@ import React from 'react'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import Link from 'next/link'
-import RegistrationForm from './components/form'
+// import RegistrationForm from './components/form'
 
 
 export const metadata = {
@@ -43,7 +43,8 @@ const Contact = async () => {
                     <div id="page-container">
                         <div className='grid'>
                             <div className='unit two-thirds'>
-                                <RegistrationForm />
+                                {/* <RegistrationForm /> */}
+                                <h1>Free Registration is currently closed</h1>
                             </div>
                         </div>
                     </div>
